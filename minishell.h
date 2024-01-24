@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/01/24 13:49:10 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:00:40 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@
 # include <readline/readline.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <libft/libft.h>
+# include <libft/get_next_line.h>
 
 #endif

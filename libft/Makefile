@@ -45,12 +45,6 @@ CFILES		= ft_atoi.c \
 			ft_lstclear.c \
 			ft_lstiter.c \
 			ft_lstmap.c \
-			ft_printf.c \
-			ft_print_addr.c \
-			ft_print_char.c \
-			ft_print_number.c \
-			ft_print_string.c \
-			ft_printf_util.c \
 			get_next_line.c \
 			get_next_line_utils.c
 
