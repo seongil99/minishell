@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/01/24 14:00:40 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:16:57 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@
 # include <stdlib.h>
 # include <term.h>
 # include <unistd.h>
+# include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
-# include <libft/libft.h>
-# include <libft/get_next_line.h>
+# include "./libft/libft.h"
+
+# define TRUE 1
+# define FALSE 0
 
 #endif

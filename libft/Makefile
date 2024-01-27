@@ -45,8 +45,6 @@ CFILES		= ft_atoi.c \
 			ft_lstclear.c \
 			ft_lstiter.c \
 			ft_lstmap.c \
-			get_next_line.c \
-			get_next_line_utils.c
 
 OBJS = $(CFILES:.c=.o)
 
