@@ -1,7 +1,9 @@
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror
 LIBFT_FLAG		= -L./libft -lft
-READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
+#READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
+READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
+READLINE_INCLUDE= -I/opt/homebrew/opt/readline/include
 
 NAME			= minishell
 
@@ -20,7 +22,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(INCLUDES)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) $(READLINE_INCLUDE) -c $< -o $@
 
 clean:
 	make fclean -sC $(LIBFT_DIR)
