@@ -1,15 +1,33 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
+# READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
+# READLINE_INCLUDE= -I/opt/homebrew/opt/readline/include
 
 NAME			= minishell
 
-SRCS			= main.c
+LIBFT_DIR		= ./libft
+PARSE_DIR		= ./parsing
+UTILS_DIR		= ./utils
+
+PARSE_SRC		= scanner.c \
+				scanner_func.c \
+				tokenize.c
+
+UTILS_SRC		= ft_calloc2.c \
+				ft_stack.c \
+				linked_list_push.c \
+				linked_list.c \
+				utils.c
+
+MAIN_SRC		= main.c
+
+SRCS			= $(MAIN_SRC) \
+				$(addprefix $(PARSE_DIR)/,$(PARSE_SRC)) \
+				$(addprefix $(UTILS_DIR)/,$(UTILS_SRC))
 OBJS			= $(SRCS:.c=.o)
 INCLUDES		= minishell.h
-
-LIBFT_DIR		= ./libft
 
 all: $(NAME)
 
@@ -20,7 +38,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(INCLUDES)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) $(READLINE_INCLUDE) -c $< -o $@
 
 clean:
 	make fclean -sC $(LIBFT_DIR)
