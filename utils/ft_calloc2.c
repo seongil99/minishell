@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_calloc2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 15:49:27 by seonyoon          #+#    #+#             */
-/*   Updated: 2023/10/20 16:35:30 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/12 17:46:09 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/12 17:51:00 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "mini_utils.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void	*))
+void	*ft_calloc2(size_t cnt, size_t size)
 {
-	if (!lst)
-		return ;
-	(*del)(lst->content);
-	free(lst);
+	void	*ret;
+
+	ret = ft_calloc(cnt, size);
+	if (!ret)
+		exit_err("MEM Error\n");
+	return (ret);
 }
