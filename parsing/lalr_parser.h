@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:38:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/14 13:29:48 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:35:43 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ typedef enum e_gmr_var
 	FILENAME,
 	IO_HERE,
 	HERE_END,
-	WORD,
 	AND_IF,
 	OR_IF,
-	DLESS,
-	DGREAT,
 	PIPE,
-	LESS,
-	GREAT,
 	LPAR,
 	RPAR,
+	WORD,
+	LESS,
+	GREAT,
+	DGREAT,
+	DLESS,
 	TYPE_EOF
 }	t_gmr_var;
 

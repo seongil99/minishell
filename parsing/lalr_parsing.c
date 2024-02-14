@@ -6,11 +6,12 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:07:24 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:57:04 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:58:50 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lalr_parser.h"
+#include "lalr_table.h"
 #include "scanner.h"
 
 t_automata	*automata_new(t_lst *input)
