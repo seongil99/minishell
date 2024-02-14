@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 19:00:21 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:42:33 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*buf_get_str(t_buf *buf)
 
 }
 
-t_token_type	get_char_type(t_scanner *src, char c)
+t_gmr_var	get_char_type(t_scanner *src, char c)
 {
 	if (c == '(')
 		return (LPAR);

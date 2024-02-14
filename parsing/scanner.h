@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:16:00 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 18:20:57 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:42:16 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,9 @@
 
 # include "../libft/libft.h"
 # include "../utils/mini_utils.h"
+# include "lalr_parser.h"
 
 # define T_EOF -1
-
-typedef enum e_token_type
-{
-	WORD = 1,
-	AND_IF,
-	OR_IF,
-	DLESS,
-	DGREAT,
-	PIPE,
-	LESS,
-	GREAT,
-	LPAR,
-	RPAR
-}	t_token_type;
 
 typedef struct s_scanner
 {
@@ -41,7 +28,7 @@ typedef struct s_scanner
 
 typedef struct s_token
 {
-	t_token_type	type;
+	t_gmr_var		type;
 	int				str_len;
 	char			*str;
 }	t_token;
