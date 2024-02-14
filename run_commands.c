@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/13 12:06:46 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/14 09:55:20 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,154 +70,65 @@ void	close_pipe(t_lst *lst)
 	}
 }
 
-void	redi_right(t_lst *lst, char **envp)
+void	pipe_exec(t_lst *lst, t_env_lst *envlst, char *envp[])
 {
-	int	file;
-	char *args[2];
-
-	args[0] = "for test";
-	args[1] = NULL;
-
-	close_pipe(lst);
-	if (!ft_strncmp(lst->curr->next->token, ">", 2))
-		file = open(lst->curr->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		file = open(lst->curr->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	dup2(file, STDOUT_FILENO);
-	close(file);
-	execve(lst->curr->token, args, envp);
-	perror("minishell right redirection");
-	exit(0);
-}
-
-void	redi_heredoc(t_lst *lst, char **envp)
-{
-	int		tmp_file;
-	char	*doc_line;
-	int		len_deli;
-	char	tmp[1025];
-	int		ret;
-	char 	*args[2];
-	int		pid;
-	
-	args[0] = "heredoc";
-	args[1] = NULL;
-	pid = fork();
-	if (pid == 0)
-	{
-		tmp_file = open(".tmp", O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		len_deli = ft_strlen(lst->curr->next->next->token) + 1;
-		doc_line = get_next_line(0);
-		while (ft_strncmp(doc_line, lst->curr->next->next->token, len_deli))
-		{
-			write(tmp_file, doc_line, ft_strlen(doc_line));
-			free(doc_line);
-			doc_line = get_next_line(0);
-		}
-		free(doc_line);
-		close(tmp_file);
-		tmp_file = open(".tmp", O_RDONLY, 0666);
-		ret = read(tmp_file, tmp, 1024);
-		while (ret)
-		{
-			write(lst->curr->pipefd[0], tmp, ret);
-			ret = read(tmp_file, tmp, 1024);
-		}
-		close_pipe(lst);
-		close(tmp_file);
-		execve(lst->curr->token, args, envp);
-		perror("minishell heredoc");
-		exit(0);
-	}
-}
-
-void	redi_left(t_lst *lst, char **envp)
-{
-	int		file;
-	char 	*args[2];
-	char	tmp[1025];
-	int		ret;
-	
-	args[0] = "left redirection test";
-	args[1] = NULL;
-	dup2(lst->curr->pipefd[0], STDIN_FILENO);
-	file = open(lst->curr->next->next->token, O_RDONLY, 0666);
-	ret = read(file, tmp, 1024);
-	while (ret)
-	{
-		write(lst->curr->pipefd[1], tmp, ret);
-		ret = read(file, tmp, 1024);
-	}
-	close(file);
-	close_pipe(lst);
-	execve(lst->curr->token, args, envp);
-	perror("minishell left redirection");
-	exit(0);
-}
-
-// void	pipe_exec(t_lst *lst, char *envp[])
-// {
-// 	char	**args;
-
-// 	args = get_args(lst);
-// 	if (lst->curr != lst->tail)
-// 		dup2(lst->curr->pipefd[1], STDOUT_FILENO);
-// 	if (lst->curr != lst->head)
-// 		dup2(lst->curr->prev->prev->pipefd[0], STDIN_FILENO);
-// 	close_pipe(lst);
-// 	execve(lst->curr->token, args, envp);
-// 	perror("minishell pipe line");
-// }
-
-
-
-void	run_commands(char **tokens, t_lst *lst, char **envp)
-{
-	int		proc_id;
 	char	*args[2];
 
 	args[0] = "asdf1";
 	args[1] = NULL;
+	if (lst->curr != lst->tail)
+		dup2(lst->curr->pipefd[1], STDOUT_FILENO);
+	if (lst->curr != lst->head)
+		dup2(lst->curr->prev->prev->pipefd[0], STDIN_FILENO);
+	close_pipe(lst);
+	if (!builtin_choice(lst, envlst))
+		execve(lst->curr->token, args, envp);
+	perror("minishell pipe line");
+}
+
+int	builtin_choice(t_lst *lst, t_env_lst *envlst)
+{
+	if (!ft_strncmp(lst->curr->token, "env", 4))
+		return (builtin_env(envlst));
+	if (!ft_strncmp(lst->curr->token, "unset", 6))
+		return (builtin_unset(envlst, lst->curr->next->token));
+	if (!ft_strncmp(lst->curr->token, "export", 7))
+		return (builtin_export(envlst, lst->curr->next->token));
+	if (!ft_strncmp(lst->curr->token, "echo", 5))
+		return (builtin_echo(lst));
+	if (!ft_strncmp(lst->curr->token, "cd", 3))
+		return (builtin_cd(lst));
+	if (!ft_strncmp(lst->curr->token, "pwd", 4))
+		return (builtin_pwd());
+	if (!ft_strncmp(lst->curr->token, "exit", 5))
+		builtin_exit(lst);
+	return (0);
+}
+
+void	run_commands(char **tokens, t_lst *lst, t_env_lst *envlst, char **envp)
+{
+	int		proc_id;
+	
 	push_cmd(lst, tokens);
 	init_pipe(lst);
 	while (lst->curr)
 	{
-		if (ft_strncmp(lst->curr->token, "|", 2)) // cmd 라면,
+		if (ft_strncmp(lst->curr->token, "<<", 3) && \
+			ft_strncmp(lst->curr->token, "<", 2) && \
+			ft_strncmp(lst->curr->token, ">>", 3) && \
+			ft_strncmp(lst->curr->token, ">", 2) && \
+			ft_strncmp(lst->curr->token, "|", 2))
 		{
 			proc_id = fork();
 			if (proc_id == 0)
 			{
-				if (lst->curr != lst->tail && !ft_strncmp(lst->curr->next->token, "|", 2)) 
-				{
-					if (lst->curr != lst->tail)
-						dup2(lst->curr->pipefd[1], STDOUT_FILENO);
-					if (lst->curr != lst->head)
-						dup2(lst->curr->prev->prev->pipefd[0], STDIN_FILENO);
-					close_pipe(lst);
-					execve(lst->curr->token, args, envp);
-					perror("minishell pipe line");
-				}
-				else if (lst->curr != lst->tail && !ft_strncmp(lst->curr->next->token, ">", 1))
-					redi_right(lst, envp);
+				if (lst->curr != lst->tail && !ft_strncmp(lst->curr->next->token, ">", 1))
+					redi_right(lst, envlst, envp);
 				else if (lst->curr != lst->tail && !ft_strncmp(lst->curr->next->token, "<", 1))
-					redi_left(lst, envp);
+					redi_left(lst, envlst, envp);
 				else
-				{
-					if (lst->curr != lst->head)
-						dup2(lst->curr->prev->prev->pipefd[0], STDIN_FILENO);
-					close_pipe(lst);
-					if (execve(lst->curr->token, args, envp))
-					{
-						perror("last cmd");
-						exit(0);
-					}
-				}
+					pipe_exec(lst, envlst, envp);
 			}
-		}
-		if (lst->curr != lst->tail && !ft_strncmp(lst->curr->next->token, ">", 1))
-		{
-			lst->curr = lst->curr->next;
-			lst->curr = lst->curr->next;
 		}
 		lst->curr = lst->curr->next;
 	}

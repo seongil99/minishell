@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:25:47 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/12 13:41:10 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/14 13:36:57 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ t_list_gnl	*ft_find_node(t_list_gnl *head, int fd)
 
 char	*ft_find_next_line(t_list_gnl *head, int fd)
 {
-	char	*str;
-	size_t	str_index;
-	size_t	str_max;
+	char		*str;
+	size_t		str_index;
+	size_t		str_max;
 	t_list_gnl	*node;
 
 	str_index = 0;
@@ -95,7 +95,8 @@ char	*ft_find_next_line(t_list_gnl *head, int fd)
 	return (str);
 }
 
-char	*ft_make_str(t_list_gnl *node, char *str, size_t str_index, size_t str_max)
+char	*ft_make_str(t_list_gnl *node, char *str, \
+					size_t str_index, size_t str_max)
 {
 	while (1)
 	{
@@ -104,26 +105,27 @@ char	*ft_make_str(t_list_gnl *node, char *str, size_t str_index, size_t str_max)
 			node->buf_info[1] = 0;
 			node->buf_info[2] = read(node->buf_info[0], node->buf, BUFFER_SIZE);
 			if (node->buf_info[2] <= 0)
-				return (ft_realloc(str, str_index, &str_max, 1));
+				return (ft_realloc_gnl(str, str_index, &str_max, 1));
 		}
 		while (node->buf_info[1] < node->buf_info[2])
 		{
 			str[str_index] = node->buf[node->buf_info[1]++];
 			if (str[str_index++] == '\n')
-				return (ft_realloc(str, str_index, &str_max, 1));
+				return (ft_realloc_gnl(str, str_index, &str_max, 1));
 			else if (str_index == str_max)
 			{
-				str = ft_realloc(str, str_index, &str_max, 0);
+				str = ft_realloc_gnl(str, str_index, &str_max, 0);
 				if (!str)
 					return (0);
 			}
 		}
 		if (node->buf_info[2] < BUFFER_SIZE)
-			return (ft_realloc(str, str_index, &str_max, 1));
+			return (ft_realloc_gnl(str, str_index, &str_max, 1));
 	}
 }
 
-char	*ft_realloc(char *str, size_t str_index, size_t	*str_max, int option)
+char	*ft_realloc_gnl(char *str, size_t str_index, \
+						size_t	*str_max, int option)
 {
 	char	*newstr;
 	size_t	len;

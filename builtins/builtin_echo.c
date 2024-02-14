@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/12 19:20:02 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/14 09:53:41 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	echo_option_check(t_node *arg)
 	return (1);
 }
 
-void	builtin_echo(t_lst *lst)
+int	builtin_echo(t_lst *lst)
 {
 	lst->curr = lst->curr->next;
 	if (echo_option_check(lst->curr))
@@ -53,5 +53,6 @@ void	builtin_echo(t_lst *lst)
 			lst->curr = lst->curr->next;
 		}
 		printf("%s\n", lst->curr->token);
-	}	
+	}
+	return (1);
 }

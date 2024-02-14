@@ -7,10 +7,14 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/02/17 17:36:26 by seonyoon         ###   ########.fr       */
 =======
 /*   Updated: 2024/02/13 13:46:58 by sihkang          ###   ########seoul.kr  */
 >>>>>>> add: builtins
+=======
+/*   Updated: 2024/02/14 13:33:35 by sihkang          ###   ########seoul.kr  */
+>>>>>>> add: signal handling
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +41,7 @@
 # define TRUE 1
 # define FALSE 0
 
-// int	g_exit_code = 0;
+extern int	g_exit_code;
 
 typedef struct s_env_node
 {
@@ -72,12 +76,32 @@ typedef struct s_node
 	struct s_node	*prev;
 }			t_node;
 
-void	builtin_env(char *envp[]);
-void	builtin_cd(t_lst *lst);
-void	builtin_pwd(void);
-void	builtin_echo(t_lst *lst);
+int		builtin_env(t_env_lst *envlst);
+int		builtin_cd(t_lst *lst);
+int		builtin_pwd(void);
+int		builtin_echo(t_lst *lst);
 void	builtin_exit(t_lst	*lst);
-void	run_commands(char **tokens, t_lst *lst, char **envp);
+int		builtin_unset(t_env_lst *envlst, char *remove_key);
+int		builtin_export(t_env_lst *envlst, char *keyvalue);
+int		builtin_choice(t_lst *lst, t_env_lst *envlst);
+void	run_commands(char **tokens, t_lst *lst, t_env_lst *envlst, char **envp);
+
+void	redi_right(t_lst *lst, t_env_lst *envlst, char **envp);
+void	redi_left(t_lst *lst, t_env_lst *envlst, char **envp);
+void	redi_heredoc(t_lst *lst, char **envp);
+
+
+void	push_cmd(t_lst *lst, char **tokens);
+void	init_pipe(t_lst *lst);
+void	close_pipe(t_lst *lst);
+void	pipe_exec(t_lst *lst, t_env_lst *envlst, char *envp[]);
+
+// terminal signal
+void	sigint_handler();
+void	sigquit_handler();
+void 	save_input_mode(struct termios *org_term);
+void	set_input_mode(struct termios *new_term);
+void	reset_input_mode(struct termios *org_term);
 
 
 # ifndef BUFFER_SIZE
@@ -95,7 +119,9 @@ char		*ft_find_next_line(t_list_gnl *node, int fd);
 char		*ft_make_str(t_list_gnl *node, char *str, size_t str_index, size_t str_max);
 t_list_gnl	*ft_find_node(t_list_gnl *head, int fd);
 char		*get_next_line(int fd);
-char		*ft_realloc(char *str, size_t str_index, size_t	*str_max, int option);
+char		*ft_realloc_gnl(char *str, size_t str_index, size_t	*str_max, int option);
 
+
+void	first_equal_separtion(t_env_node *new, char *str);
 
 #endif

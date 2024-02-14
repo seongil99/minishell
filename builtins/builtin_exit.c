@@ -6,23 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/12 19:20:06 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/14 13:28:23 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	ft_isspace(const char c)
-{
-	return (
-		c == '\t'
-		|| c == '\n'
-		|| c == '\v'
-		|| c == '\f'
-		|| c == '\r'
-		|| c == ' '
-	);
-}
 
 static long long	ft_atoll(const char *str)
 {
@@ -49,7 +37,7 @@ void	builtin_exit(t_lst	*lst)
 	if (lst->nums > 2)
 	{
 		perror("too many arguments");
-		g_exit_code = 1;
+		// g_exit_code = 1;
 	}
 	if (lst->nums == 2)
 	{
@@ -58,7 +46,7 @@ void	builtin_exit(t_lst	*lst)
 			if (!ft_isalpha(lst->curr->next->token[i++]))
 			{
 				perror("numeric argument required");
-				g_exit_code = 255;
+				// g_exit_code = 255;
 			}
 		}
 		g_exit_code = ft_atoll(lst->curr->next->token) % 256;
