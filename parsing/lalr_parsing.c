@@ -6,13 +6,19 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:07:24 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:58:50 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:59:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lalr_parser.h"
 #include "lalr_table.h"
 #include "scanner.h"
+
+
+
+
+
+# include <stdio.h>
 
 t_automata	*automata_new(t_lst *input)
 {
@@ -48,15 +54,36 @@ int	auto_get_state(t_automata *at)
 	return (state);
 }
 
-int	auto_move(t_automata *at, int state, int top, t_gmr_var head)
+int	lalr_action(t_automata *at, t_table t)
 {
 	int	ret;
 
 	ret = 0;
-	if (top < 100)
-		lalr_action();
+	if (t.action == REDUCE)
+		ret = lalr_reduce(at, t);
+	else if (t.action == SHIFT)
+		ret = lalr_shift(at, t);
+	return (ret);
+}
+
+int	auto_action(t_automata *at, int state, int top, t_gmr_var head)
+{
+	int		ret;
+	t_table	**t;
+
+	ret = 0;
+	if (state == 1 && head == TYPE_EOF)
+		return (ACC);
+	if (top < COMPLETE_COMMAND)
+	{
+		t = get_action_table();
+		ret = lalr_action(at, t[state][head - AND_IF]);
+	}
 	else
-		lalr_goto();
+	{
+		t = get_goto_table();
+		ret = lalr_goto(at, t[state][top - COMPLETE_COMMAND]);
+	}
 	return (ret);
 }
 
@@ -64,16 +91,35 @@ int	auto_transition(t_automata *at)
 {
 	int			cur_state;
 	int			st_top;
-	t_gmr_var	*input_head;
+	t_gmr_var	input_head;
+	int			ret;
 
 	cur_state = auto_get_state(at);
 	st_top = stack_top(at->stack);
-	input_head = ((t_token *)at->head->data)->type;
+	if (!at->head)
+		input_head = TYPE_EOF;
+	else
+		input_head = ((t_token *)at->head->data)->type;
+	ret = auto_action(at, cur_state, st_top, input_head);
+	if (at->head && ret == SHIFT)
+		at->head = at->head->next;
+	return (ret);
 }
 
-bool	parse_line(t_lst *lst)
+int	parse_line(t_lst *lst)
 {
 	t_automata	*atmt;
+	int			t;
 
+	init_action_table();
+	init_goto_table();
 	atmt = automata_new(lst);
+	while (true)
+	{
+		t = auto_transition(atmt);
+		if (t == ACC || t == REJECT)
+			break ;
+	}
+	automata_del(atmt);
+	return (t);
 }

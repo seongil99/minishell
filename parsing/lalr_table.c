@@ -6,23 +6,64 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:30:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/14 15:11:37 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:11:27 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lalr_table.h"
 
+void	table_clear(void)
+{
+	t_table	**t1;
+	t_table	**t2;
+	int		i;
+
+	t1 = get_action_table();
+	t2 = get_goto_table();
+	i = 0;
+	while (i < 37)
+	{
+		free(t1[i]);
+		free(t2[i]);
+		i++;
+	}
+	free(t1);
+	free(t2);
+}
+
 t_table	**get_action_table(void)
 {
-	static t_table	action_table[37][11];
+	static t_table	**action_table;
+	int				i;
 
+	if (!action_table)
+	{
+		action_table = ft_calloc2(37, sizeof(t_table *));
+		i = 0;
+		while (i < 37)
+		{
+			action_table[i] = ft_calloc2(11, sizeof(t_table));
+			i++;
+		}
+	}
 	return (action_table);
 }
 
 t_table	**get_goto_table(void)
 {
-	static t_table	goto_table[37][14];
+	static t_table	**goto_table;
+	int				i;
 
+	if (!goto_table)
+	{
+		goto_table = ft_calloc2(37, sizeof(t_table *));
+		i = 0;
+		while (i < 37)
+		{
+			goto_table[i] = ft_calloc2(14, sizeof(t_table));
+			i++;
+		}
+	}
 	return (goto_table);
 }
 
@@ -31,7 +72,6 @@ void	init_action_table(void)
 	t_table	**at;
 
 	at = get_action_table();
-	ft_memset(at, 0, sizeof(t_table) * 37 * 11);
 	at[0][3] = (t_table){SHIFT, 7};
 	at[0][5] = (t_table){SHIFT, 8};
 
@@ -372,7 +412,6 @@ void	init_goto_table(void)
 	t_table	**gt;
 
 	gt = get_goto_table();
-	ft_memset(gt, 0, sizeof(t_table) * 37 * 14);
 	gt_table_init1(gt);
 	gt_table_init2(gt);
 }

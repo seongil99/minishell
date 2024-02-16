@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/13 16:42:33 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:58:22 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,6 @@ t_lst	*tokenize(char *command)
 			break ;
 		lst_push_back(&head, lst_new(temp));
 	}
+	scanner_del(src);
 	return (head);
 }

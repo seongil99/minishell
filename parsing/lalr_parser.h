@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:38:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/14 15:35:43 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:10:49 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "../utils/mini_utils.h"
 # include "../libft/libft.h"
+
+
+# include <stdio.h>
 
 # define PARSE_ERR -1
 
@@ -58,5 +61,11 @@ typedef struct s_table
 	int	action;
 	int	number;
 }	t_table;
+
+int		lalr_shift(t_automata *at, t_table t);
+int		lalr_reduce(t_automata *at, t_table t);
+int		lalr_goto(t_automata *at, t_table t);
+int		parse_line(t_lst *lst);
+void	table_clear(void);
 
 #endif
