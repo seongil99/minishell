@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:37 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/16 16:05:43 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 13:12:36 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	reduce_pop(t_automata *at, t_table t)
 	else
 		n = 2;
 	while (n--)
-		stack_pop(at->stack);
+		stack_pop(at->stack, free);
 }
 
 static void	reduce_push(t_automata *at, t_table t)

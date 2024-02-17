@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/16 16:58:22 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 13:36:33 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,25 @@ t_token	*get_next_token(t_scanner *src)
 	tkn->str = buf_get_str(buf);
 	buf_del(buf);
 	return (tkn);
+}
+
+void	token_del(t_token *t)
+{
+	free(t->str);
+	free(t);
+}
+
+t_token	*token_dup(t_token *org)
+{
+	t_token	*ret;
+
+	ret = ft_calloc2(1, sizeof(t_token));
+	ret->str = ft_strdup(org->str);
+	if (!ret->str)
+		exit_err("MEM Error\n");
+	ret->str_len = org->str_len;
+	ret->type = org->type;
+	return (ret);
 }
 
 t_lst	*tokenize(char *command)

@@ -6,19 +6,13 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:07:24 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:59:54 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 13:26:08 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lalr_parser.h"
 #include "lalr_table.h"
 #include "scanner.h"
-
-
-
-
-
-# include <stdio.h>
 
 t_automata	*automata_new(t_lst *input)
 {
@@ -33,7 +27,7 @@ t_automata	*automata_new(t_lst *input)
 
 void	automata_del(t_automata *at)
 {
-	stack_del(at->stack);
+	stack_del(at->stack, free);
 	free(at);
 }
 
@@ -111,6 +105,9 @@ int	parse_line(t_lst *lst)
 	t_automata	*atmt;
 	int			t;
 
+	/**
+	 * init functions should be called once at the minishell init
+	*/
 	init_action_table();
 	init_goto_table();
 	atmt = automata_new(lst);
