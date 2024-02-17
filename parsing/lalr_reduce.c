@@ -6,16 +6,18 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:37 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 13:12:36 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:22:40 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lalr_parser.h"
 #include "lalr_table.h"
+#include "parse_tree.h"
 
-static void	reduce_pop(t_automata *at, t_table t)
+static int	reduce_pop(t_automata *at, t_table t)
 {
 	int	n;
+	int	i;
 
 	n = t.number;
 	if (n == 2 || n == 3 || n == 5 || n == 9)
@@ -25,8 +27,13 @@ static void	reduce_pop(t_automata *at, t_table t)
 		n = 4;
 	else
 		n = 2;
-	while (n--)
+	i = 0;
+	while (i < n)
+	{
 		stack_pop(at->stack, free);
+		++i;
+	}
+	return (n / 2);
 }
 
 static void	reduce_push(t_automata *at, t_table t)
@@ -66,12 +73,27 @@ static void	reduce_push(t_automata *at, t_table t)
 		st->push(st, HERE_END);
 }
 
-int	lalr_reduce(t_automata *at, t_table t)
+int	lalr_reduce(t_automata *at, t_stack *tree_stack, t_table t)
 {
+	int			n;
+	void		*temp;
+	t_treenode	*new_node;
+	t_token		*data;
+
 	if (t.action == REJECT)
 		return (REJECT);
-	reduce_pop(at, t);
+	n = reduce_pop(at, t);
+	data = token_new(NULL, 0);
+	new_node = treenode_new(data);
+	while (n--)
+	{
+		temp = tree_stack->top(tree_stack);
+		treenode_add_child_front(new_node, temp);
+		tree_stack->pop(tree_stack, do_nothing);
+	}
 	reduce_push(at, t);
+	data->type = ((t_token *)at->stack->_top->data)->type;
+	tree_stack->push_void(tree_stack, new_node);
 	printf("REDUCE %d\n", t.number);
 	return (REDUCE);
 }

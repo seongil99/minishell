@@ -16,6 +16,7 @@ PARSE_SRC		= lalr_goto.c \
 				lalr_reduce.c \
 				lalr_shift.c \
 				lalr_table.c \
+				parse_tree.c \
 				scanner.c \
 				scanner_func.c \
 				tokenize.c

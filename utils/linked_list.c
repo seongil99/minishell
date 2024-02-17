@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:17:56 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:59:52 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:05:21 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,9 @@ t_lst	*ft_lstlast(t_lst *lst)
 		lst = lst->next;
 	}
 	return (lst);
+}
+
+void	do_nothing(void *v)
+{
+	(void)v;
 }

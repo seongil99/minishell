@@ -6,21 +6,21 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:33:00 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 20:36:41 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 17:48:30 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_TREE_H
 # define PARSE_TREE_H
 
-# include "scanner.h"
 # include "../utils/mini_utils.h"
 # include "../libft/libft.h"
+# include "mini_parsing.h"
 
-typedef struct s_treenode
-{
-	t_token				*data;
-	struct s_treenode	*child;
-}	t_treenode;
+t_treenode	*treenode_new(t_token *data);
+void		treenode_del(t_treenode *t);
+void		tree_del(t_treenode	*root);
+t_treenode	*treenode_add_child_back(t_treenode *node, t_treenode *new_child);
+t_treenode	*treenode_add_child_front(t_treenode *node, t_treenode *new_child);
 
 #endif

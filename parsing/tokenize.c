@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 13:36:33 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:04:27 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,23 @@ t_token	*get_next_token(t_scanner *src)
 	return (tkn);
 }
 
-void	token_del(t_token *t)
+t_token	*token_new(char *str, t_gmr_var type)
 {
+	t_token	*ret;
+
+	ret = ft_calloc2(1, sizeof(t_token));
+	ret->str = str;
+	if (ret->str)
+		ret->str_len = ft_strlen(str);
+	ret->type = type;
+	return (ret);
+}
+
+void	token_del(void *tkn)
+{
+	t_token	*t;
+
+	t = (t_token *)tkn;
 	free(t->str);
 	free(t);
 }

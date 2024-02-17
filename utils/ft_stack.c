@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 20:09:45 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:56:23 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:17:46 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_stack	*stack_new(void)
 	st->pop = stack_pop;
 	st->push = stack_push;
 	st->top = stack_top;
+	st->push_void = stack_push_void;
 	return (st);
 }
 
@@ -32,14 +33,11 @@ void	stack_del(t_stack *st, void (*f)(void *))
 	free(st);
 }
 
-int	stack_top(t_stack *st)
+void	*stack_top(t_stack *st)
 {
-	int	*t;
-
 	if (!st->_top)
 		exit_err("Error: attempted to top() empty stack\n");
-	t = (int *)st->_top->data;
-	return (*t);
+	return (st->_top->data);
 }
 
 void	stack_push(t_stack *st, int n)
@@ -49,6 +47,26 @@ void	stack_push(t_stack *st, int n)
 
 	data = ft_calloc2(1, sizeof(int));
 	*data = n;
+	new = lst_new(data);
+	if (!st->_btm)
+	{
+		st->_top = new;
+		st->_btm = new;
+	}
+	else
+	{
+		st->_top->next = new;
+		new->prev = st->_top;
+		new->next = NULL;
+		st->_top = new;
+	}
+	st->size++;
+}
+
+void	stack_push_void(t_stack *st, void *data)
+{
+	t_lst	*new;
+
 	new = lst_new(data);
 	if (!st->_btm)
 	{

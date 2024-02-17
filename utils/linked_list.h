@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:45:23 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 12:39:55 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:05:35 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	lst_clear(t_lst **head, void (*del_func)(void *));
 void	lst_push_front(t_lst **head, t_lst *newlst);
 void	lst_push_back(t_lst **head, t_lst *newlst);
 t_lst	*ft_lstlast(t_lst *lst);
+void	do_nothing(void *v);
 
 #endif

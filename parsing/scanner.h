@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:16:00 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 13:36:45 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 17:48:18 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,7 @@
 
 # include "../libft/libft.h"
 # include "../utils/mini_utils.h"
-# include "lalr_parser.h"
-
-# define T_EOF -1
-
-typedef struct s_scanner
-{
-	char	*line;
-	int		size;
-	int		cur;
-}	t_scanner;
-
-typedef struct s_token
-{
-	t_gmr_var		type;
-	int				str_len;
-	char			*str;
-}	t_token;
-
-typedef struct s_buf
-{
-	char	*buf;
-	int		len;
-	int		size;
-}	t_buf;
+# include "mini_parsing.h"
 
 t_scanner	*scanner_new(char *line);
 void		scanner_del(t_scanner *s);
@@ -47,7 +24,8 @@ char		peek_char(t_scanner *src);
 void		cur_back(t_scanner *src);
 void		skip_whitespaces(t_scanner *src);
 t_lst		*tokenize(char *command);
-void		token_del(t_token *t);
+t_token		*token_new(char *str, t_gmr_var type);
+void		token_del(void *t);
 t_token		*token_dup(t_token *org);
 
 #endif
