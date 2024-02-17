@@ -6,11 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:17:56 by seonyoon          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/02/12 17:48:18 by seonyoon         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/17 12:37:30 by seonyoon         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/02/17 12:54:42 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +40,11 @@ void	lst_del(t_lst **lst, t_lst *target, void (*f)(void *))
 void	lst_clear(t_lst **head, void (*f)(void *))
 {
 	t_lst	*t;
+	t_lst	*n;
 
 	t = *head;
 	while (t)
 	{
-<<<<<<< Updated upstream
-		t = t->next;
-		free(t->prev->data);
-		t->prev->data = 0;
-		t->prev->next = 0;
-		t->prev->prev = 0;
-		free(t->prev);
-=======
 		n = t->next;
 		f(t->data);
 		t->data = 0;
@@ -63,7 +52,6 @@ void	lst_clear(t_lst **head, void (*f)(void *))
 		t->prev = 0;
 		free(t);
 		t = n;
->>>>>>> Stashed changes
 	}
 }
 

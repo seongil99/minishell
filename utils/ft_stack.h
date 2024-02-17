@@ -6,11 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:36:53 by seonyoon          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/02/11 20:46:08 by seonyoon         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/17 12:40:18 by seonyoon         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/02/17 12:54:58 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
