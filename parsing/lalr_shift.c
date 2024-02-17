@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 15:57:11 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:57:24 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	lalr_shift(t_automata *at, t_stack *tree_stack, t_table t)
 	var = ((t_token *)at->head->data)->type;
 	st->push(st, var);
 	st->push(st, t.number);
-	printf("SHIFT %d\n", t.number);
 	node = treenode_new(token_dup(at->head->data));
 	tree_stack->push_void(tree_stack, node);
 	return (SHIFT);

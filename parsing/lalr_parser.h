@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:38:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 17:48:55 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:57:16 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 # include "../utils/mini_utils.h"
 # include "../libft/libft.h"
-# include "parse_tree.h"
-
-/////
-# include <stdio.h>
-/////
-
+# include "parsing_type.h"
 
 int			lalr_shift(t_automata *at, t_stack *tree_stack, t_table t);
 int			lalr_reduce(t_automata *at, t_stack *tree_stack, t_table t);
 int			lalr_goto(t_automata *at, t_table t);
 t_treenode	*parse_line(t_lst *lst);
 void		table_clear(void);
+int			lalr_action(t_automata *at, t_stack *st, t_table t);
+int			auto_transition(t_automata *at, t_stack *st);
+t_automata	*automata_new(t_lst *input);
+void		automata_del(t_automata *at);
+int			auto_get_state(t_automata *at);
 
 #endif

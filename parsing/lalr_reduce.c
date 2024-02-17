@@ -6,13 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:37 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 16:22:40 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:18:28 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lalr_parser.h"
-#include "lalr_table.h"
-#include "parse_tree.h"
+#include "mini_parsing.h"
 
 static int	reduce_pop(t_automata *at, t_table t)
 {
@@ -36,13 +34,8 @@ static int	reduce_pop(t_automata *at, t_table t)
 	return (n / 2);
 }
 
-static void	reduce_push(t_automata *at, t_table t)
+static void	reduce_push1(t_stack *st, int n)
 {
-	int		n;
-	t_stack	*st;
-
-	n = t.number;
-	st = at->stack;
 	if (n == 0)
 		st->push(st, COMPLETE_COMMAND);
 	else if (1 <= n && n <= 3)
@@ -59,7 +52,11 @@ static void	reduce_push(t_automata *at, t_table t)
 		st->push(st, CMD_NAME);
 	else if (13 <= n && n <= 16)
 		st->push(st, CMD_SUFFIX);
-	else if (n == 17 || n == 18)
+}
+
+static void	reduce_push2(t_stack *st, int n)
+{
+	if (n == 17 || n == 18)
 		st->push(st, REDIRECTION_LIST);
 	else if (n == 19 || n == 20)
 		st->push(st, IO_REDIRECT);
@@ -71,6 +68,19 @@ static void	reduce_push(t_automata *at, t_table t)
 		st->push(st, IO_HERE);
 	else if (n == 26)
 		st->push(st, HERE_END);
+}
+
+static void	reduce_push(t_automata *at, t_table t)
+{
+	int		n;
+	t_stack	*st;
+
+	n = t.number;
+	st = at->stack;
+	if (0 <= n && n <= 16)
+		reduce_push1(st, n);
+	else if (17 <= n && n <= 26)
+		reduce_push2(st, n);
 }
 
 int	lalr_reduce(t_automata *at, t_stack *tree_stack, t_table t)
@@ -94,6 +104,5 @@ int	lalr_reduce(t_automata *at, t_stack *tree_stack, t_table t)
 	reduce_push(at, t);
 	data->type = ((t_token *)at->stack->_top->data)->type;
 	tree_stack->push_void(tree_stack, new_node);
-	printf("REDUCE %d\n", t.number);
 	return (REDUCE);
 }

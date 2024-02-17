@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_goto.c                                        :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 16:46:42 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:07:15 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/17 20:54:06 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/17 20:54:28 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_parsing.h"
 
-int	lalr_goto(t_automata *at, t_table t)
+t_token	*token_new(char *str, t_gmr_var type)
 {
-	t_stack	*st;
+	t_token	*ret;
 
-	if (t.action == REJECT)
-		return (REJECT);
-	st = at->stack;
-	st->push(st, t.number);
-	return (GOTO);
+	ret = ft_calloc2(1, sizeof(t_token));
+	ret->str = str;
+	if (ret->str)
+		ret->str_len = ft_strlen(str);
+	ret->type = type;
+	return (ret);
+}
+
+void	token_del(void *tkn)
+{
+	t_token	*t;
+
+	t = (t_token *)tkn;
+	free(t->str);
+	free(t);
 }
