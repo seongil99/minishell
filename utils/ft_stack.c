@@ -6,7 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 20:09:45 by seonyoon          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/02/12 18:23:22 by seonyoon         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/17 12:38:53 by seonyoon         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +28,9 @@ t_stack	*stack_new(void)
 	return (st);
 }
 
-void	stack_del(t_stack *st)
+void	stack_del(t_stack *st, void (*f)(void *))
 {
-	lst_clear(&(st->_btm));
+	lst_clear(&(st->_btm), f);
 	st->_top = NULL;
 	st->_btm = NULL;
 	free(st);
@@ -65,7 +69,7 @@ void	stack_push(t_stack *st, int n)
 	st->size++;
 }
 
-void	stack_pop(t_stack *st)
+void	stack_pop(t_stack *st, void (*f)(void *))
 {
 	t_lst	*t;
 
@@ -77,14 +81,14 @@ void	stack_pop(t_stack *st)
 	t = st->_top;
 	if (st->size == 1)
 	{
-		lst_del(&(st->_btm), t);
+		lst_del(&(st->_btm), t, f);
 		st->_top = NULL;
 		st->_btm = NULL;
 		st->size--;
 		return ;
 	}
 	st->_top = st->_top->prev;
-	lst_del(&(st->_btm), t);
+	lst_del(&(st->_btm), t, f);
 	st->_top->next = NULL;
 	st->size--;
 }
