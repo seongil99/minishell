@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc2.c                                       :+:      :+:    :+:   */
+/*   builtin_unset_export.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:46:09 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/16 10:26:43 by sihkang          ###   ########seoul.kr  */
+/*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
+/*   Updated: 2024/02/16 11:03:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_utils.h"
+#include "../minishell.h"
 
-void	*ft_calloc2(size_t cnt, size_t size)
+int	builtin_unset(t_env_lst *envlst, char *delkey)
 {
-	void	*ret;
+	remove_env_node(envlst, delkey);
+	return (1);
+}
 
-	ret = ft_calloc(cnt, size);
-	if (!ret)
-		exit_err("MEM Error\n");
-	return (ret);
+int	builtin_export(t_env_lst *envlst, char *keyvalue)
+{
+	put_env_node(envlst, keyvalue);
+	return (1);	
 }
