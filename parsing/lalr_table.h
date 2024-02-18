@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_parsing.h                                     :+:      :+:    :+:   */
+/*   lalr_table.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/27 14:23:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 17:54:10 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/13 18:17:03 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/17 17:49:25 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_PARSING_H
-# define MINI_PARSING_H
+#ifndef LALR_TABLE_H
+# define LALR_TABLE_H
 
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
-# include "../utils/mini_utils.h"
-# include "parsing_type.h"
-# include "lalr_parser.h"
-# include "lalr_table.h"
-# include "parse_tree.h"
-# include "scanner.h"
+# include "mini_parsing.h"
+
+t_table	**get_action_table(void);
+t_table	**get_goto_table(void);
+void	init_action_table(void);
+void	init_goto_table(void);
 
 #endif

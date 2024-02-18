@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_parsing.h                                     :+:      :+:    :+:   */
+/*   lalr_goto.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/27 14:23:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 17:54:10 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/14 16:46:42 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/17 20:07:15 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_PARSING_H
-# define MINI_PARSING_H
+#include "mini_parsing.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft/libft.h"
-# include "../utils/mini_utils.h"
-# include "parsing_type.h"
-# include "lalr_parser.h"
-# include "lalr_table.h"
-# include "parse_tree.h"
-# include "scanner.h"
+int	lalr_goto(t_automata *at, t_table t)
+{
+	t_stack	*st;
 
-#endif
+	if (t.action == REJECT)
+		return (REJECT);
+	st = at->stack;
+	st->push(st, t.number);
+	return (GOTO);
+}
