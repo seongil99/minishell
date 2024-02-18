@@ -6,11 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 14:45:24 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 14:47:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scanner.h"
+#include "mini_parsing.h"
 
 t_buf	*buf_new(void)
 {
@@ -53,7 +53,7 @@ char	*buf_get_str(t_buf *buf)
 	return (str);
 }
 
-t_token_type	get_char_type(t_scanner *src, char c)
+t_gmr_var	get_char_type(t_scanner *src, char c)
 {
 	if (c == '(')
 		return (LPAR);
