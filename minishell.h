@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 14:45:13 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 19:17:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,22 @@
 extern int	g_exit_code;
 
 // tokens lst
-typedef struct s_lst
+typedef struct s_cmd_lst
 {
-	struct s_node	*head;
-	struct s_node	*tail;
-	struct s_node	*curr;
+	struct s_cmd_node	*head;
+	struct s_cmd_node	*tail;
+	struct s_cmd_node	*curr;
 	int				nums;
-}			t_lst;
+}			t_cmd_lst;
 
-typedef struct s_node
+typedef struct s_cmd_node
 {
 	char			*token;
+	char			*file_heredoc;
 	int				pipefd[2];
-	struct s_node	*next;
-	struct s_node	*prev;
-}			t_node;
+	struct s_cmd_node	*next;
+	struct s_cmd_node	*prev;
+}			t_cmd_node;
 
 typedef struct s_list_gnl
 {
@@ -60,42 +61,44 @@ typedef struct s_list_gnl
 	struct s_list_gnl	*next;
 }			t_list_gnl;
 
-void	clear_lst(t_lst *lst);
+void	clear_lst(t_cmd_lst *lst);
 
 // utils
 void	*ft_calloc2(size_t cnt, size_t size);
 
-int		builtin_env(t_env_lst *envlst);
-int		builtin_cd(t_lst *lst, t_env_lst *envlst);
-int		builtin_pwd(void);
-int		builtin_echo(t_lst *lst);
-void	builtin_exit(t_lst	*lst);
-int		builtin_unset(t_env_lst *envlst, char *remove_key);
-int		builtin_export(t_env_lst *envlst, char *keyvalue);
-int		builtin_choice(t_lst *lst, t_env_lst *envlst);
-void	run_commands(char **tokens, t_lst *lst, t_env_lst *envlst, char **envp);
+int			builtin_env(t_env_lst *envlst);
+int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
+int			builtin_pwd(void);
+int			builtin_echo(t_cmd_lst *lst);
+void		builtin_exit(t_cmd_lst	*lst);
+int			builtin_unset(t_env_lst *envlst, char *remove_key);
+int			builtin_export(t_env_lst *envlst, char *keyvalue);
+int			builtin_choice(t_cmd_lst *lst, t_env_lst *envlst);
+void		run_commands(char **tokens, t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 
-void	logic_control(t_lst *lst, t_env_lst *envlst, char **envp);
-int		logic_stop(t_lst *lst);
-void	redi_right(t_lst *lst, t_env_lst *envlst, char **envp);
-void	redi_left(t_lst *lst, t_env_lst *envlst, char **envp);
-void	redi_heredoc(t_lst *lst);
-int		is_op(t_node *node);
+void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+int			logic_stop(t_cmd_lst *lst);
+void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+void		redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+void		redi_heredoc(t_cmd_lst *lst, char *file_name);
+int			is_cmd(t_cmd_node *node);
 
-char 	**get_cmd_args(t_lst *lst);
-t_node	*get_prev_cmd(t_lst *lst);
-t_node	*get_next_cmd(t_lst *lst);
-void	push_cmd(t_lst *lst, char **tokens);
-void	init_pipe(t_lst *lst);
-void	close_pipe(t_lst *lst);
-void	pipe_exec(t_lst *lst, t_env_lst *envlst, char *envp[]);
+char 		**get_cmd_args(t_cmd_lst *lst);
+t_cmd_node	*get_prev_cmd(t_cmd_lst *lst);
+t_cmd_node	*get_next_cmd(t_cmd_lst *lst);
+void		push_cmd(t_cmd_lst *lst, char **tokens);
+void		init_pipe(t_cmd_lst *lst);
+void		close_pipe(t_cmd_lst *lst);
+void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
+void		exec_subshell(t_cmd_lst *lst);
+void		move_to_close_subshell(t_cmd_lst *lst);
 
 // terminal signal
-void	sigint_handler();
-void	sigquit_handler();
-void 	save_input_mode(struct termios *org_term);
-void	set_input_mode(struct termios *new_term);
-void	reset_input_mode(struct termios *org_term);
+void		sigint_handler();
+void		sigquit_handler();
+void 		save_input_mode(struct termios *org_term);
+void		set_input_mode(struct termios *new_term);
+void		reset_input_mode(struct termios *org_term);
 
 // get_next_line_setting
 # ifndef BUFFER_SIZE

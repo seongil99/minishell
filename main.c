@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 19:03:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 19:30:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*line;
 	char			**tokens;
-	t_lst			*lst;
+	t_cmd_lst		*lst;
 	t_env_lst		envlst;
 	struct termios	org_term;
 	struct termios	new_term;
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, sigquit_handler);
 	save_input_mode(&org_term);
 	set_input_mode(&new_term);
-	lst = (t_lst *)ft_calloc2(sizeof(t_lst), 1);
+	lst = (t_cmd_lst *)ft_calloc2(sizeof(t_cmd_lst), 1);
 	lst->curr = NULL;
 	init_env_lst(&envlst, envp);
 	while (TRUE)

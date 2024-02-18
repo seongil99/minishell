@@ -6,13 +6,13 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/15 19:31:49 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 15:23:12 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	echo_option_check(t_node *arg)
+static int	echo_option_check(t_cmd_node *arg)
 {
 	int	i;
 
@@ -34,11 +34,11 @@ static int	echo_option_check(t_node *arg)
 	return (1 + echo_option_check(arg->next));
 }
 
-static void	write_echo_args(t_lst *lst)
+static void	write_echo_args(t_cmd_lst *lst)
 {
 	if (!lst->curr)
 		return ;
-	while (lst->curr->next && is_op(lst->curr->next))
+	while (lst->curr->next && is_cmd(lst->curr->next))
 	{
 		write(1, lst->curr->token, ft_strlen(lst->curr->token));
 		write(1, " ", 1);
@@ -47,7 +47,7 @@ static void	write_echo_args(t_lst *lst)
 	write(1, lst->curr->token, ft_strlen(lst->curr->token));
 }
 
-int	builtin_echo(t_lst *lst)
+int	builtin_echo(t_cmd_lst *lst)
 {
 	int	skip;
 

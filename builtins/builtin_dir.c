@@ -6,13 +6,13 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/17 13:08:18 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 15:02:55 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_cd(t_lst *lst, t_env_lst *envlst)
+int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 {
 	if (envlst)
 	if (lst->curr->next == NULL)

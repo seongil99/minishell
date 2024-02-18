@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/14 13:28:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 15:03:18 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static long long	ft_atoll(const char *str)
 	return (sign * ret);
 }
 
-void	builtin_exit(t_lst	*lst)
+void	builtin_exit(t_cmd_lst	*lst)
 {
 	int	i;
 
