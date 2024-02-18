@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/14 09:53:41 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/15 19:31:49 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int	echo_option_check(t_node *arg)
 {
 	int	i;
 
+	if (!arg)
+		return (0);
 	i = 0;
 	if (arg->token[i++] == '-')
 	{
@@ -29,30 +31,38 @@ static int	echo_option_check(t_node *arg)
 	}
 	else
 		return (0);
-	return (1);
+	return (1 + echo_option_check(arg->next));
+}
+
+static void	write_echo_args(t_lst *lst)
+{
+	if (!lst->curr)
+		return ;
+	while (lst->curr->next && is_op(lst->curr->next))
+	{
+		write(1, lst->curr->token, ft_strlen(lst->curr->token));
+		write(1, " ", 1);
+		lst->curr = lst->curr->next;
+	}
+	write(1, lst->curr->token, ft_strlen(lst->curr->token));
 }
 
 int	builtin_echo(t_lst *lst)
 {
+	int	skip;
+
 	lst->curr = lst->curr->next;
-	if (echo_option_check(lst->curr))
+	skip = echo_option_check(lst->curr);
+	if (skip)
 	{
-		lst->curr = lst->curr->next;
-		while (lst->curr && lst->curr != lst->tail)
-		{
-			printf("%s ", lst->curr->token);
+		while (skip--)
 			lst->curr = lst->curr->next;
-		}
-		printf("%s", lst->curr->token);
+		write_echo_args(lst);
 	}
 	else
 	{
-		while (lst->curr && lst->curr != lst->tail)
-		{
-			printf("%s ", lst->curr->token);
-			lst->curr = lst->curr->next;
-		}
-		printf("%s\n", lst->curr->token);
+		write_echo_args(lst);
+		write(1, "\n", 1);
 	}
 	return (1);
 }
