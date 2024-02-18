@@ -6,14 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:57:24 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:17:43 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lalr_parser.h"
-#include "lalr_table.h"
-#include "scanner.h"
-#include "parse_tree.h"
+#include "mini_parsing.h"
 
 int	lalr_shift(t_automata *at, t_stack *tree_stack, t_table t)
 {
