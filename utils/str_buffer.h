@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_utils.h                                       :+:      :+:    :+:   */
+/*   str_buffer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:46:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:40:43 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/18 15:39:11 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/18 15:41:03 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_UTILS_H
-# define MINI_UTILS_H
+#ifndef STR_BUFFER_H
+# define STR_BUFFER_H
 
-# include <stdbool.h>
-# include "../libft/libft.h"
-# include "ft_stack.h"
-# include "linked_list.h"
-# include "str_buffer.h"
+typedef struct s_buf
+{
+	char	*buf;
+	int		len;
+	int		size;
+}	t_buf;
 
-void	*ft_calloc2(size_t cnt, size_t size);
-void	exit_err(char *message);
-void	mini_assert(bool condition, char *msg);
-void	*ft_realloc(void *ptr, size_t ptrsize, size_t tosize);
+t_buf	*buf_new(void);
+void	buf_del(t_buf *buf);
+void	buf_add_char(t_buf *buf, char c);
+void	buf_add_str(t_buf *buf, char *str);
+char	*buf_get_str(t_buf *buf);
 
 #endif
