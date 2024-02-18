@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 19:17:24 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/18 20:31:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@
 # include "./libft/libft.h"
 # include "parsing/mini_parsing.h"
 # include "utils/mini_utils.h"
+# include "expansions/expansions.h"
 # include "envir.h"
-
-# define TRUE 1
-# define FALSE 0
 
 extern int	g_exit_code;
 

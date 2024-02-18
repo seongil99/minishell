@@ -14,7 +14,12 @@ BUILT_DIR		= ./builtins
 TMSIG_DIR		= ./termi_signal
 ENVIR_DIR		= ./environments
 OPERA_DIR		= ./operators
+EXPNS_DIR		= ./expansions
 
+EXPNS_SRC		= param_expansion.c \
+				pathname_expansion.c \
+				quote_removal.c \
+				tilde_expansion.c
 
 PARSE_SRC		= lalr_action_table.c \
 				lalr_action_table2.c \
@@ -55,9 +60,10 @@ ENVIR_SRC		= create_envlst.c \
 OPERA_SRC		= redirection.c \
 				subshell.c
 
-MAIN_SRC		= main.c  run_commands.c
+MAIN_SRC		= test.c  run_commands.c
 
 SRCS			= $(MAIN_SRC) \
+				$(addprefix $(EXPNS_DIR)/,$(EXPNS_SRC)) \
 				$(addprefix $(PARSE_DIR)/,$(PARSE_SRC)) \
 				$(addprefix $(UTILS_DIR)/,$(UTILS_SRC)) \
 				$(addprefix $(BUILT_DIR)/,$(BUILT_SRC)) \
@@ -76,7 +82,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(INCLUDES)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) -I$(BUILT_DIR) -I$(TMSIG_DIR) -I$(ENVIR_DIR) -I$(OPERA_DIR) $(READLINE_INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(EXPNS_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) -I$(BUILT_DIR) -I$(TMSIG_DIR) -I$(ENVIR_DIR) -I$(OPERA_DIR) $(READLINE_INCLUDE) -c $< -o $@
 
 clean:
 	make fclean -sC $(LIBFT_DIR)
