@@ -10,6 +10,11 @@ NAME			= minishell
 LIBFT_DIR		= ./libft
 PARSE_DIR		= ./parsing
 UTILS_DIR		= ./utils
+BUILT_DIR		= ./builtins
+TMSIG_DIR		= ./termi_signal
+ENVIR_DIR		= ./environments
+OPERA_DIR		= ./operators
+
 
 PARSE_SRC		= lalr_action_table.c \
 				lalr_action_table2.c \
@@ -33,13 +38,32 @@ UTILS_SRC		= ft_calloc2.c \
 				linked_list_push.c \
 				linked_list.c \
 				str_buffer.c \
-				utils.c
+				utils.c \
+				get_next_line.c
 
-MAIN_SRC		= test.c
+BUILT_SRC		= builtin_dir.c \
+				builtin_echo.c \
+				builtin_env.c \
+				builtin_exit.c \
+				builtin_unset_export.c
+
+TMSIG_SRC		= signal_control.c
+
+ENVIR_SRC		= create_envlst.c \
+				manage_envir.c
+
+OPERA_SRC		= redirection.c \
+				subshell.c
+
+MAIN_SRC		= main.c  run_commands.c
 
 SRCS			= $(MAIN_SRC) \
 				$(addprefix $(PARSE_DIR)/,$(PARSE_SRC)) \
-				$(addprefix $(UTILS_DIR)/,$(UTILS_SRC))
+				$(addprefix $(UTILS_DIR)/,$(UTILS_SRC)) \
+				$(addprefix $(BUILT_DIR)/,$(BUILT_SRC)) \
+				$(addprefix $(TMSIG_DIR)/,$(TMSIG_SRC)) \
+				$(addprefix $(ENVIR_DIR)/,$(ENVIR_SRC)) \
+				$(addprefix $(OPERA_DIR)/,$(OPERA_SRC))
 OBJS			= $(SRCS:.c=.o)
 INCLUDES		= minishell.h
 
@@ -52,7 +76,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(INCLUDES)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) $(READLINE_INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) -I$(BUILT_DIR) -I$(TMSIG_DIR) -I$(ENVIR_DIR) -I$(OPERA_DIR) $(READLINE_INCLUDE) -c $< -o $@
 
 clean:
 	make fclean -sC $(LIBFT_DIR)

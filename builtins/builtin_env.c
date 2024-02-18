@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc2.c                                       :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:46:09 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/16 10:26:43 by sihkang          ###   ########seoul.kr  */
+/*   Created: 2024/02/07 12:23:03 by sihkang           #+#    #+#             */
+/*   Updated: 2024/02/16 10:52:55 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_utils.h"
+#include "../minishell.h"
 
-void	*ft_calloc2(size_t cnt, size_t size)
+int	builtin_env(t_env_lst *envlst)
 {
-	void	*ret;
+	t_env_node	*tmp;
+	int	i;
 
-	ret = ft_calloc(cnt, size);
-	if (!ret)
-		exit_err("MEM Error\n");
-	return (ret);
+	i = 0;
+	tmp = envlst->head;
+	while (tmp)
+	{
+		printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+	return (1);
 }

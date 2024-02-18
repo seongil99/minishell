@@ -3,48 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 18:02:46 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:30:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handler(int signum)
+int	g_exit_code;
+
+void check(void)
 {
-	if (signum != SIGINT)
-		return ;
-	write(STDOUT_FILENO, "\n", 1);
-	if (rl_on_new_line() == -1)
-		exit(1);
-	rl_replace_line("", 1);
-	rl_redisplay();
+	system("leaks minishell");
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	int				ret;
 	char			*line;
+	char			**tokens;
+	t_cmd_lst		*lst;
+	t_env_lst		envlst;
+	struct termios	org_term;
+	struct termios	new_term;
 
-	signal(SIGINT, handler);
+	// atexit(check);
+	if (argc != 1 && argv[1] != NULL)
+		return (127);
+	g_exit_code = 0;
+	printf("WELCOME MINISHELL !\n");
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
+	save_input_mode(&org_term);
+	set_input_mode(&new_term);
+	lst = (t_cmd_lst *)ft_calloc2(sizeof(t_cmd_lst), 1);
+	lst->curr = NULL;
+	init_env_lst(&envlst, envp);
 	while (TRUE)
 	{
+		lst->nums = 0;
 		line = readline("input> ");
-		if (line)
+		if (!line)
 		{
-			ret = strcmp(line, "bye");
-			if (ret)
-				printf("output> %s\n", line);
-			add_history(line);
-			free(line);
-			line = NULL;
-			if (!ret)
-				break ;
+			printf("byebye\n");
+			exit(0);
 		}
-		else
-			return (1);
+		tokens = ft_split(line, ' ');
+		if (tokens)
+			run_commands(tokens, lst, &envlst, envp);
+		add_history(line);
+		rl_replace_line("\n", 1);
+		rl_on_new_line();
+		clear_lst(lst);
+		free(line);
+		tokens = 0;
+		line = 0;
 	}
-	return (0);
+	free(lst);
+	rl_clear_history();
+	reset_input_mode(&org_term);
+	exit(0);
 }
