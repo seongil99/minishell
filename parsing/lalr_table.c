@@ -6,11 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:30:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:20:24 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:17:52 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lalr_table.h"
+#include "mini_parsing.h"
 
 void	table_clear(void)
 {

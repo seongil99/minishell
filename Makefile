@@ -29,7 +29,6 @@ PARSE_SRC		= lalr_action_table.c \
 				parse_tree.c \
 				scanner.c \
 				scanner_func.c \
-				token_buffer.c \
 				token.c \
 				tokenize.c
 
@@ -38,6 +37,7 @@ UTILS_SRC		= ft_calloc2.c \
 				ft_stack_func.c \
 				linked_list_push.c \
 				linked_list.c \
+				str_buffer.c \
 				utils.c \
 				get_next_line.c
 
@@ -54,8 +54,8 @@ ENVIR_SRC		= create_envlst.c \
 
 OPERA_SRC		= redirection.c \
 				subshell.c
-				
-MAIN_SRC		= main.c  run_commands.c 
+
+MAIN_SRC		= main.c  run_commands.c
 
 SRCS			= $(MAIN_SRC) \
 				$(addprefix $(PARSE_DIR)/,$(PARSE_SRC)) \

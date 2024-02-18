@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_shift.c                                       :+:      :+:    :+:   */
+/*   str_buffer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 16:46:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:17:43 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/18 15:39:11 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/18 15:41:03 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_parsing.h"
+#ifndef STR_BUFFER_H
+# define STR_BUFFER_H
 
-int	lalr_shift(t_automata *at, t_stack *tree_stack, t_table t)
+typedef struct s_buf
 {
-	t_stack		*st;
-	t_gmr_var	var;
-	t_treenode	*node;
+	char	*buf;
+	int		len;
+	int		size;
+}	t_buf;
 
-	if (t.action == REJECT)
-		return (REJECT);
-	st = at->stack;
-	var = ((t_token *)at->head->data)->type;
-	st->push(st, var);
-	st->push(st, t.number);
-	node = treenode_new(token_dup(at->head->data));
-	tree_stack->push_void(tree_stack, node);
-	return (SHIFT);
-}
+t_buf	*buf_new(void);
+void	buf_del(t_buf *buf);
+void	buf_add_char(t_buf *buf, char c);
+void	buf_add_str(t_buf *buf, char *str);
+char	*buf_get_str(t_buf *buf);
+
+#endif

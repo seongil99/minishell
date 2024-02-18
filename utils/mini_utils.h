@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:46:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 17:53:10 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:40:43 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../libft/libft.h"
 # include "ft_stack.h"
 # include "linked_list.h"
+# include "str_buffer.h"
 
 void	*ft_calloc2(size_t cnt, size_t size);
 void	exit_err(char *message);

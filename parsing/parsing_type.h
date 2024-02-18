@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:52:22 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 18:28:24 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:41:53 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ typedef struct s_scanner
 	int		size;
 	int		cur;
 }	t_scanner;
-
-typedef struct s_buf
-{
-	char	*buf;
-	int		len;
-	int		size;
-}	t_buf;
 
 typedef enum e_gmr_var
 {

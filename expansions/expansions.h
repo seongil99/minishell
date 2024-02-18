@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_shift.c                                       :+:      :+:    :+:   */
+/*   expansions.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 16:46:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:17:43 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/18 13:40:32 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/18 19:17:51 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_parsing.h"
+#ifndef EXPANSIONS_H
+# define EXPANSIONS_H
 
-int	lalr_shift(t_automata *at, t_stack *tree_stack, t_table t)
-{
-	t_stack		*st;
-	t_gmr_var	var;
-	t_treenode	*node;
+# include "../libft/libft.h"
+# include "../utils/mini_utils.h"
+# include "../envir.h"
 
-	if (t.action == REJECT)
-		return (REJECT);
-	st = at->stack;
-	var = ((t_token *)at->head->data)->type;
-	st->push(st, var);
-	st->push(st, t.number);
-	node = treenode_new(token_dup(at->head->data));
-	tree_stack->push_void(tree_stack, node);
-	return (SHIFT);
-}
+# define NO_QUOTE 0
+# define SQUOTE 1
+# define DQUOTE 2
+
+extern int	g_exit_code;
+
+char	*quote_removal(char *str);
+char	*param_expansion(char *str, t_env_lst *elst);
+char	*tilde_expansion(char *str, char *home_dir);
+
+#endif

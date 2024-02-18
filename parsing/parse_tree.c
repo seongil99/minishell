@@ -6,11 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:23:51 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 19:40:04 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:18:00 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "mini_parsing.h"
 
 t_treenode	*treenode_new(t_token *data)
 {

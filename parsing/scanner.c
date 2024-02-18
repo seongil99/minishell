@@ -6,11 +6,11 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:05:25 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/12 18:21:05 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:18:06 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scanner.h"
+#include "mini_parsing.h"
 
 t_scanner	*scanner_new(char *line)
 {

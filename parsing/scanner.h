@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:16:00 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:55:04 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:41:33 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ t_lst		*tokenize(char *command);
 t_token		*token_new(char *str, t_gmr_var type);
 void		token_del(void *t);
 t_token		*token_dup(t_token *org);
-t_buf		*buf_new(void);
-void		buf_del(t_buf *buf);
-void		buf_add_char(t_buf *buf, char c);
-char		*buf_get_str(t_buf *buf);
 t_token		*token_new(char *str, t_gmr_var type);
 void		token_del(void *tkn);
 

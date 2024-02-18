@@ -1,53 +1,43 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 13:20:05 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/17 13:16:35 by sihkang          ###   ########seoul.kr  */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+#include <stdio.h>
 
-static int	builtin_pwd1(void)
+void dfs(t_treenode *node)
 {
-	char 	*tmp;
-	size_t	size;
+	t_lst	*t;
 
-	size = 100;
-	tmp = (char *)ft_calloc(sizeof(char), size);
-	while (!getcwd(tmp, size))
-		size *= 2;
-	printf("%s\n", tmp);
-	free(tmp);
-	return (1);
-}
-int main()
-{
-	DIR *dir;
-	struct dirent *files;
-	int i;
-	char 	*tmp;
-	size_t	size;
-
-	size = 100;
-	tmp = (char *)ft_calloc(sizeof(char), size);
-	while (!getcwd(tmp, size))
-		size *= 2;
-	i = 0;
-	dir = opendir(tmp);
-	files = readdir(dir);
-	while (files)
+	printf("%d\n", node->data->type);
+	t = node->child;
+	while (t)
 	{
-		if (files->d_type == DT_REG)
-			printf("file : %s\n", files->d_name);
-		files = readdir(dir);
+		dfs(t->data);
+		t = t->next;
 	}
-	closedir(dir);
-	chdir(getenv("HOME"));
-	builtin_pwd1();
-	return 0;
+}
+
+void check(void)
+{
+	system("leaks minishell");
+}
+
+int main(void)
+{
+	atexit(check);
+	init_action_table();
+	init_goto_table();
+	char *c = readline("input$ ");
+	t_lst *lst = tokenize(c);
+	t_lst *head = lst;
+	t_treenode  *ret = parse_line(lst);
+	printf("result : %s\n", (ret == 0 ? "REJECT" : "ACCEPT"));
+	while (lst)
+	{
+		t_token *t = (t_token *)lst->data;
+		printf("|%s| ", t->str);
+		lst = lst->next;
+	}
+	printf("\n");
+	dfs(ret);
+	lst_clear(&head, token_del);
+	tree_del(ret);
+	exit(0);
 }
