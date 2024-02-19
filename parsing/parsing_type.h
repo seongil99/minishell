@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:52:22 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:41:53 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:13:53 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,6 @@ typedef struct s_token
 	int				str_len;
 	char			*str;
 }	t_token;
-
-typedef struct s_treenode
-{
-	t_token	*data;
-	t_lst	*child;
-}	t_treenode;
 
 typedef struct s_automata
 {

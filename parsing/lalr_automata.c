@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 20:07:43 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:09:43 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:17:56 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	auto_get_state(t_automata *at)
 	return (state);
 }
 
-int	auto_action(t_automata *at, t_stack *st, t_gmr_var head)
+int	auto_action(t_automata *at, t_gmr_var head)
 {
 	int		ret;
 	int		state;
@@ -61,7 +61,7 @@ int	auto_action(t_automata *at, t_stack *st, t_gmr_var head)
 	if (top < COMPLETE_COMMAND)
 	{
 		t = get_action_table();
-		ret = lalr_action(at, st, t[state][head - AND_IF]);
+		ret = lalr_action(at, t[state][head - AND_IF]);
 	}
 	else
 	{
@@ -71,7 +71,7 @@ int	auto_action(t_automata *at, t_stack *st, t_gmr_var head)
 	return (ret);
 }
 
-int	auto_transition(t_automata *at, t_stack *st)
+int	auto_transition(t_automata *at)
 {
 	t_gmr_var	input_head;
 	int			ret;
@@ -80,7 +80,7 @@ int	auto_transition(t_automata *at, t_stack *st)
 		input_head = TYPE_EOF;
 	else
 		input_head = ((t_token *)at->head->data)->type;
-	ret = auto_action(at, st, input_head);
+	ret = auto_action(at, input_head);
 	if (at->head && ret == SHIFT)
 		at->head = at->head->next;
 	return (ret);

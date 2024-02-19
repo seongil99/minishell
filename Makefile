@@ -38,7 +38,6 @@ PARSE_SRC		= lalr_action_table.c \
 				lalr_reduce.c \
 				lalr_shift.c \
 				lalr_table.c \
-				parse_tree.c \
 				scanner.c \
 				scanner_func.c \
 				token.c \
