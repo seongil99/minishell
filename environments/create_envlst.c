@@ -6,11 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/17 13:20:51 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 10:51:53 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	first_equal_separtion(t_env_node *new, char *str)
 {
@@ -39,7 +39,6 @@ void	create_new_node(t_env_lst *envlst, char *keyval)
 	{
 		envlst->head = new;
 		envlst->tail = new;
-		envlst->curr = new;
 		new->next = NULL;
 		new->prev = NULL;
 	}
@@ -60,6 +59,10 @@ void	init_env_lst(t_env_lst *envlst, char **envp)
 	i = 0;
 	envlst->nums = 0;
 	while (envp[i])
+	{
 		create_new_node(envlst, envp[i++]);
+		if (!ft_strncmp(envlst->tail->key, "PATH", 5))
+			envlst->path = envlst->tail;
+	}
 	return ;
 }

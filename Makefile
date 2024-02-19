@@ -15,6 +15,12 @@ TMSIG_DIR		= ./termi_signal
 ENVIR_DIR		= ./environments
 OPERA_DIR		= ./operators
 EXPNS_DIR		= ./expansions
+COMDS_DIR		= ./cmds
+
+COMDS_SRC		= init_rm_cmds.c \
+				manage_cmd.c \
+				pipe_func.c \
+				run_commands.c 
 
 EXPNS_SRC		= param_expansion.c \
 				pathname_expansion.c \
@@ -58,9 +64,10 @@ ENVIR_SRC		= create_envlst.c \
 				manage_envir.c
 
 OPERA_SRC		= redirection.c \
-				subshell.c
+				subshell.c \
+				logics.c
 
-MAIN_SRC		= test.c  run_commands.c
+MAIN_SRC		= main.c
 
 SRCS			= $(MAIN_SRC) \
 				$(addprefix $(EXPNS_DIR)/,$(EXPNS_SRC)) \
@@ -69,7 +76,9 @@ SRCS			= $(MAIN_SRC) \
 				$(addprefix $(BUILT_DIR)/,$(BUILT_SRC)) \
 				$(addprefix $(TMSIG_DIR)/,$(TMSIG_SRC)) \
 				$(addprefix $(ENVIR_DIR)/,$(ENVIR_SRC)) \
-				$(addprefix $(OPERA_DIR)/,$(OPERA_SRC))
+				$(addprefix $(OPERA_DIR)/,$(OPERA_SRC)) \
+				$(addprefix $(COMDS_DIR)/,$(COMDS_SRC))
+
 OBJS			= $(SRCS:.c=.o)
 INCLUDES		= minishell.h
 
@@ -82,7 +91,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(INCLUDES)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(EXPNS_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) -I$(BUILT_DIR) -I$(TMSIG_DIR) -I$(ENVIR_DIR) -I$(OPERA_DIR) $(READLINE_INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -I. -I$(LIBFT_DIR) -I$(EXPNS_DIR) -I$(UTILS_DIR) -I$(PARSE_DIR) -I$(BUILT_DIR) -I$(TMSIG_DIR) -I$(ENVIR_DIR) -I$(OPERA_DIR) -I$(COMDS_DIR) $(READLINE_INCLUDE) -c $< -o $@
 
 clean:
 	make fclean -sC $(LIBFT_DIR)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 20:31:54 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 11:06:46 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_heredoc(t_cmd_lst *lst, char *file_name);
+void		get_heredoc(t_cmd_lst *lst);
 int			is_cmd(t_cmd_node *node);
 
 char 		**get_cmd_args(t_cmd_lst *lst);
@@ -98,6 +99,10 @@ void 		save_input_mode(struct termios *org_term);
 void		set_input_mode(struct termios *new_term);
 void		reset_input_mode(struct termios *org_term);
 
+// cmds
+void	move_to_next_cmd(t_cmd_lst *lst);
+
+
 // get_next_line_setting
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -108,5 +113,10 @@ char		*ft_make_str(t_list_gnl *node, char *str, size_t str_index, size_t str_max
 t_list_gnl	*ft_find_node(t_list_gnl *head, int fd);
 char		*get_next_line(int fd);
 char		*ft_realloc_gnl(char *str, size_t str_index, size_t	*str_max, int option);
+
+
+
+
+int		exec_program(t_env_lst *envlst, char **args, char **envp);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envir.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:33:47 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 20:34:35 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:49:04 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_env_lst
 {
 	struct s_env_node	*head;
 	struct s_env_node	*tail;
-	struct s_env_node	*curr;
+	struct s_env_node	*path;
 	int					nums;
 }			t_env_lst;
 
