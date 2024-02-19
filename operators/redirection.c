@@ -6,19 +6,19 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 19:32:29 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 12:10:35 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
-	int	file;
-	char **args;
-	char *name;
-	char *op;
-	t_cmd_node *tmp;
+	int			file;
+	char 		**args;
+	char 		*name;
+	char 		*op;
+	t_cmd_node	*tmp;
 
 	if (logic_stop(lst))
 		exit(g_exit_code);
@@ -26,7 +26,7 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	while (tmp->next && \
 			ft_strncmp(tmp->token, ">>", 3) && \
 			ft_strncmp(tmp->token, ">", 2))
-			tmp = tmp->next;
+		tmp = tmp->next;
 	op = tmp->token;
 	name = tmp->next->token;
 	args = get_cmd_args(lst);
@@ -42,7 +42,8 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	close_pipe(lst);
 	close(file);
 	if (!builtin_choice(lst, envlst))
-		execve(lst->curr->token, args, envp);
+		exec_program(envlst, args, envp);
+		// execve(lst->curr->token, args, envp);
 	perror("minishell right redirection");
 	exit(0);
 }
@@ -52,16 +53,14 @@ void	redi_heredoc(t_cmd_lst *lst, char *file_name)
 	int		tmp_file;
 	char	*doc_line;
 	int		len_deli;
-	char 	**args;
 	char	*deli;
 
-	args = get_cmd_args(lst);
 	tmp_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	len_deli = ft_strlen(get_next_cmd(lst)->token);
 	deli = ft_strjoin(get_next_cmd(lst)->token, "\n");
 	write(1, "> ", 2);
 	doc_line = get_next_line(0);
-	while (ft_strncmp(doc_line, deli, len_deli + 1))
+	while (ft_strncmp(doc_line, deli, len_deli + 2))
 	{
 		write(tmp_file, doc_line, ft_strlen(doc_line));
 		free(doc_line);
@@ -76,13 +75,10 @@ void	redi_heredoc(t_cmd_lst *lst, char *file_name)
 void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
 	int		file;
-	char 	**args;
-	char	tmp[1025];
 	int		ret;
-	
-	args = get_cmd_args(lst);	
-	if (logic_stop(lst))
-		exit(g_exit_code);
+	char	tmp[1025];
+
+	if (envlst && envp) {};
 	dup2(lst->curr->pipefd[0], STDIN_FILENO);
 	if (!ft_strncmp(get_next_cmd(lst)->prev->token, "<<", 3))
 		file = open(lst->curr->file_heredoc, O_RDONLY, 0666);
@@ -96,48 +92,27 @@ void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	}
 	close(file);
 	if (!ft_strncmp(get_next_cmd(lst)->prev->token, "<<", 3))
-	{
 		unlink(lst->curr->file_heredoc);
-		free(lst->curr->file_heredoc);
-	}
-	close_pipe(lst);
-	if (!builtin_choice(lst, envlst))
-		execve(lst->curr->token, args, envp);
-	perror("minishell left redirection");
-	exit(0);
 }
 
-int	logic_stop(t_cmd_lst *lst)
+void	get_heredoc(t_cmd_lst *lst)
 {
-	if (lst->curr->prev && !ft_strncmp(lst->curr->prev->token, "||", 3))
-		if (g_exit_code == 0)
-			return (1);
-	if (lst->curr->prev && !ft_strncmp(lst->curr->prev->token, "&&", 3))
-		if (g_exit_code != 0)
-			return (1);
-	return (0);
-}
+	int			num_heredoc;
+	char		*get_itoa;
 
-void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
-{
-	char	**args;
-	pid_t	pid;
-	
-	if (logic_stop(lst))
-		return ;
-	pid = fork();
-	if (pid == 0)
+	num_heredoc = 0;
+	lst->curr = lst->head;
+	while (lst->curr)
 	{
-		if (lst->curr != lst->head)
-			dup2(get_prev_cmd(lst)->pipefd[0], STDIN_FILENO);
-		close_pipe(lst);
-		if (!builtin_choice(lst, envlst))
+		if (get_next_cmd(lst) && !ft_strncmp(get_next_cmd(lst)->prev->token, "<<", 3))
 		{
-			execve(lst->curr->token, args, envp);
-			perror("minishell pipe line");
-			exit(errno);
+			get_itoa = ft_itoa(num_heredoc);
+			lst->curr->file_heredoc = ft_strjoin(".", get_itoa);
+			free(get_itoa);
+			redi_heredoc(lst, lst->curr->file_heredoc);
+			num_heredoc++;
 		}
-		exit(errno); // 빌트인 실패시에 대한 errno설정 필요
+		lst->curr = get_next_cmd(lst);
 	}
-	waitpid(pid, &g_exit_code, 0);
+	lst->curr = lst->head;
 }

@@ -6,13 +6,12 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:33:47 by sihkang           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/18 14:34:55 by sihkang          ###   ########seoul.kr  */
-=======
-/*   Updated: 2024/02/18 14:58:26 by sihkang          ###   ########seoul.kr  */
->>>>>>> main
+/*   Updated: 2024/02/19 10:49:04 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef ENVIR_H
+# define ENVIR_H
 
 // env elements lst
 typedef struct s_env_node
@@ -27,7 +26,7 @@ typedef struct s_env_lst
 {
 	struct s_env_node	*head;
 	struct s_env_node	*tail;
-	struct s_env_node	*curr;
+	struct s_env_node	*path;
 	int					nums;
 }			t_env_lst;
 
@@ -38,3 +37,5 @@ void		create_new_node(t_env_lst *envlst, char *keyval);
 void		remove_env_node(t_env_lst *envlst, char *delkey);
 void		put_env_node(t_env_lst *envlst, char *str);
 t_env_node	*search_env_node(t_env_lst *envlst, char *tofind);
+
+#endif

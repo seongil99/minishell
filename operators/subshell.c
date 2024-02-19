@@ -6,11 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 19:17:48 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 10:43:05 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	exec_subshell(t_cmd_lst *lst)
 {

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 19:30:56 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 11:07:09 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 	lst = (t_cmd_lst *)ft_calloc2(sizeof(t_cmd_lst), 1);
 	lst->curr = NULL;
 	init_env_lst(&envlst, envp);
-	while (TRUE)
+	while (true)
 	{
 		lst->nums = 0;
 		line = readline("input> ");

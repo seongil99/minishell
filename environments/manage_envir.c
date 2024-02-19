@@ -6,11 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/16 12:13:30 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 10:51:57 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	remove_env_node(t_env_lst *envlst, char *delkey)
 {
