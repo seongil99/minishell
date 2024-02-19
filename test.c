@@ -11,7 +11,7 @@ void check(void)
 
 int main(void)
 {
-	atexit(check);
+	// atexit(check);
 	init_action_table();
 	init_goto_table();
 	char *c = readline("input$ ");

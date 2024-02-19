@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rm_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 10:32:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 14:45:35 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	clear_lst(t_cmd_lst *lst)
 
 	tmp = lst->head;
 	while (tmp)
-	{	
+	{
 		del = tmp;
 		tmp = tmp->next;
 		free(del->token);
@@ -61,5 +61,6 @@ void	clear_lst(t_cmd_lst *lst)
 	lst->head = 0;
 	lst->tail = 0;
 	lst->curr = 0;
+	free(lst);
 	return ;
 }
