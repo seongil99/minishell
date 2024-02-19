@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:20:45 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 12:42:28 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:50:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_cmd_node	*cmdlst_last(t_cmd_node	*lst)
 
 static void	cmdlst_push_back(t_cmd_lst *lst, t_cmd_node *newlst)
 {
-	t_lst	*last;
+	t_cmd_node	*last;
 
 	if (!lst || !newlst)
 		return ;

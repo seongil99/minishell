@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 12:13:34 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 12:48:51 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 	exit(127);
 }
 
-void	run_commands(char **tokens, t_cmd_lst *lst, t_env_lst *envlst, char **envp)
+void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
-	int		proc_id;
-	int		n_pid;
+	int			proc_id;
+	int			n_pid;
 	
 	n_pid = 0;
-	push_cmd(lst, tokens);
 	init_pipe(lst);
 	get_heredoc(lst);
 	while (lst->curr)

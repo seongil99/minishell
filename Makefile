@@ -20,7 +20,8 @@ COMDS_DIR		= ./cmds
 COMDS_SRC		= init_rm_cmds.c \
 				manage_cmd.c \
 				pipe_func.c \
-				run_commands.c 
+				run_commands.c \
+				convert_cmd.c
 
 EXPNS_SRC		= param_expansion.c \
 				pathname_expansion.c \
