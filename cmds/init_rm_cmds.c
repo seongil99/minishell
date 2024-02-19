@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 14:45:35 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:40:19 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	clear_lst(t_cmd_lst *lst)
 	t_cmd_node	*tmp;
 	t_cmd_node	*del;
 
+	if (!lst)
+		return ;
 	tmp = lst->head;
 	while (tmp)
 	{
