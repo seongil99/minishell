@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 14:44:31 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:51:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 		rl_replace_line("\n", 1);
 		rl_on_new_line();
 		clear_lst(cmd_lst);
+		cmd_lst = 0;
 		free(line);
 		line = 0;
 	}

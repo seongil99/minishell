@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:20:45 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 12:50:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 15:24:25 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ t_cmd_lst	*convert_cmd(t_lst	*lst)
 	t_cmd_lst	*ret;
 	t_token		*t;
 
+	if (!lst)
+		return (NULL);
 	ret = ft_calloc2(1, sizeof(t_cmd_lst));
 	while (lst)
 	{
