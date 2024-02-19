@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 11:06:46 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/19 12:41:12 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,11 @@ typedef struct s_list_gnl
 	struct s_list_gnl	*next;
 }			t_list_gnl;
 
-void	clear_lst(t_cmd_lst *lst);
+void		clear_lst(t_cmd_lst *lst);
+t_cmd_lst	*convert_cmd(t_lst	*lst);
 
 // utils
-void	*ft_calloc2(size_t cnt, size_t size);
+void		*ft_calloc2(size_t cnt, size_t size);
 
 int			builtin_env(t_env_lst *envlst);
 int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
