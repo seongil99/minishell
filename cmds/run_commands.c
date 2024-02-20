@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 12:48:51 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/20 19:13:37 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 	{
 		execve(args[0], args, envp);
 		perror("minishell program executed");
-		exit(127);
+		exit(g_exit_code);
 	}
 	i = 0;
 	path = ft_split(envlst->path->value, ':');
@@ -57,7 +57,63 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 		}
 	}
 	perror("minishell program failed");
-	exit(127);
+	exit(g_exit_code);
+}
+
+int	is_cmd_for_check_logic(t_cmd_node *node)
+{
+	if (!node)
+		return (0);
+	return (ft_strncmp(node->token, ">>", 3) && \
+			ft_strncmp(node->token, ">", 2) && \
+			ft_strncmp(node->token, "&&", 3) && \
+			ft_strncmp(node->token, "||", 3) && \
+			ft_strncmp(node->token, "|", 2));
+}
+
+t_cmd_node	*get_next_cmd_for_check_logic(t_cmd_lst *lst)
+{
+	t_cmd_node	*ret;
+	
+	ret = lst->curr;
+	if (!ret->next)
+	{
+		ret = ret->next;
+		return (NULL);
+	}	
+	while (ret && is_cmd_for_check_logic(ret))
+		ret = ret->next;
+	if (ret)
+		ret = ret->next;
+	return (ret);
+}
+
+int	is_cmd_after_lr(t_cmd_node *node)
+{
+	if (!node)
+		return (0);
+	return (ft_strncmp(node->token, ">>", 3) && \
+			ft_strncmp(node->token, ">", 2) && \
+			ft_strncmp(node->token, "&&", 3) && \
+			ft_strncmp(node->token, "||", 3) && \
+			ft_strncmp(node->token, "|", 2));
+}
+
+t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst)
+{
+	t_cmd_node	*ret;
+	
+	ret = lst->curr;
+	if (!ret->next)
+	{
+		ret = ret->next;
+		return (NULL);
+	}	
+	while (ret && is_cmd_after_lr(ret))
+		ret = ret->next;
+	if (ret)
+		ret = ret->next;
+	return (ret);
 }
 
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
@@ -70,16 +126,23 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	get_heredoc(lst);
 	while (lst->curr)
 	{
-		if (lst->curr != lst->tail && \
-			(!ft_strncmp(lst->curr->next->token, "&&", 3) || \
-			!ft_strncmp(lst->curr->next->token, "||", 3)))
+		if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst))
+			builtin_choice(lst, envlst);
+		if ((get_next_cmd_for_check_logic(lst) && \
+			(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
+			!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))
 			logic_control(lst, envlst, envp);
 		else
 		{
 			proc_id = fork();
 			if (proc_id == 0)
 			{
-				if (get_next_cmd(lst) && !ft_strncmp(get_next_cmd(lst)->prev->token, ">", 1))
+				if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
+					redi_left(lst, envlst, envp);
+				else if (get_prev_cmd_rr(lst))
+					dup2(lst->curr->pipefd[0], STDIN_FILENO);
+				if (get_next_cmd_after_lr(lst) && \
+				!ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
 					redi_right(lst, envlst, envp);
 				else
 					pipe_exec(lst, envlst, envp);

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 12:49:01 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/20 08:55:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,14 @@ int	is_cmd(t_cmd_node *node)
 	return (ft_strncmp(node->token, ">>", 3) && \
 			ft_strncmp(node->token, ">", 2) && \
 			ft_strncmp(node->token, "&&", 3) && \
+			ft_strncmp(node->token, "(", 2) && \
+			ft_strncmp(node->token, ")", 2) && \
+			ft_strncmp(node->token, "<<", 3) && \
+			ft_strncmp(node->token, "<", 2) && \
 			ft_strncmp(node->token, "||", 3) && \
 			ft_strncmp(node->token, "|", 2));
 }
 
-// t_cmd_node	*get_deli(t_cmd_lst * lst)
-// {
-// 	t_cmd_node	*ret;
-	
-// 	ret = lst->curr;
-// 	if (!ret->next)
-// 	{
-// 		ret = ret->next;
-// 		return (NULL);
-// 	}	
-// 	while (ret && is_cmd(ret) && ft_strncmp(ret->token, "<<", 3) &&\
-// 		ft_strncmp(ret->token, "<", 2))
-// 		ret = ret->next;
-// 	if (ret)
-// 		ret = ret->next;
-// 	return (ret);
-// }
-			// ft_strncmp(node->token, "(", 2) && 
-			// ft_strncmp(node->token, ")", 2) && 
-			
-			// ft_strncmp(node->token, "<<", 3) && 
-			// ft_strncmp(node->token, "<", 2)
-			
 t_cmd_node	*get_prev_cmd(t_cmd_lst *lst)
 {
 	t_cmd_node	*ret;
@@ -84,6 +65,15 @@ t_cmd_node	*get_next_cmd(t_cmd_lst *lst)
 	return (ret);
 }
 
+int	is_cmd_for_move(t_cmd_node *node)
+{
+	if (!node)
+		return (0);
+	return (ft_strncmp(node->token, "&&", 3) && \
+			ft_strncmp(node->token, "||", 3) && \
+			ft_strncmp(node->token, "|", 2));
+}
+
 void	move_to_next_cmd(t_cmd_lst *lst)
 {
 	if (!lst->curr)
@@ -93,10 +83,7 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 		lst->curr = lst->curr->next;
 		return ;
 	}
-	while (lst->curr && is_cmd(lst->curr))
-		if (lst->curr)
-			lst->curr = lst->curr->next;
-	while (lst->curr && !is_cmd(lst->curr))
+	while (lst->curr && is_cmd_for_move(lst->curr))
 	{
 		if (!ft_strncmp(lst->curr->token, "(", 2))
 			exec_subshell(lst);
@@ -105,9 +92,15 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 		if (lst->curr)
 			lst->curr = lst->curr->next;
 	}
-	if (lst->curr)
-		if (!ft_strncmp(lst->curr->prev->token, ">", 1))
-			move_to_next_cmd(lst);
+	while (lst->curr && !is_cmd(lst->curr))
+	{
+		// if (!ft_strncmp(lst->curr->token, "(", 2))
+		// 	exec_subshell(lst);
+		// else if (!ft_strncmp(lst->curr->token, ")", 2))
+		// 	exit(g_exit_code);
+		if (lst->curr)
+			lst->curr = lst->curr->next;
+	}
 }
 
 char 	**get_cmd_args(t_cmd_lst *lst)

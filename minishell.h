@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 12:48:49 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/20 16:15:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
-void		redi_heredoc(t_cmd_lst *lst, char *file_name);
+void		redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli);
 void		get_heredoc(t_cmd_lst *lst);
 int			is_cmd(t_cmd_node *node);
-
+int			is_cmd2(t_cmd_node *node);
+t_cmd_node	*get_next_cmd2(t_cmd_lst *lst);
 char 		**get_cmd_args(t_cmd_lst *lst);
 t_cmd_node	*get_prev_cmd(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd(t_cmd_lst *lst);
@@ -93,6 +94,10 @@ void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 void		exec_subshell(t_cmd_lst *lst);
 void		move_to_close_subshell(t_cmd_lst *lst);
 
+int			is_cmd_for_heredoc(t_cmd_node *node);
+t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node);
+t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst);
+t_cmd_node	*get_prev_cmd_pp(t_cmd_lst *lst);
 // terminal signal
 void		sigint_handler();
 void		sigquit_handler();
@@ -101,8 +106,10 @@ void		set_input_mode(struct termios *new_term);
 void		reset_input_mode(struct termios *org_term);
 
 // cmds
-void	move_to_next_cmd(t_cmd_lst *lst);
+void		move_to_next_cmd(t_cmd_lst *lst);
 
+t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
+int			is_cmd_after_lr(t_cmd_node *node);
 
 // get_next_line_setting
 # ifndef BUFFER_SIZE
@@ -115,6 +122,8 @@ t_list_gnl	*ft_find_node(t_list_gnl *head, int fd);
 char		*get_next_line(int fd);
 char		*ft_realloc_gnl(char *str, size_t str_index, size_t	*str_max, int option);
 
+int			is_cmd_for_rr(t_cmd_node *node);
+t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst);
 
 
 

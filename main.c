@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 14:51:54 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:24:53 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		tkn_lst = tokenize(line);
 		parse_code = parse_line(tkn_lst);
-		printf("command \"%s\": %s\n", line, (parse_code == 0 ? "REJECT" : "ACCEPT"));
+		// printf("command \"%s\": %s\n", line, (parse_code == 0 ? "REJECT" : "ACCEPT"));
 		cmd_lst = convert_cmd(tkn_lst);
 		lst_clear(&tkn_lst, token_del);
 		if (cmd_lst)
