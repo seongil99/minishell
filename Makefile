@@ -1,5 +1,5 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
 # READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
@@ -20,12 +20,16 @@ COMDS_DIR		= ./cmds
 COMDS_SRC		= init_rm_cmds.c \
 				manage_cmd.c \
 				pipe_func.c \
-				run_commands.c 
+				run_commands.c \
+				convert_cmd.c
 
-EXPNS_SRC		= param_expansion.c \
+EXPNS_SRC		= lst_expansion.c \
+				param_expansion.c \
 				pathname_expansion.c \
 				quote_removal.c \
-				tilde_expansion.c
+				tilde_expansion.c \
+				utils.c \
+				word_expansion.c
 
 PARSE_SRC		= lalr_action_table.c \
 				lalr_action_table2.c \
@@ -37,7 +41,6 @@ PARSE_SRC		= lalr_action_table.c \
 				lalr_reduce.c \
 				lalr_shift.c \
 				lalr_table.c \
-				parse_tree.c \
 				scanner.c \
 				scanner_func.c \
 				token.c \

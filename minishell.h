@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 12:41:12 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:48:49 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		builtin_exit(t_cmd_lst	*lst);
 int			builtin_unset(t_env_lst *envlst, char *remove_key);
 int			builtin_export(t_env_lst *envlst, char *keyvalue);
 int			builtin_choice(t_cmd_lst *lst, t_env_lst *envlst);
-void		run_commands(char **tokens, t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 
 void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 int			logic_stop(t_cmd_lst *lst);

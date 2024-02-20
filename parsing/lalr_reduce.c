@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:46:37 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 20:18:28 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:19:18 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,26 +83,11 @@ static void	reduce_push(t_automata *at, t_table t)
 		reduce_push2(st, n);
 }
 
-int	lalr_reduce(t_automata *at, t_stack *tree_stack, t_table t)
+int	lalr_reduce(t_automata *at, t_table t)
 {
-	int			n;
-	void		*temp;
-	t_treenode	*new_node;
-	t_token		*data;
-
 	if (t.action == REJECT)
 		return (REJECT);
-	n = reduce_pop(at, t);
-	data = token_new(NULL, 0);
-	new_node = treenode_new(data);
-	while (n--)
-	{
-		temp = tree_stack->top(tree_stack);
-		treenode_add_child_front(new_node, temp);
-		tree_stack->pop(tree_stack, do_nothing);
-	}
+	reduce_pop(at, t);
 	reduce_push(at, t);
-	data->type = ((t_token *)at->stack->_top->data)->type;
-	tree_stack->push_void(tree_stack, new_node);
 	return (REDUCE);
 }

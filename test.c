@@ -1,18 +1,8 @@
 #include "minishell.h"
 #include <stdio.h>
 
-void dfs(t_treenode *node)
-{
-	t_lst	*t;
+int	g_exit_code;
 
-	printf("%d\n", node->data->type);
-	t = node->child;
-	while (t)
-	{
-		dfs(t->data);
-		t = t->next;
-	}
-}
 
 void check(void)
 {
@@ -21,13 +11,13 @@ void check(void)
 
 int main(void)
 {
-	atexit(check);
+	// atexit(check);
 	init_action_table();
 	init_goto_table();
 	char *c = readline("input$ ");
 	t_lst *lst = tokenize(c);
 	t_lst *head = lst;
-	t_treenode  *ret = parse_line(lst);
+	int ret = parse_line(lst);
 	printf("result : %s\n", (ret == 0 ? "REJECT" : "ACCEPT"));
 	while (lst)
 	{
@@ -36,8 +26,6 @@ int main(void)
 		lst = lst->next;
 	}
 	printf("\n");
-	dfs(ret);
 	lst_clear(&head, token_del);
-	tree_del(ret);
 	exit(0);
 }

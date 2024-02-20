@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 14:23:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 17:54:10 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:13:42 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include "parsing_type.h"
 # include "lalr_parser.h"
 # include "lalr_table.h"
-# include "parse_tree.h"
 # include "scanner.h"
 
 #endif

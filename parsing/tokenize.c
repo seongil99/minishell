@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 19:52:56 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:21:11 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,11 @@ t_token	*token_dup(t_token *org)
 	return (ret);
 }
 
+/**
+ * command 스트링을 받아서 토큰 리스트로 변트
+ * @param command 커맨드 스트링
+ * @return 토큰 리스트
+*/
 t_lst	*tokenize(char *command)
 {
 	t_scanner	*src;
