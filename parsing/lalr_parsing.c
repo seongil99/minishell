@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:07:24 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 13:15:52 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:18:57 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int	lalr_action(t_automata *at, t_table t)
 	return (ret);
 }
 
+/**
+ * token 리스트를 받아서 ACCEPT, REJECT 판별
+ * @param lst token 리스트
+ * @return ACCEPT 1, REJECT 0
+*/
 int	parse_line(t_lst *lst)
 {
 	t_automata	*atmt;
