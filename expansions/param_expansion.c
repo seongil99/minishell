@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 19:20:39 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:26:38 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	special_variable(t_buf *buf)
 	exit_code = ft_itoa(temp);
 	buf_add_str(buf, exit_code);
 	free(exit_code);
-	return (1);
+	return (2);
 }
 
 static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
@@ -34,7 +34,7 @@ static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
 	end = str;
 	while (*end)
 	{
-		if (*end == ' ' || *end == '$')
+		if (!ft_isalnum(*end))
 		{
 			temp = *end;
 			break ;
@@ -43,17 +43,18 @@ static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
 	}
 	*end = '\0';
 	node = search_env_node(elst, str);
-	buf_add_str(buf, node->value);
+	if (node)
+		buf_add_str(buf, node->value);
 	*end = temp;
-	return (end - str - 1);
+	return (end - str + 1);
 }
 
-static int	append_param(char *str, t_buf *buf, t_env_lst *elst)
+static int	append_param(char *str, t_buf *buf, t_env_lst *elst, int flag)
 {
 	int	ret;
 
 	ret = 0;
-	if (*str == '$')
+	if (flag != SQUOTE && *str == '$')
 	{
 		str++;
 		if (*str == '?')
@@ -77,16 +78,19 @@ static int	append_param(char *str, t_buf *buf, t_env_lst *elst)
 
 char	*param_expansion(char *str, t_env_lst *elst)
 {
-	t_buf		*buf;
-	char		*ret;
+	t_buf	*buf;
+	char	*ret;
+	int		flag;
 
 	if (!str || !elst)
 		return (NULL);
-	if (str[0] == '\'')
-		return (ft_strdup(str));
 	buf = buf_new();
+	flag = NO_QUOTE;
 	while (*str)
-		append_param(str, buf, elst);
+	{
+		set_quote_flag(&flag, *str);
+		str += append_param(str, buf, elst, flag);
+	}
 	ret = buf_get_str(buf);
 	buf_del(buf);
 	return (ret);

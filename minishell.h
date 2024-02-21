@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 16:15:56 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 09:36:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_pwd(void);
 int			builtin_echo(t_cmd_lst *lst);
 void		builtin_exit(t_cmd_lst	*lst);
-int			builtin_unset(t_env_lst *envlst, char *remove_key);
-int			builtin_export(t_env_lst *envlst, char *keyvalue);
+int			builtin_unset(t_cmd_lst *lst, t_env_lst *envlst);
+int			builtin_export(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_choice(t_cmd_lst *lst, t_env_lst *envlst);
 void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 
@@ -94,6 +94,8 @@ void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 void		exec_subshell(t_cmd_lst *lst);
 void		move_to_close_subshell(t_cmd_lst *lst);
 
+char		*get_pwd(void);
+int			is_builtin(t_cmd_lst *lst);
 int			is_cmd_for_heredoc(t_cmd_node *node);
 t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node);
 t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst);

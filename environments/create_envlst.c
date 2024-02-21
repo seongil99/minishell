@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 10:51:53 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 09:59:29 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,38 @@ void	create_new_node(t_env_lst *envlst, char *keyval)
 		envlst->tail = new;
 		new->next = NULL;
 	}
+	if (!ft_strncmp(new->key, "PWD", 4))
+		envlst->pwd = new;
+	else if (!ft_strncmp(new->key, "OLDPWD", 7))
+		envlst->oldpwd = new;
+	else if (!ft_strncmp(new->key, "PATH", 5))
+		envlst->path = new;
 	envlst->nums++;
 }
 
 void	init_env_lst(t_env_lst *envlst, char **envp)
 {
 	int			i;
+	char		*tmp;
 
 	i = 0;
 	envlst->nums = 0;
+	envlst->oldpwd = 0;
 	while (envp[i])
 	{
 		create_new_node(envlst, envp[i++]);
 		if (!ft_strncmp(envlst->tail->key, "PATH", 5))
 			envlst->path = envlst->tail;
+		else if (!ft_strncmp(envlst->tail->key, "PWD", 4))
+			envlst->pwd = envlst->tail;
+		else if (!ft_strncmp(envlst->tail->key, "OLDPWD", 7))
+			envlst->oldpwd = envlst->tail;
+	}
+	if (!envlst->oldpwd)
+	{
+		tmp = ft_strjoin("OLDPWD=",envlst->pwd->value);
+		create_new_node(envlst, tmp);
+		free(tmp);
 	}
 	return ;
 }

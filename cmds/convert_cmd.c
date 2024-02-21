@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:20:45 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 13:59:06 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/20 19:30:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ static void	cmdlst_push_back(t_cmd_lst *lst, t_cmd_node *newlst)
 	}
 }
 
+/**
+ * token 리스트를 받아 cmd 리스트로 변환
+ * @param lst token 리스트
+ * @return cmd 리스트
+*/
 t_cmd_lst	*convert_cmd(t_lst	*lst)
 {
 	t_cmd_lst	*ret;

@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tilde_expansion.c                                  :+:      :+:    :+:   */
+/*   word_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 13:41:09 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 18:10:55 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/19 15:54:41 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/20 16:40:34 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansions.h"
 
-char	*tilde_expansion(char *str, char *home_dir)
+/**
+ * t_lst *token_lst를 받아 word expansion을 수행
+ * @param tknlst 토큰 리스트
+ * @param envlst 환경변수 리스트
+ * @return 토큰 리스트
+*/
+t_lst	*word_expantion(t_lst *tknlst, t_env_lst *envlst)
 {
-	char	*ret;
-
-	if (!str || !home_dir)
-		return (NULL);
-	if (str[0] != '~' || (str[0] == '~' && (str[1] != '/' && str[1] != '\0')))
-		ret = ft_strdup(str);
-	else
-		ret = ft_strjoin(home_dir, str + 1);
-	return (ret);
+	lst_tilde_expansion(tknlst, envlst);
+	lst_param_expansion(tknlst, envlst);
+	lst_path_expansion(tknlst);
+	lst_quote_removal(tknlst);
+	return (tknlst);
 }

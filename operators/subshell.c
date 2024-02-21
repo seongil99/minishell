@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 10:43:05 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 12:04:00 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	exec_subshell(t_cmd_lst *lst)
 
 	id = fork();
 	if (id == 0)
-	{ 
+	{
+		lst->curr = lst->curr->next;
 		return ;
 	}
 	else
@@ -36,7 +37,7 @@ void	move_to_close_subshell(t_cmd_lst *lst)
 	num_ss = 1;
 	tmp = lst->curr;
 	tmp = tmp->next;
-	while (tmp || num_ss)
+	while (tmp && num_ss)
 	{
 		if (!ft_strncmp(tmp->token, "(", 2))
 			num_ss++;
@@ -44,5 +45,12 @@ void	move_to_close_subshell(t_cmd_lst *lst)
 			num_ss--;
 		tmp = tmp->next;
 	}
-	lst->curr= tmp;	
+	while (tmp)
+	{
+		if (!is_cmd(tmp))
+			tmp = tmp->next;
+		else
+			break;
+	}
+	lst->curr= tmp;
 }

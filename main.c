@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 13:24:53 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/20 19:32:07 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(0);
 		}
 		tkn_lst = tokenize(line);
+		tkn_lst = word_expantion(tkn_lst, &envlst);
 		parse_code = parse_line(tkn_lst);
 		// printf("command \"%s\": %s\n", line, (parse_code == 0 ? "REJECT" : "ACCEPT"));
 		cmd_lst = convert_cmd(tkn_lst);

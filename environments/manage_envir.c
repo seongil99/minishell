@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 10:51:57 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 11:14:39 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,24 @@ void	remove_env_node(t_env_lst *envlst, char *delkey)
 	t_env_node	*tmp;
 
 	tmp = search_env_node(envlst, delkey);
-	printf("key : %s | value : %s\n", tmp->key, tmp->value);
 	if (!tmp)
 		return ;
 	if (tmp->prev)
 		tmp->prev->next = tmp->next;
 	if (tmp->next)
 		tmp->next->prev = tmp->prev;
+	if (!ft_strncmp(delkey, envlst->pwd->key, ft_strlen(delkey) + 1))
+		envlst->pwd = 0;
+	else if (!ft_strncmp(delkey, envlst->oldpwd->key, ft_strlen(delkey) + 1))
+		envlst->oldpwd = 0;
+	else if (!ft_strncmp(delkey, envlst->path->key, ft_strlen(delkey) + 1))
+		envlst->path = 0;
 	free(tmp->key);
+	tmp->key = 0;
 	free(tmp->value);
+	tmp->value = 0;
 	free(tmp);
+	tmp = 0;
 	envlst->nums--;
 }
 

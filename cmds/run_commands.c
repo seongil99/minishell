@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/20 19:13:37 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 12:09:41 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
 	if (!ft_strncmp(lst->curr->token, "env", 4))
 		return (builtin_env(envlst));
 	else if (!ft_strncmp(lst->curr->token, "unset", 6))
-		return (builtin_unset(envlst, lst->curr->next->token));
+		return (builtin_unset(lst, envlst));
 	else if (!ft_strncmp(lst->curr->token, "export", 7))
-		return (builtin_export(envlst, lst->curr->next->token));
+		return (builtin_export(lst, envlst));
 	else if (!ft_strncmp(lst->curr->token, "echo", 5))
 		return (builtin_echo(lst));
 	else if (!ft_strncmp(lst->curr->token, "cd", 3))
@@ -28,6 +28,25 @@ int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
 		return (builtin_pwd());
 	else if (!ft_strncmp(lst->curr->token, "exit", 5))
 		builtin_exit(lst);
+	return (0);
+}
+
+int	is_builtin(t_cmd_lst *lst)
+{
+	if (!ft_strncmp(lst->curr->token, "env", 4))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "unset", 6))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "export", 7))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "echo", 5))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "cd", 3))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "pwd", 4))
+		return (1);
+	else if (!ft_strncmp(lst->curr->token, "exit", 5))
+		return (1);
 	return (0);
 }
 
@@ -45,15 +64,18 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 		exit(g_exit_code);
 	}
 	i = 0;
-	path = ft_split(envlst->path->value, ':');
-	add_slash = ft_strjoin("/", args[0]);
-	while (path[i])
+	if (envlst->path)
 	{
-		ab_path = ft_strjoin(path[i++], add_slash);
-		if (!access(ab_path, F_OK & X_OK))
+		path = ft_split(envlst->path->value, ':');
+		add_slash = ft_strjoin("/", args[0]);
+		while (path[i])
 		{
-			execve(ab_path, args, envp);
-			break ;
+			ab_path = ft_strjoin(path[i++], add_slash);
+			if (!access(ab_path, F_OK & X_OK))
+			{
+				execve(ab_path, args, envp);
+				break ;
+			}
 		}
 	}
 	perror("minishell program failed");
@@ -126,9 +148,14 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	get_heredoc(lst);
 	while (lst->curr)
 	{
-		if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst))
+		if (!ft_strncmp(lst->curr->token, "(", 2))
+		{	
+			exec_subshell(lst);
+			continue ;
+		}
+		if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst) && is_builtin(lst))
 			builtin_choice(lst, envlst);
-		if ((get_next_cmd_for_check_logic(lst) && \
+		else if ((get_next_cmd_for_check_logic(lst) && \
 			(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
 			!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))
 			logic_control(lst, envlst, envp);

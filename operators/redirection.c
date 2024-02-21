@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/20 19:06:10 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 12:09:07 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
 	delim = ft_strjoin(deli, "\n");
 	write(1, "> ", 2);
 	doc_line = get_next_line(0);
-	while (ft_strncmp(doc_line, delim, len_deli + 2))
+	while (doc_line && ft_strncmp(doc_line, delim, len_deli + 2))
 	{
 		write(tmp_file, doc_line, ft_strlen(doc_line));
 		free(doc_line);
@@ -102,29 +102,39 @@ void	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
 	g_exit_code = 0;
 }
 
+void	reset_written_pipe(t_cmd_lst *lst)
+{
+	close(lst->curr->pipefd[0]);
+	close(lst->curr->pipefd[1]);
+	pipe(lst->curr->pipefd);
+	dup2(lst->curr->pipefd[0], STDIN_FILENO);
+}
+
+void	check_read_auth(t_cmd_lst *lst)
+{
+	if (access(get_next_cmd_pp(lst)->token, F_OK | R_OK))
+	{
+		perror("file open error");
+		g_exit_code = 1;
+		exit(g_exit_code);
+	}
+}
+
 void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
 	int		file;
 	int		ret;
-	char	tmp[1025];
+	char	tmp[1024];
 
 	if (envlst && envp) {};
 	if (!ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<<", 3))
 		file = open(lst->curr->file_heredoc, O_RDONLY, 0666);
 	else
 	{
-		if (access(get_next_cmd_pp(lst)->token, F_OK | R_OK))
-		{
-			perror("file open error");
-			g_exit_code = 1;
-			exit(g_exit_code);
-		}
+		check_read_auth(lst);
 		file = open(get_next_cmd_pp(lst)->token, O_RDONLY, 0666);
 	}
-	close(lst->curr->pipefd[0]);
-	close(lst->curr->pipefd[1]);
-	pipe(lst->curr->pipefd);
-	dup2(lst->curr->pipefd[0], STDIN_FILENO);
+	reset_written_pipe(lst);
 	ret = read(file, tmp, 1024);
 	while (ret)
 	{
@@ -187,9 +197,4 @@ void	get_heredoc(t_cmd_lst *lst)
 		move_to_next_cmd(lst);
 	}
 	lst->curr = lst->head;
-	while (!ft_strncmp(lst->curr->token, "(", 2))
-	{
-		exec_subshell(lst);
-		lst->curr = lst->curr->next;
-	}
 }
