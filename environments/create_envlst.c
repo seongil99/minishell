@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_envlst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 09:59:29 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 15:45:42 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	first_equal_separtion(t_env_node *new, char *str)
 void	create_new_node(t_env_lst *envlst, char *keyval)
 {
 	t_env_node	*new;
-	
+
 	new = (t_env_node *)ft_calloc2(sizeof(t_env_node), 1);
 	first_equal_separtion(new, keyval);
 	if (envlst->nums == 0)
@@ -75,6 +75,8 @@ void	init_env_lst(t_env_lst *envlst, char **envp)
 			envlst->pwd = envlst->tail;
 		else if (!ft_strncmp(envlst->tail->key, "OLDPWD", 7))
 			envlst->oldpwd = envlst->tail;
+		else if (!ft_strncmp(envlst->tail->key, "HOME", 5))
+			envlst->home = ft_strdup(envlst->tail->value);
 	}
 	if (!envlst->oldpwd)
 	{

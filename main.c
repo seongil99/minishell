@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 19:32:07 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/21 18:00:28 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,21 @@ int	main(int argc, char **argv, char **envp)
 	init_env_lst(&envlst, envp);
 	while (true)
 	{
-		line = readline("input> ");
+		line = readline("minishell$ ");
 		if (!line)
 		{
 			printf("byebye\n");
 			exit(0);
 		}
 		tkn_lst = tokenize(line);
-		tkn_lst = word_expantion(tkn_lst, &envlst);
 		parse_code = parse_line(tkn_lst);
-		// printf("command \"%s\": %s\n", line, (parse_code == 0 ? "REJECT" : "ACCEPT"));
+		tkn_lst = word_expantion(tkn_lst, &envlst);
 		cmd_lst = convert_cmd(tkn_lst);
 		lst_clear(&tkn_lst, token_del);
-		if (cmd_lst)
+		if (parse_code == ACC && cmd_lst)
 			run_commands(cmd_lst, &envlst, envp);
+		else if (parse_code == REJECT && *line)
+			perror("Syntax Error ");
 		add_history(line);
 		rl_replace_line("\n", 1);
 		rl_on_new_line();

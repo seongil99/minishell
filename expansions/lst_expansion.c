@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:38:02 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 16:41:49 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:17:43 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	lst_tilde_expansion(t_lst *tknlst, t_env_lst *envlst)
 	char	*home_dir;
 
 	home_dir = get_home_dir(envlst);
+	if (!home_dir)
+		return ;
 	while (tknlst)
 	{
 		token = tknlst->data;
