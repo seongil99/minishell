@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 10:58:01 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 13:08:16 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,20 @@ t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst)
 char	*last_args(t_cmd_lst *lst)
 {
 	char	**args;
+	char	*ret;
 	int		i;
+	int		j;
 
 	i = 0;
 	args = get_cmd_args(lst);
 	while (args[i])
 		i++;
-	return (args[i - 1]);
+	ret = ft_strdup(args[i - 1]);
+	j = 0;
+	while (j < i)
+		free(args[j++]);
+	free(args);
+	return (ret);
 }
 
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
@@ -172,7 +179,12 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 			if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst) && \
 			is_builtin(lst))
 			{
-				envlst->underbar->value = last_args(lst);
+				if (envlst->underbar)
+				{
+					free(envlst->underbar->value);
+					envlst->underbar->value = 0;
+					envlst->underbar->value = last_args(lst);
+				}
 				builtin_choice(lst, envlst);
 			}
 			else if ((get_next_cmd_for_check_logic(lst) && \

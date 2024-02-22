@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 20:28:06 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 12:57:00 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,22 @@ void	first_equal_separtion(t_env_node *new, char *str)
 	i = 0;
 	if (!str && !new)
 		return ;
-	while (str[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
 	len = ft_strlen(str);
-	new->key = (char *)ft_calloc2(sizeof(char), i + 1);
-	new->value = (char *)ft_calloc2(sizeof(char), len - i + 1);
-	ft_strlcpy(new->key, str, i + 1);
-	ft_strlcpy(new->value, &str[i + 1], len - i + 1);
+	if (str[i])
+	{
+		new->key = (char *)ft_calloc2(sizeof(char), i + 1);
+		new->value = (char *)ft_calloc2(sizeof(char), len - i + 1);
+		ft_strlcpy(new->key, str, i + 1);
+		ft_strlcpy(new->value, &str[i + 1], len - i + 1);
+	}
+	else
+	{
+		new->key = (char *)ft_calloc2(sizeof(char), i + 1);
+		new->value = NULL;
+		ft_strlcpy(new->key, str, i + 1);
+	}
 }
 
 void	create_new_node(t_env_lst *envlst, char *keyval)
@@ -55,6 +64,8 @@ void	create_new_node(t_env_lst *envlst, char *keyval)
 		envlst->oldpwd = new;
 	else if (!ft_strncmp(new->key, "PATH", 5))
 		envlst->path = new;
+	else if (!ft_strncmp(new->key, "_", 2))
+		envlst->underbar = new;
 	envlst->nums++;
 }
 
