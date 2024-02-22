@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 19:26:38 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 12:09:27 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	append_param(char *str, t_buf *buf, t_env_lst *elst, int flag)
 		{
 			buf_add_char(buf, '$');
 			buf_add_char(buf, *str);
-			ret++;
+			ret += 2;
 		}
 	}
 	else
