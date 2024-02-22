@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/21 18:00:28 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:17:39 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@ int	main(int argc, char **argv, char **envp)
 
 	// atexit(check);
 	if (argc != 1 && argv[1] != NULL)
-		return (127);
+		return (127); 
 	g_exit_code = 0;
 	init_action_table();
 	init_goto_table();
 	printf("WELCOME MINISHELL !\n");
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
 	save_input_mode(&org_term);
 	set_input_mode(&new_term);
 	init_env_lst(&envlst, envp);
 	while (true)
 	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, sigquit_handler);
 		line = readline("minishell$ ");
 		if (!line)
 		{
@@ -54,6 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		tkn_lst = word_expantion(tkn_lst, &envlst);
 		cmd_lst = convert_cmd(tkn_lst);
 		lst_clear(&tkn_lst, token_del);
+		printf("parsing result : %d\n", parse_code);
 		if (parse_code == ACC && cmd_lst)
 			run_commands(cmd_lst, &envlst, envp);
 		else if (parse_code == REJECT && *line)

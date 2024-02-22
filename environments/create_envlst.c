@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_envlst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 15:45:42 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/21 20:28:06 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	init_env_lst(t_env_lst *envlst, char **envp)
 			envlst->oldpwd = envlst->tail;
 		else if (!ft_strncmp(envlst->tail->key, "HOME", 5))
 			envlst->home = ft_strdup(envlst->tail->value);
+		else if (!ft_strncmp(envlst->tail->key, "_", 2))
+			envlst->underbar = envlst->tail;
 	}
 	if (!envlst->oldpwd)
 	{

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 12:04:00 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 08:52:38 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ void	exec_subshell(t_cmd_lst *lst)
 	}
 }
 
+int	is_cmd_close_ss(t_cmd_node *node)
+{
+	if (!node)
+		return (0);
+	return (ft_strncmp(node->token, ">>", 3) && \
+			ft_strncmp(node->token, ">", 2) && \
+			ft_strncmp(node->token, "&&", 3) && \
+			ft_strncmp(node->token, ")", 2) && \
+			ft_strncmp(node->token, "<<", 3) && \
+			ft_strncmp(node->token, "<", 2) && \
+			ft_strncmp(node->token, "||", 3) && \
+			ft_strncmp(node->token, "|", 2));
+}
+
 void	move_to_close_subshell(t_cmd_lst *lst)
 {
 	t_cmd_node	*tmp;
@@ -47,7 +61,7 @@ void	move_to_close_subshell(t_cmd_lst *lst)
 	}
 	while (tmp)
 	{
-		if (!is_cmd(tmp))
+		if (!is_cmd_close_ss(tmp))
 			tmp = tmp->next;
 		else
 			break;

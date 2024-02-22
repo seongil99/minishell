@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/21 09:36:21 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 10:17:03 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_cmd_lst	*convert_cmd(t_lst	*lst);
 // utils
 void		*ft_calloc2(size_t cnt, size_t size);
 
+void	sigint_handler_stdin(int a);
+void	sigquit_handler_stdin(int a);
 int			builtin_env(t_env_lst *envlst);
 int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_pwd(void);
@@ -79,7 +81,7 @@ void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
-void		redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli);
+int			redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli);
 void		get_heredoc(t_cmd_lst *lst);
 int			is_cmd(t_cmd_node *node);
 int			is_cmd2(t_cmd_node *node);
@@ -93,7 +95,10 @@ void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 void		exec_subshell(t_cmd_lst *lst);
 void		move_to_close_subshell(t_cmd_lst *lst);
+int			redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli);
 
+char 	**get_cmd_args_pp(t_cmd_lst *lst);
+int			is_cmd_for_move(t_cmd_node *node);
 char		*get_pwd(void);
 int			is_builtin(t_cmd_lst *lst);
 int			is_cmd_for_heredoc(t_cmd_node *node);
@@ -103,6 +108,8 @@ t_cmd_node	*get_prev_cmd_pp(t_cmd_lst *lst);
 // terminal signal
 void		sigint_handler();
 void		sigquit_handler();
+void		sigint_handler_child(int a);
+void		sigquit_handler_child(int a);
 void 		save_input_mode(struct termios *org_term);
 void		set_input_mode(struct termios *new_term);
 void		reset_input_mode(struct termios *org_term);

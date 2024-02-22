@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 11:57:11 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 08:57:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,9 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 		if (lst->curr)
 			lst->curr = lst->curr->next;
 	}
-	while (lst->curr && !is_cmd(lst->curr))
-	{
+	if (lst->curr && !is_cmd(lst->curr))
 		if (lst->curr)
 			lst->curr = lst->curr->next;
-	}
 }
 
 char 	**get_cmd_args(t_cmd_lst *lst)

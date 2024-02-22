@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_envir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 12:18:03 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:34:42 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,14 @@ void	put_env_node(t_env_lst *envlst, char *str)
 	char		*findkey;
 
 	i = 0;
-	while (str[i] != '=')
+	while (str[i] && str[i] != '=')
 			i++;
+	if (!str[i])
+	{
+		perror("export error");
+		g_exit_code = 1;
+		exit(g_exit_code);
+	}
 	len = ft_strlen(str);
 	findkey = ft_calloc2(sizeof(char), i + 1);
 	ft_strlcpy(findkey, str, i + 1);

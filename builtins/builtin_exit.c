@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 15:03:18 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 08:30:17 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static long long	ft_atoll(const char *str)
 {
 	long long	ret;
 	long long	sign;
+	int			digits;
 
+	digits = 0;
 	ret = 0;
 	sign = 1;
 	if (*str == '-')
@@ -25,35 +27,44 @@ static long long	ft_atoll(const char *str)
 	{
 		ret = ret * 10 + (*str - '0');
 		str++;
+		digits++;
+		if (digits > 19)
+		{
+			perror("numeric argument required");
+			exit(255);
+		}
 	}
 	return (sign * ret);
 }
 
 void	builtin_exit(t_cmd_lst	*lst)
 {
-	int	i;
+	int		i;
+	char	**args;
 
 	i = 0;
-	if (lst->nums > 2)
+	args = get_cmd_args(lst);
+	if (args[1] && args[2])
 	{
 		perror("too many arguments");
-		// g_exit_code = 1;
+		g_exit_code = 1;
+		return ;
 	}
-	if (lst->nums == 2)
+	else if (args[1] && !args[2])
 	{
-		while (lst->curr->next->token[i])
+		while (args[1][i])
 		{
-			if (!ft_isalpha(lst->curr->next->token[i++]))
+			if (ft_isalpha(args[1][i++]))
 			{
 				perror("numeric argument required");
-				// g_exit_code = 255;
+				exit(255);
 			}
 		}
-		g_exit_code = ft_atoll(lst->curr->next->token) % 256;
+		g_exit_code = ft_atoll(args[1]) % 256;
 		if (g_exit_code < 0)
 			g_exit_code += 256;
 	}
-	else
+	else if (args[0] && !args[1])
 		g_exit_code = 0;
 	exit(g_exit_code);
 }

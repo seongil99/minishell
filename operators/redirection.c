@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 12:09:07 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 11:53:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 		tmp = tmp->next;
 	op = tmp->token;
 	name = tmp->next->token;
-	args = get_cmd_args(lst);
+	args = get_cmd_args_pp(lst);
 	if (get_prev_cmd_rr(lst) && ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
 		dup2(lst->curr->pipefd[0], STDIN_FILENO);
 	if (!ft_strncmp(op, ">", 2))
@@ -77,29 +77,45 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	exit(0);
 }
 
-void	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
+int	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
 {
 	int		tmp_file;
 	char	*doc_line;
 	int		len_deli;
 	char	*delim;
+	pid_t	id;
 
 	tmp_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	len_deli = ft_strlen(get_next_cmd_for_heredoc(lst->curr)->token);
 	delim = ft_strjoin(deli, "\n");
 	write(1, "> ", 2);
-	doc_line = get_next_line(0);
-	while (doc_line && ft_strncmp(doc_line, delim, len_deli + 2))
+	id = fork();
+	if (id == 0)
 	{
-		write(tmp_file, doc_line, ft_strlen(doc_line));
-		free(doc_line);
-		write(1, "> ", 2);
+		signal(SIGINT, sigint_handler_child);
+		signal(SIGQUIT, SIG_IGN);
 		doc_line = get_next_line(0);
+		while (doc_line && ft_strncmp(doc_line, delim, len_deli + 2))
+		{
+			write(tmp_file, doc_line, ft_strlen(doc_line));
+			free(doc_line);
+			write(1, "> ", 2);
+			doc_line = get_next_line(0);
+		}
+		free(doc_line);
+		free(delim);
+		close(tmp_file);
+		exit(0);
 	}
-	free(doc_line);
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(id, &g_exit_code, 0);
+	}
 	free(delim);
 	close(tmp_file);
-	g_exit_code = 0;
+	return (g_exit_code);
 }
 
 void	reset_written_pipe(t_cmd_lst *lst)
@@ -173,6 +189,25 @@ t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node)
 	return (node);
 }
 
+void	move_to_next_cmd_heredoc(t_cmd_lst *lst)
+{
+	if (!lst->curr)
+		return ;
+	if (!lst->curr->next)
+	{
+		lst->curr = lst->curr->next;
+		return ;
+	}
+	while (lst->curr && is_cmd_for_move(lst->curr))
+	{
+		if (lst->curr)
+			lst->curr = lst->curr->next;
+	}
+	if (lst->curr && !is_cmd(lst->curr))
+		if (lst->curr)
+			lst->curr = lst->curr->next;
+}
+
 void	get_heredoc(t_cmd_lst *lst)
 {
 	t_cmd_node	*next_cmd;
@@ -182,6 +217,7 @@ void	get_heredoc(t_cmd_lst *lst)
 
 	lst->curr = lst->head;
 	num_heredoc = 0;
+	g_exit_code = 0;
 	while (lst->curr)
 	{
 		name_node = lst->curr;
@@ -191,10 +227,11 @@ void	get_heredoc(t_cmd_lst *lst)
 		next_cmd = get_next_cmd_for_heredoc(lst->curr);
 		while (next_cmd && !ft_strncmp(next_cmd->prev->token, "<<", 3))
 		{
-			redi_heredoc(lst, name_node->file_heredoc, next_cmd->token);
+			if (redi_heredoc(lst, name_node->file_heredoc, next_cmd->token))
+				break ;
 			next_cmd = get_next_cmd_for_heredoc(next_cmd);
 		}
-		move_to_next_cmd(lst);
+		move_to_next_cmd_heredoc(lst);
 	}
 	lst->curr = lst->head;
 }

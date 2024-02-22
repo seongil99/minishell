@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rm_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 15:40:19 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:31:32 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	clear_lst(t_cmd_lst *lst)
 	{
 		del = tmp;
 		tmp = tmp->next;
+		if (del->file_heredoc)
+			unlink(del->file_heredoc);
 		free(del->token);
 		del->token = 0;
 		free(del->file_heredoc);
@@ -64,5 +66,4 @@ void	clear_lst(t_cmd_lst *lst)
 	lst->tail = 0;
 	lst->curr = 0;
 	free(lst);
-	return ;
 }

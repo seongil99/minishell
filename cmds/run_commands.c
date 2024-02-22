@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 12:09:41 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 10:58:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,18 @@ t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst)
 	return (ret);
 }
 
+char	*last_args(t_cmd_lst *lst)
+{
+	char	**args;
+	int		i;
+
+	i = 0;
+	args = get_cmd_args(lst);
+	while (args[i])
+		i++;
+	return (args[i - 1]);
+}
+
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
 	int			proc_id;
@@ -146,37 +158,52 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	n_pid = 0;
 	init_pipe(lst);
 	get_heredoc(lst);
-	while (lst->curr)
+	if (g_exit_code == 0)
 	{
-		if (!ft_strncmp(lst->curr->token, "(", 2))
-		{	
-			exec_subshell(lst);
-			continue ;
-		}
-		if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst) && is_builtin(lst))
-			builtin_choice(lst, envlst);
-		else if ((get_next_cmd_for_check_logic(lst) && \
-			(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
-			!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))
-			logic_control(lst, envlst, envp);
-		else
+		while (lst->curr)
 		{
-			proc_id = fork();
-			if (proc_id == 0)
-			{
-				if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
-					redi_left(lst, envlst, envp);
-				else if (get_prev_cmd_rr(lst))
-					dup2(lst->curr->pipefd[0], STDIN_FILENO);
-				if (get_next_cmd_after_lr(lst) && \
-				!ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
-					redi_right(lst, envlst, envp);
-				else
-					pipe_exec(lst, envlst, envp);
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			if (!ft_strncmp(lst->curr->token, "(", 2))
+			{	
+				exec_subshell(lst);
+				continue ;
 			}
-			n_pid++;
+			if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst) && \
+			is_builtin(lst))
+			{
+				envlst->underbar->value = last_args(lst);
+				builtin_choice(lst, envlst);
+			}
+			else if ((get_next_cmd_for_check_logic(lst) && \
+				(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
+				!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))
+				logic_control(lst, envlst, envp);
+			else
+			{
+				proc_id = fork();
+				if (proc_id == 0)
+				{
+					if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
+						redi_left(lst, envlst, envp);
+					else if (get_prev_cmd_rr(lst))
+						dup2(lst->curr->pipefd[0], STDIN_FILENO);
+					if (get_next_cmd_after_lr(lst) && \
+					!ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
+						redi_right(lst, envlst, envp);
+					else
+						pipe_exec(lst, envlst, envp);
+					exit(g_exit_code);
+				}
+				else
+				{
+					signal(SIGINT, SIG_IGN);
+					signal(SIGQUIT, SIG_IGN);
+				}
+				n_pid++;
+			}
+			move_to_next_cmd(lst);
 		}
-		move_to_next_cmd(lst);
 	}
 	close_pipe(lst);
 	while (n_pid--)

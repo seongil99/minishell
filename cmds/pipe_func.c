@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/21 08:34:12 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 11:08:50 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,51 @@ t_cmd_node	*get_prev_cmd_pp(t_cmd_lst *lst)
 	return (ret->next);
 }
 
+char 	**get_cmd_args_pp(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+	char	**args;
+	int		nums;
+	int		size;
+
+	size = 10;
+	args = (char **)ft_calloc(size, sizeof(char *));
+	args[0] = ft_strdup(lst->curr->token);
+	nums = 1;
+	tmp = lst->curr->next;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->token, "<", 1) || \
+		!ft_strncmp(tmp->token, ">", 1) || \
+		!ft_strncmp(tmp->prev->token, "<", 1) || \
+		!ft_strncmp(tmp->prev->token, ">", 1))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		if (!is_cmd_for_move(tmp) || !tmp)
+		{
+			args[nums] = NULL;
+			break;
+		}
+		if (nums + 1 == size)
+		{
+			args = ft_realloc(args, size * sizeof(char *), size * sizeof(char *) * 2);
+			size *= 2;
+		}
+		args[nums++] = ft_strdup(tmp->token);
+		tmp = tmp->next;
+	}
+	return (args);
+}
+
 void	pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[])
 {
 	char	**args;
 	
 	if (logic_stop(lst))
 		exit(g_exit_code);
-	args = get_cmd_args(lst);
+	args = get_cmd_args_pp(lst);
 	if (get_next_cmd_after_lr(lst))
 		dup2(get_next_cmd_after_lr(lst)->pipefd[1], STDOUT_FILENO);
 	close_pipe(lst);
