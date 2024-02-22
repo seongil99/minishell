@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:46:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 18:58:06 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 12:58:53 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,22 @@ static bool	pattern_match(
 	return (!*pattern);
 }
 
+static int	path_append(t_lst **tknnode, char *filename, char *pattern)
+{
+	int	cnt;
+
+	cnt = 0;
+	if (pattern_match(pattern, filename, NULL, NULL))
+	{
+		lst_insert_next(tknnode, lst_new(token_new(filename, WORD)));
+		*tknnode = (*tknnode)->next;
+		cnt++;
+	}
+	else
+		free(filename);
+	return (cnt);
+}
+
 void	path_expansion(t_lst *head, t_lst *tknnode)
 {
 	t_lst	*temp;
@@ -104,14 +120,7 @@ void	path_expansion(t_lst *head, t_lst *tknnode)
 		filename = get_next_filename();
 		if (!filename)
 			break ;
-		if (pattern_match(pattern, filename, NULL, NULL))
-		{
-			lst_insert_next(&tknnode, lst_new(token_new(filename, WORD)));
-			tknnode = tknnode->next;
-			cnt++;
-		}
-		else
-			free(filename);
+		cnt += path_append(&tknnode, filename, pattern);
 	}
 	if (cnt)
 		lst_del(&head, temp, token_del);
