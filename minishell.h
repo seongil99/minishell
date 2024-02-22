@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 10:17:03 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 13:41:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void		*ft_calloc2(size_t cnt, size_t size);
 
 void	sigint_handler_stdin(int a);
 void	sigquit_handler_stdin(int a);
-int			builtin_env(t_env_lst *envlst);
+int	builtin_env(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_pwd(void);
 int			builtin_echo(t_cmd_lst *lst);
@@ -77,6 +77,7 @@ int			builtin_export(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_choice(t_cmd_lst *lst, t_env_lst *envlst);
 void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 
+void		update_underbar(t_cmd_lst *lst, t_env_lst *envlst);
 void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);

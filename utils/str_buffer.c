@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_buffer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:40:14 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:42:46 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:23:54 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	buf_add_char(t_buf *buf, char c)
 
 void	buf_add_str(t_buf *buf, char *str)
 {
+	if (!str)
+	 	return ;
 	while (*str)
 	{
 		buf_add_char(buf, *str);

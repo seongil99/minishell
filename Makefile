@@ -1,5 +1,5 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
 # READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory

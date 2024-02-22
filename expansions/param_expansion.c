@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 12:09:27 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:31:40 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
 	end = str;
 	while (*end)
 	{
-		if (!ft_isalnum(*end))
+		if (*end != '_' && !ft_isalnum(*end))
 		{
 			temp = *end;
 			break ;
@@ -59,7 +59,7 @@ static int	append_param(char *str, t_buf *buf, t_env_lst *elst, int flag)
 		str++;
 		if (*str == '?')
 			ret += special_variable(buf);
-		else if (ft_isalnum(*str))
+		else if (*str == '_' || ft_isalnum(*str))
 			ret += insert_variable(str, buf, elst);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 13:08:16 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 15:39:19 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
 {
+	update_underbar(lst, envlst);
 	if (!ft_strncmp(lst->curr->token, "env", 4))
-		return (builtin_env(envlst));
+		return (builtin_env(lst, envlst));
 	else if (!ft_strncmp(lst->curr->token, "unset", 6))
 		return (builtin_unset(lst, envlst));
 	else if (!ft_strncmp(lst->curr->token, "export", 7))
@@ -56,26 +57,32 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 	int		i;
 	char	*ab_path;
 	char	*add_slash;
-
-	if (!access(args[0], F_OK & X_OK))
-	{
-		execve(args[0], args, envp);
-		perror("minishell program executed");
-		exit(g_exit_code);
-	}
 	i = 0;
-	if (envlst->path)
+
+	if (!ft_strchr(args[0], '/'))
 	{
-		path = ft_split(envlst->path->value, ':');
-		add_slash = ft_strjoin("/", args[0]);
-		while (path[i])
+		if (envlst->path)
 		{
-			ab_path = ft_strjoin(path[i++], add_slash);
-			if (!access(ab_path, F_OK & X_OK))
+			path = ft_split(envlst->path->value, ':');
+			add_slash = ft_strjoin("/", args[0]);
+			while (path[i])
 			{
-				execve(ab_path, args, envp);
-				break ;
+				ab_path = ft_strjoin(path[i++], add_slash);
+				if (!access(ab_path, F_OK & X_OK))
+				{
+					execve(ab_path, args, envp);
+					break ;
+				}
 			}
+		}
+	}
+	else
+	{
+		if (!access(args[0], F_OK & X_OK))
+		{
+			execve(args[0], args, envp);
+			perror("minishell program executed");
+			exit(g_exit_code);
 		}
 	}
 	perror("minishell program failed");
@@ -157,6 +164,25 @@ char	*last_args(t_cmd_lst *lst)
 	return (ret);
 }
 
+void	update_underbar(t_cmd_lst *lst, t_env_lst *envlst)
+{
+	if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst))
+	{
+		if (envlst->underbar)
+		{
+			free(envlst->underbar->value);
+			envlst->underbar->value = 0;
+			envlst->underbar->value = last_args(lst);
+		}
+	}
+	else
+	{
+		free(envlst->underbar->value);
+		envlst->underbar->value = 0;
+		envlst->underbar->value = ft_strdup(" ");
+	}
+}
+
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
 	int			proc_id;
@@ -176,17 +202,9 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 				exec_subshell(lst);
 				continue ;
 			}
-			if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst) && \
-			is_builtin(lst))
-			{
-				if (envlst->underbar)
-				{
-					free(envlst->underbar->value);
-					envlst->underbar->value = 0;
-					envlst->underbar->value = last_args(lst);
-				}
+			// update_underbar(lst, envlst);
+			if (is_builtin(lst))
 				builtin_choice(lst, envlst);
-			}
 			else if ((get_next_cmd_for_check_logic(lst) && \
 				(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
 				!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))

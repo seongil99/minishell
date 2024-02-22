@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 12:38:33 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:13:30 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		if (parse_code == ACC && cmd_lst)
 			run_commands(cmd_lst, &envlst, envp);
 		else if (parse_code == REJECT && *line)
-			perror("Syntax Error ");
+			ft_putstr_fd("minishell: syntax error occured\n", STDERR_FILENO);
 		add_history(line);
 		rl_replace_line("\n", 1);
 		rl_on_new_line();
