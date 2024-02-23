@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 20:07:43 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/21 17:49:59 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:09:21 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int	auto_transition(t_automata *at)
 		input_head = TYPE_EOF;
 	else
 		input_head = ((t_token *)at->head->data)->type;
-	if (at->head && quote_check(((t_token *)at->head->data)->str) == REJECT)
-		return (REJECT);
+	// if (at->head && quote_check(((t_token *)at->head->data)->str) == REJECT)
+	// 	return (REJECT);
 	ret = auto_action(at, input_head);
 	if (at->head && ret == SHIFT)
 		at->head = at->head->next;

@@ -53,6 +53,7 @@ UTILS_SRC		= ft_calloc2.c \
 				linked_list_push.c \
 				linked_list.c \
 				str_buffer.c \
+				str_buffer2.c \
 				utils.c \
 				get_next_line.c
 

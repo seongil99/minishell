@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_buffer.h                                       :+:      :+:    :+:   */
+/*   str_buffer2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 15:39:11 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 13:14:39 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/23 13:10:22 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/23 13:40:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STR_BUFFER_H
-# define STR_BUFFER_H
+#include "mini_utils.h"
 
-typedef struct s_buf
+void	buf_remove_char(t_buf *buf, int index)
 {
-	char	*buf;
-	int		len;
-	int		size;
-}	t_buf;
-
-t_buf	*buf_new(void);
-void	buf_del(t_buf *buf);
-void	buf_add_char(t_buf *buf, char c);
-void	buf_add_str(t_buf *buf, char *str);
-char	*buf_get_str(t_buf *buf);
-void	buf_remove_char(t_buf *buf, int index);
-
-#endif
+	while (index < buf->size - 1)
+	{
+		buf->buf[index] = buf->buf[index + 1];
+		++index;
+	}
+	buf->len--;
+}

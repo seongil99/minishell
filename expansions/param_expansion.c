@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 13:01:14 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 13:08:32 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	append_param(char *str, t_buf *buf, t_env_lst *elst, int flag)
 	int	ret;
 
 	ret = 1;
-	if (flag != SQUOTE && *str == '$')
+	if (!(flag == SQUOTE && ft_strchr(str, '\'')) && *str == '$')
 	{
 		if (*(++str) == '?')
 			ret += special_variable(buf);

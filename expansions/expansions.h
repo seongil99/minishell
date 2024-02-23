@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:40:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 17:59:15 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:33:19 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@
 # define DQUOTE 2
 
 extern int	g_exit_code;
+
+typedef struct s_quote_info
+{
+	char	c;
+	int		idx;
+	int		flag;
+}	t_quote_info;
+
 
 t_lst	*word_expantion(t_lst *tknlst, t_env_lst *envlst);
 void	lst_tilde_expansion(t_lst *tknlst, t_env_lst *envlst);
