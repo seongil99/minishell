@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 08:52:38 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 16:13:37 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	exec_subshell(t_cmd_lst *lst)
 	}
 	else
 	{
-		waitpid(id, &g_exit_code, 0);
 		move_to_close_subshell(lst);
+		waitpid(id, &g_exit_code, 0);
+		g_exit_code = WEXITSTATUS(g_exit_code);
 	}
 }
 

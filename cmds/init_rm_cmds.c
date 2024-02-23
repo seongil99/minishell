@@ -6,40 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 11:31:32 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 14:26:33 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	push_cmd(t_cmd_lst *lst, char **tokens)
-{
-	t_cmd_node	*new;
-	int		i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		new = (t_cmd_node *)ft_calloc2(sizeof(t_cmd_node), 1);
-		new->token = ft_strdup(tokens[i]);
-		new->file_heredoc = NULL;
-		free(tokens[i]);
-		new->next = NULL;
-		if (i++ == 0)
-		{
-			lst->head = new;
-			new->prev = NULL;
-		}
-		else
-		{
-			lst->tail->next = new;
-			new->prev = lst->tail;
-		}
-		lst->tail = new;
-		lst->nums++;
-	}
-	free(tokens);
-}
 
 void	clear_lst(t_cmd_lst *lst)
 {
@@ -66,4 +37,33 @@ void	clear_lst(t_cmd_lst *lst)
 	lst->tail = 0;
 	lst->curr = 0;
 	free(lst);
+}
+
+void	init_pipe(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+
+	tmp = lst->head;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->token, "|", 2))
+			pipe(tmp->pipefd);
+		tmp = tmp->next;
+	}
+}
+
+void	close_pipe(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+	
+	tmp = lst->head;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->token, "|", 2))
+		{
+			close(tmp->pipefd[0]);
+			close(tmp->pipefd[1]);
+		}
+		tmp = tmp->next;
+	}
 }

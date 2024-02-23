@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 12:55:25 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 13:33:38 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	remove_env_node(t_env_lst *envlst, char *delkey)
 		envlst->oldpwd = 0;
 	else if (envlst->path && !ft_strncmp(delkey, envlst->path->key, ft_strlen(delkey) + 1))
 		envlst->path = 0;
+	else if (envlst->n_home && !ft_strncmp(delkey, envlst->n_home->key, ft_strlen(delkey) + 1))
+		envlst->n_home = 0;
 	else if (envlst->underbar && !ft_strncmp(delkey, envlst->underbar->key, ft_strlen(delkey) + 1))
 		envlst->underbar = 0;
 	free(tmp->key);

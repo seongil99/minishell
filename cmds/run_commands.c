@@ -6,49 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 11:09:14 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 18:54:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
-{
-	if (!ft_strncmp(lst->curr->token, "env", 4))
-		return (builtin_env(lst, envlst));
-	else if (!ft_strncmp(lst->curr->token, "unset", 6))
-		return (builtin_unset(lst, envlst));
-	else if (!ft_strncmp(lst->curr->token, "export", 7))
-		return (builtin_export(lst, envlst));
-	else if (!ft_strncmp(lst->curr->token, "echo", 5))
-		return (builtin_echo(lst));
-	else if (!ft_strncmp(lst->curr->token, "cd", 3))
-		return (builtin_cd(lst, envlst));
-	else if (!ft_strncmp(lst->curr->token, "pwd", 4))
-		return (builtin_pwd());
-	else if (!ft_strncmp(lst->curr->token, "exit", 5))
-		builtin_exit(lst);
-	return (0);
-}
-
-int	is_builtin(t_cmd_lst *lst)
-{
-	if (!ft_strncmp(lst->curr->token, "env", 4))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "unset", 6))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "export", 7))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "echo", 5))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "cd", 3))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "pwd", 4))
-		return (1);
-	else if (!ft_strncmp(lst->curr->token, "exit", 5))
-		return (1);
-	return (0);
-}
 
 int		exec_program(t_env_lst *envlst, char **args, char **envp)
 {
@@ -80,106 +42,14 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 		if (!access(args[0], F_OK & X_OK))
 		{
 			execve(args[0], args, envp);
+			g_exit_code = 126;
 			perror("minishell program executed");
 			exit(g_exit_code);
 		}
 	}
+	g_exit_code = 127;
 	perror("minishell program failed");
 	exit(g_exit_code);
-}
-
-int	is_cmd_for_check_logic(t_cmd_node *node)
-{
-	if (!node)
-		return (0);
-	return (ft_strncmp(node->token, ">>", 3) && \
-			ft_strncmp(node->token, ">", 2) && \
-			ft_strncmp(node->token, "&&", 3) && \
-			ft_strncmp(node->token, "||", 3) && \
-			ft_strncmp(node->token, "|", 2));
-}
-
-t_cmd_node	*get_next_cmd_for_check_logic(t_cmd_lst *lst)
-{
-	t_cmd_node	*ret;
-	
-	ret = lst->curr;
-	if (!ret->next)
-	{
-		ret = ret->next;
-		return (NULL);
-	}	
-	while (ret && is_cmd_for_check_logic(ret))
-		ret = ret->next;
-	if (ret)
-		ret = ret->next;
-	return (ret);
-}
-
-int	is_cmd_after_lr(t_cmd_node *node)
-{
-	if (!node)
-		return (0);
-	return (ft_strncmp(node->token, ">>", 3) && \
-			ft_strncmp(node->token, ">", 2) && \
-			ft_strncmp(node->token, "&&", 3) && \
-			ft_strncmp(node->token, "||", 3) && \
-			ft_strncmp(node->token, "|", 2));
-}
-
-t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst)
-{
-	t_cmd_node	*ret;
-	
-	ret = lst->curr;
-	if (!ret->next)
-	{
-		ret = ret->next;
-		return (NULL);
-	}	
-	while (ret && is_cmd_after_lr(ret))
-		ret = ret->next;
-	if (ret)
-		ret = ret->next;
-	return (ret);
-}
-
-char	*last_args(t_cmd_lst *lst)
-{
-	char	**args;
-	char	*ret;
-	int		i;
-	int		j;
-
-	i = 0;
-	args = get_cmd_args(lst);
-	while (args[i])
-		i++;
-	ret = ft_strdup(args[i - 1]);
-	j = 0;
-	while (j < i)
-		free(args[j++]);
-	free(args);
-	return (ret);
-}
-
-void	update_underbar(t_cmd_lst *lst, t_env_lst *envlst)
-{
-	if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst))
-	{
-		if (envlst->underbar)
-		{
-			free(envlst->underbar->value);
-			envlst->underbar->value = 0;
-			envlst->underbar->value = last_args(lst);
-		}
-	}
-	else
-	{
-		free(envlst->underbar->value);
-		envlst->underbar->value = 0;
-		envlst->underbar->value = ft_strdup(" ");
-	}
 }
 
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
@@ -188,8 +58,9 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	int			n_pid;
 	
 	n_pid = 0;
+	proc_id = 0;
 	init_pipe(lst);
-	get_heredoc(lst);
+	get_heredoc(lst, envlst);
 	if (g_exit_code == 0)
 	{
 		while (lst->curr)
@@ -230,6 +101,9 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 					{
 						signal(SIGINT, SIG_IGN);
 						signal(SIGQUIT, SIG_IGN);
+						if (!get_next_cmd_for_move(lst))
+						{				
+						}
 					}
 					n_pid++;
 				}
@@ -238,6 +112,8 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 		}
 	}
 	close_pipe(lst);
+	waitpid(proc_id, &g_exit_code, 0);
+	g_exit_code = WEXITSTATUS(g_exit_code);
 	while (n_pid--)
-		wait(0);
+		wait(NULL);
 }

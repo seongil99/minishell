@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 12:57:00 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 13:20:31 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	create_new_node(t_env_lst *envlst, char *keyval)
 		envlst->oldpwd = new;
 	else if (!ft_strncmp(new->key, "PATH", 5))
 		envlst->path = new;
+	else if (!ft_strncmp(new->key, "HOME", 5))
+		envlst->n_home = new;
 	else if (!ft_strncmp(new->key, "_", 2))
 		envlst->underbar = new;
 	envlst->nums++;
@@ -87,7 +89,10 @@ void	init_env_lst(t_env_lst *envlst, char **envp)
 		else if (!ft_strncmp(envlst->tail->key, "OLDPWD", 7))
 			envlst->oldpwd = envlst->tail;
 		else if (!ft_strncmp(envlst->tail->key, "HOME", 5))
+		{
 			envlst->home = ft_strdup(envlst->tail->value);
+			envlst->n_home = envlst->tail;
+		}
 		else if (!ft_strncmp(envlst->tail->key, "_", 2))
 			envlst->underbar = envlst->tail;
 	}

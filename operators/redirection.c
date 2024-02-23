@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 12:16:47 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 19:18:47 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	else if (!ft_strncmp(op, ">>", 3))
 		file = open(name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
-		exit(0);
+		exit(g_exit_code);
 	dup2(file, STDOUT_FILENO);
 	close_pipe(lst);
 	close(file);
@@ -74,15 +74,16 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 		exec_program(envlst, args, envp);
 		perror("minishell right redirection");
 	}
-	exit(0);
+	exit(g_exit_code);
 }
 
-int	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
+int	redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli)
 {
 	int		tmp_file;
 	char	*doc_line;
 	int		len_deli;
 	char	*delim;
+	char	*temp;
 	pid_t	id;
 
 	tmp_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
@@ -97,8 +98,10 @@ int	redi_heredoc(t_cmd_lst *lst, char *file_name, char *deli)
 		doc_line = get_next_line(0);
 		while (doc_line && ft_strncmp(doc_line, delim, len_deli + 2))
 		{
-			write(tmp_file, doc_line, ft_strlen(doc_line));
+			temp = param_expansion(doc_line, envlst, true);
+			write(tmp_file, temp, ft_strlen(temp));
 			free(doc_line);
+			free(temp);
 			write(1, "> ", 2);
 			doc_line = get_next_line(0);
 		}
@@ -208,7 +211,7 @@ void	move_to_next_cmd_heredoc(t_cmd_lst *lst)
 			lst->curr = lst->curr->next;
 }
 
-void	get_heredoc(t_cmd_lst *lst)
+void	get_heredoc(t_cmd_lst *lst, t_env_lst *envlst)
 {
 	t_cmd_node	*next_cmd;
 	t_cmd_node	*name_node;
@@ -227,7 +230,7 @@ void	get_heredoc(t_cmd_lst *lst)
 		next_cmd = get_next_cmd_for_heredoc(lst->curr);
 		while (next_cmd && !ft_strncmp(next_cmd->prev->token, "<<", 3))
 		{
-			if (redi_heredoc(lst, name_node->file_heredoc, next_cmd->token))
+			if (redi_heredoc(lst, envlst, name_node->file_heredoc, next_cmd->token))
 				break ;
 			next_cmd = get_next_cmd_for_heredoc(next_cmd);
 		}

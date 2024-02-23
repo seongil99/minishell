@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_type.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:52:22 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 13:13:53 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:44:39 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 

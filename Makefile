@@ -1,5 +1,5 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
 # READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
@@ -21,7 +21,10 @@ COMDS_SRC		= init_rm_cmds.c \
 				manage_cmd.c \
 				pipe_func.c \
 				run_commands.c \
-				convert_cmd.c
+				convert_cmd.c \
+				cmd_args_func.c \
+				cmd_checker.c \
+				get_cmds_func.c
 
 EXPNS_SRC		= lst_expansion.c \
 				param_expansion.c \
@@ -61,7 +64,8 @@ BUILT_SRC		= builtin_dir.c \
 				builtin_echo.c \
 				builtin_env.c \
 				builtin_exit.c \
-				builtin_unset_export.c
+				builtin_unset_export.c \
+				builtin_select.c
 
 TMSIG_SRC		= signal_control.c
 

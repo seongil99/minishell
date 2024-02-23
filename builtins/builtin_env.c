@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:23:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 11:17:03 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 14:01:57 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,41 @@ int	builtin_env(t_cmd_lst *lst, t_env_lst *envlst)
 		tmp = tmp->next;
 	}
 	return (1);
+}
+
+void	update_underbar(t_cmd_lst *lst, t_env_lst *envlst)
+{
+	if (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst))
+	{
+		if (envlst->underbar)
+		{
+			free(envlst->underbar->value);
+			envlst->underbar->value = 0;
+			envlst->underbar->value = last_args(lst);
+		}
+	}
+	else
+	{
+		free(envlst->underbar->value);
+		envlst->underbar->value = 0;
+		envlst->underbar->value = ft_strdup(" ");
+	}
+}
+
+void	update_oldpwd(t_env_lst *envlst)
+{
+	if (envlst->oldpwd)
+	{
+		free(envlst->oldpwd->value);
+		envlst->oldpwd->value = get_pwd();
+	}
+}
+
+void	update_pwd(t_env_lst *envlst)
+{
+	if (envlst->pwd)
+	{
+		free(envlst->pwd->value);
+		envlst->pwd->value = get_pwd();
+	}	
 }

@@ -6,73 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 08:57:01 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 16:03:39 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_cmd(t_cmd_node *node)
-{
-	if (!node)
-		return (0);
-	return (ft_strncmp(node->token, ">>", 3) && \
-			ft_strncmp(node->token, ">", 2) && \
-			ft_strncmp(node->token, "&&", 3) && \
-			ft_strncmp(node->token, "(", 2) && \
-			ft_strncmp(node->token, ")", 2) && \
-			ft_strncmp(node->token, "<<", 3) && \
-			ft_strncmp(node->token, "<", 2) && \
-			ft_strncmp(node->token, "||", 3) && \
-			ft_strncmp(node->token, "|", 2));
-}
-
-t_cmd_node	*get_next_cmd(t_cmd_lst *lst)
-{
-	t_cmd_node	*ret;
-	
-	ret = lst->curr;
-	if (!ret->next)
-	{
-		ret = ret->next;
-		return (NULL);
-	}	
-	while (ret && is_cmd(ret))
-		ret = ret->next;
-	if (ret)
-		ret = ret->next;
-	return (ret);
-}
-
-t_cmd_node	*get_prev_cmd(t_cmd_lst *lst)
-{
-	t_cmd_node	*ret;
-
-	if (lst->curr == lst->head)
-		return (NULL);
-	ret = lst->curr->prev;
-	while (!is_cmd(ret))
-		ret = ret->prev;
-	while (ret && is_cmd(ret))
-	{
-		if (ret == lst->head)
-			return (ret);
-		ret = ret->prev;
-	}
-	// if (!ft_strncmp(ret->token, "<", 2) || \
-	// !ft_strncmp(ret->token, "<<", 3))
-	// 	return (get_prev_cmd(lst));
-	return (ret->next);
-}
-
-int	is_cmd_for_move(t_cmd_node *node)
-{
-	if (!node)
-		return (0);
-	return (ft_strncmp(node->token, "&&", 3) && \
-			ft_strncmp(node->token, "||", 3) && \
-			ft_strncmp(node->token, "|", 2));
-}
 
 void	move_to_next_cmd(t_cmd_lst *lst)
 {
@@ -95,31 +33,4 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 	if (lst->curr && !is_cmd(lst->curr))
 		if (lst->curr)
 			lst->curr = lst->curr->next;
-}
-
-char 	**get_cmd_args(t_cmd_lst *lst)
-{
-	t_cmd_node	*tmp;
-	char	**args;
-	int		nums;
-
-	nums = 0;
-	tmp = lst->curr;
-	while (tmp && is_cmd(tmp))
-	{
-		nums++;
-		if (!tmp->next)
-			break ;
-		tmp = tmp->next;
-	}
-	if (!is_cmd(tmp))
-		tmp = tmp->prev;
-	args = (char **)ft_calloc(nums + 1, sizeof(char *));
-	args[nums--] = NULL;
-	while (nums >= 0 && tmp)
-	{
-		args[nums--] = ft_strdup(tmp->token);
-		tmp = tmp->prev;
-	}
-	return (args);
 }

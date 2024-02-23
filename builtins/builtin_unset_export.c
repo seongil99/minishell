@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 11:16:52 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 14:20:31 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	builtin_export(t_cmd_lst *lst, t_env_lst *envlst)
 		j = 0;
 		while (ft_isalnum(args[i][j]) || args[i][j] == '_' || \
 		args[i][j] == '=' || args[i][j] == '\"' || \
-		args[i][j] == '\'' || args[i][j] == ' ')
+		args[i][j] == '\'' || args[i][j] == ' ' || args[i][j] == '/')
 			j++;
 		if (args[i][j] || args[i][0] == '=')
 		{

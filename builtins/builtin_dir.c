@@ -6,29 +6,11 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 12:51:41 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 15:15:52 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	update_oldpwd(t_env_lst *envlst)
-{
-	if (envlst->oldpwd)
-	{
-		free(envlst->oldpwd->value);
-		envlst->oldpwd->value = get_pwd();
-	}
-}
-
-void	update_pwd(t_env_lst *envlst)
-{
-	if (envlst->pwd)
-	{
-		free(envlst->pwd->value);
-		envlst->pwd->value = get_pwd();
-	}	
-}
 
 int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 {
@@ -38,16 +20,21 @@ int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 	update_oldpwd(envlst);
 	if (args[0] && !args[1])
 	{
-		if (chdir(getenv("HOME"))) // 수정필요 envlst에서 HOME을 찾도록.
+		if (!envlst->n_home)
 		{
-			perror("minishell chdir 1");
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			g_exit_code = 1;
+			return (1);
 		}
+		else if (envlst->n_home && !envlst->n_home->value)
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		else if (envlst->n_home && chdir(envlst->n_home->value))
+			ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
 	}
-	else if (args[2] || (args[1] && chdir(args[1]))) // 권한체크 필요
+	else if (args[2] || (args[1] && chdir(args[1])))
 	{
 		g_exit_code = 1;
-		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
+		ft_putstr_fd("minishell: cd: argument error occured\n", 2);
 	}
 	update_pwd(envlst);
 	g_exit_code = 0;

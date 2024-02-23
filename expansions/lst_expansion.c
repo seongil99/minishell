@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:38:02 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 14:37:33 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:50:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	lst_param_expansion(t_lst *tknlst, t_env_lst *envlst)
 	while (tknlst)
 	{
 		token = tknlst->data;
-		replace_str(&(token->str), param_expansion(token->str, envlst));
+		replace_str(&(token->str), param_expansion(token->str, envlst, false));
 		tknlst = tknlst->next;
 	}
 }
