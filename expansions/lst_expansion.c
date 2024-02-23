@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:38:02 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/21 15:17:43 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:37:33 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	lst_param_expansion(t_lst *tknlst, t_env_lst *envlst)
 	}
 }
 
-void	lst_path_expansion(t_lst *tknlst)
+void	lst_path_expansion(t_lst **head)
 {
 	t_lst	*temp;
-	t_lst	*head;
+	t_lst	*tknlst;
 
-	head = tknlst;
+	tknlst = *head;
 	while (tknlst)
 	{
 		temp = tknlst->next;

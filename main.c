@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 16:13:30 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 14:35:18 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		tkn_lst = tokenize(line);
 		parse_code = parse_line(tkn_lst);
-		tkn_lst = word_expantion(tkn_lst, &envlst);
+		tkn_lst = word_expantion(&tkn_lst, &envlst);
 		cmd_lst = convert_cmd(tkn_lst);
 		lst_clear(&tkn_lst, token_del);
 		if (parse_code == ACC && cmd_lst)

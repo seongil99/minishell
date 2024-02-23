@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:46:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 12:58:53 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:37:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	path_append(t_lst **tknnode, char *filename, char *pattern)
 	return (cnt);
 }
 
-void	path_expansion(t_lst *head, t_lst *tknnode)
+void	path_expansion(t_lst **head, t_lst *tknnode)
 {
 	t_lst	*temp;
 	char	*filename;
@@ -123,5 +123,5 @@ void	path_expansion(t_lst *head, t_lst *tknnode)
 		cnt += path_append(&tknnode, filename, pattern);
 	}
 	if (cnt)
-		lst_del(&head, temp, token_del);
+		lst_del(head, temp, token_del);
 }
