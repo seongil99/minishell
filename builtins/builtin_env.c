@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:23:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 13:15:52 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 11:17:03 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	builtin_env(t_cmd_lst *lst, t_env_lst *envlst)
 {
 	t_env_node	*tmp;
-	int	i;
+	int			i;
 
 	i = 0;
 	if (is_cmd(lst->curr->next))
 	{
 		g_exit_code = 1;
-		perror("No options in env");
+		ft_putstr_fd("minishell: env: No options in env\n", STDERR_FILENO);
 		return (g_exit_code);
 	}
 	tmp = envlst->head;

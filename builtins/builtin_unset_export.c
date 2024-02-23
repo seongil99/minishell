@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 16:38:17 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 11:16:52 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	builtin_unset(t_cmd_lst *lst, t_env_lst *envlst)
 		else
 		{
 			g_exit_code = 1;
-			ft_putstr_fd("minishell: unset: not a valid identifier\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: unset: not a valid identifier\n", 2);
 		}
 		i++;
 	}
@@ -68,16 +68,18 @@ int	builtin_export(t_cmd_lst *lst, t_env_lst *envlst)
 	while (args[i])
 	{
 		j = 0;
-		while (ft_isalnum(args[i][j]) || args[i][j] == '_')
+		while (ft_isalnum(args[i][j]) || args[i][j] == '_' || \
+		args[i][j] == '=' || args[i][j] == '\"' || \
+		args[i][j] == '\'' || args[i][j] == ' ')
 			j++;
-		if (!args[i][j])
-			put_env_node(envlst, args[i]);
-		else
+		if (args[i][j] || args[i][0] == '=')
 		{
 			g_exit_code = 1;
-			ft_putstr_fd("minishell: export: not a valid identifier\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: export: not a valid identifier\n", 2);
 		}
+		else if (!args[i][j])
+			put_env_node(envlst, args[i]);
 		i++;
 	}
-	return (1);	
+	return (1);
 }

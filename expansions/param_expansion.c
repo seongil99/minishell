@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/22 13:31:40 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 13:01:14 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	special_variable(t_buf *buf)
 	exit_code = ft_itoa(temp);
 	buf_add_str(buf, exit_code);
 	free(exit_code);
-	return (2);
+	return (1);
 }
 
 static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
@@ -46,33 +46,31 @@ static int	insert_variable(char *str, t_buf *buf, t_env_lst *elst)
 	if (node)
 		buf_add_str(buf, node->value);
 	*end = temp;
-	return (end - str + 1);
+	return (end - str);
 }
 
 static int	append_param(char *str, t_buf *buf, t_env_lst *elst, int flag)
 {
 	int	ret;
 
-	ret = 0;
+	ret = 1;
 	if (flag != SQUOTE && *str == '$')
 	{
-		str++;
-		if (*str == '?')
+		if (*(++str) == '?')
 			ret += special_variable(buf);
 		else if (*str == '_' || ft_isalnum(*str))
 			ret += insert_variable(str, buf, elst);
+		else if (!*str)
+			buf_add_char(buf, '$');
 		else
 		{
 			buf_add_char(buf, '$');
 			buf_add_char(buf, *str);
-			ret += 2;
+			ret += 1;
 		}
 	}
 	else
-	{
 		buf_add_char(buf, *str);
-		ret++;
-	}
 	return (ret);
 }
 

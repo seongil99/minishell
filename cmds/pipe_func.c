@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 11:08:50 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/22 17:01:46 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ char 	**get_cmd_args_pp(t_cmd_lst *lst)
 	tmp = lst->curr->next;
 	while (tmp)
 	{
+		// printf("prev : %s, curr :%s \n", tmp->prev->token, tmp->token);
 		if (!ft_strncmp(tmp->token, "<", 1) || \
 		!ft_strncmp(tmp->token, ">", 1) || \
 		!ft_strncmp(tmp->prev->token, "<", 1) || \
