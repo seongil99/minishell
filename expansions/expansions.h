@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:40:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 18:50:02 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 20:14:50 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_quote_info
 	int		idx;
 	int		flag;
 }	t_quote_info;
-
 
 t_lst	*word_expantion(t_lst **tknlst, t_env_lst *envlst);
 void	lst_tilde_expansion(t_lst *tknlst, t_env_lst *envlst);

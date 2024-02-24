@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_goto_table_new.c                              :+:      :+:    :+:   */
+/*   lalr_goto_tablev2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:39:58 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 18:56:33 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:00:10 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_parsing.h"
 
-void	init_goto_tablev2(void)
+static void	_init_goto_table1(t_table **gt)
 {
-	t_table	**gt;
-
-	gt = get_goto_table();
 	gt[0][1] = (t_table){GOTO, 1};
 	gt[0][2] = (t_table){GOTO, 2};
 	gt[0][3] = (t_table){GOTO, 3};
@@ -42,6 +39,10 @@ void	init_goto_tablev2(void)
 	gt[8][1] = (t_table){GOTO, 27};
 	gt[8][2] = (t_table){GOTO, 2};
 	gt[8][3] = (t_table){GOTO, 3};
+}
+
+static void	_init_goto_table2(t_table **gt)
+{
 	gt[8][4] = (t_table){GOTO, 5};
 	gt[8][5] = (t_table){GOTO, 4};
 	gt[8][6] = (t_table){GOTO, 7};
@@ -67,6 +68,11 @@ void	init_goto_tablev2(void)
 	gt[18][4] = (t_table){GOTO, 5};
 	gt[18][5] = (t_table){GOTO, 4};
 	gt[18][6] = (t_table){GOTO, 7};
+}
+
+static void	_init_goto_table3(t_table **gt)
+{
+	gt[18][6] = (t_table){GOTO, 7};
 	gt[18][7] = (t_table){GOTO, 6};
 	gt[18][10] = (t_table){GOTO, 9};
 	gt[18][11] = (t_table){GOTO, 11};
@@ -90,6 +96,16 @@ void	init_goto_tablev2(void)
 	gt[24][11] = (t_table){GOTO, 11};
 	gt[24][13] = (t_table){GOTO, 12};
 	gt[38][10] = (t_table){GOTO, 39};
+}
+
+void	init_goto_tablev2(void)
+{
+	t_table	**gt;
+
+	gt = get_goto_table();
+	_init_goto_table1(gt);
+	_init_goto_table2(gt);
+	_init_goto_table3(gt);
 	gt[38][11] = (t_table){GOTO, 11};
 	gt[38][13] = (t_table){GOTO, 12};
 }
