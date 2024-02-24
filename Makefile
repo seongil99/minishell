@@ -1,5 +1,5 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
 # READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
@@ -35,10 +35,12 @@ EXPNS_SRC		= lst_expansion.c \
 				word_expansion.c
 
 PARSE_SRC		= lalr_action_table.c \
+				lalr_action_table_new.c \
 				lalr_action_table2.c \
 				lalr_action_table3.c \
 				lalr_automata.c \
 				lalr_goto_table.c \
+				lalr_goto_table_new.c \
 				lalr_goto.c \
 				lalr_parsing.c \
 				lalr_reduce.c \

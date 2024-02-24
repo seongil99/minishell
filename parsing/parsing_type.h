@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_type.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:52:22 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 14:44:39 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 18:25:24 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef enum e_gmr_var
 	SUBSHELL,
 	SIMPLE_COMMAND,
 	CMD_NAME,
+	CMD_PREFIX,
 	CMD_SUFFIX,
 	REDIRECTION_LIST,
 	IO_REDIRECT,

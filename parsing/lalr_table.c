@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:30:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:17:52 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:46:18 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ t_table	**get_action_table(void)
 
 	if (!action_table)
 	{
-		action_table = ft_calloc2(37, sizeof(t_table *));
+		action_table = ft_calloc2(42, sizeof(t_table *));
 		i = 0;
-		while (i < 37)
+		while (i < 42)
 		{
 			action_table[i] = ft_calloc2(11, sizeof(t_table));
 			i++;
@@ -56,11 +56,11 @@ t_table	**get_goto_table(void)
 
 	if (!goto_table)
 	{
-		goto_table = ft_calloc2(37, sizeof(t_table *));
+		goto_table = ft_calloc2(42, sizeof(t_table *));
 		i = 0;
-		while (i < 37)
+		while (i < 42)
 		{
-			goto_table[i] = ft_calloc2(14, sizeof(t_table));
+			goto_table[i] = ft_calloc2(15, sizeof(t_table));
 			i++;
 		}
 	}

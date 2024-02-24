@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:17:03 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/17 17:49:25 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:17:18 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 t_table	**get_action_table(void);
 t_table	**get_goto_table(void);
 void	init_action_table(void);
+void	init_action_tablev2(void);
 void	init_goto_table(void);
+void	init_goto_tablev2(void);
 
 #endif

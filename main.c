@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 18:20:05 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 18:18:52 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 && argv[1] != NULL)
 		return (127);
 	g_exit_code = 0;
-	init_action_table();
-	init_goto_table();
+	init_action_tablev2();
+	init_goto_tablev2();
 	printf("WELCOME MINISHELL !\n");
 	save_input_mode(&org_term);
 	set_input_mode(&new_term);
@@ -53,10 +53,9 @@ int	main(int argc, char **argv, char **envp)
 		parse_code = parse_line(tkn_lst);
 		tkn_lst = word_expantion(&tkn_lst, &envlst);
 		cmd_lst = convert_cmd(tkn_lst);
-		lst_clear(&tkn_lst, token_del);
 		if (parse_code == ACC && cmd_lst)
 			run_commands(cmd_lst, &envlst, envp);
-		else if (parse_code == REJECT && *line)
+		else if (parse_code == REJECT && tkn_lst)
 			ft_putstr_fd("minishell: syntax error occured\n", STDERR_FILENO);
 		add_history(line);
 		rl_replace_line("\n", 1);
@@ -64,6 +63,7 @@ int	main(int argc, char **argv, char **envp)
 		clear_lst(cmd_lst);
 		cmd_lst = 0;
 		free(line);
+		lst_clear(&tkn_lst, token_del);
 		line = 0;
 	}
 	rl_clear_history();
