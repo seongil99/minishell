@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 18:54:01 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 20:30:20 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 		if (!access(args[0], F_OK & X_OK))
 		{
 			execve(args[0], args, envp);
-			g_exit_code = 126;
 			perror("minishell program executed");
-			exit(g_exit_code);
+			exit(126);
 		}
 	}
-	g_exit_code = 127;
 	perror("minishell program failed");
-	exit(g_exit_code);
+	exit(127);
 }
 
 void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
@@ -68,7 +66,7 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
 			if (!ft_strncmp(lst->curr->token, "(", 2))
-			{	
+			{
 				exec_subshell(lst);
 				continue ;
 			}
@@ -77,10 +75,8 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 				builtin_choice(lst, envlst);
 			else
 			{
-				if ((get_next_cmd_for_check_logic(lst) && \
-				(!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "&&", 3) || \
-				!ft_strncmp(get_next_cmd_for_check_logic(lst)->prev->token, "||", 3))))
-				logic_control(lst, envlst, envp);
+				if (is_logical(lst->curr))
+					logic_control(lst, envlst, envp);
 				else
 				{
 					proc_id = fork();
@@ -88,7 +84,7 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 					{
 						if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
 							redi_left(lst, envlst, envp);
-						else if (get_prev_cmd_rr(lst))
+						else if (new_get_prev_cmd(lst))
 							dup2(lst->curr->pipefd[0], STDIN_FILENO);
 						if (get_next_cmd_after_lr(lst) && \
 						!ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
@@ -101,19 +97,18 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 					{
 						signal(SIGINT, SIG_IGN);
 						signal(SIGQUIT, SIG_IGN);
-						if (!get_next_cmd_for_move(lst))
-						{				
-						}
 					}
 					n_pid++;
 				}
 			}
 			move_to_next_cmd(lst);
 		}
-	}
-	close_pipe(lst);
-	waitpid(proc_id, &g_exit_code, 0);
-	g_exit_code = WEXITSTATUS(g_exit_code);
-	while (n_pid--)
-		wait(NULL);
+		close_pipe(lst);
+		waitpid(proc_id, &g_exit_code, 0);
+		g_exit_code = WEXITSTATUS(g_exit_code);
+		while (n_pid--)
+		{
+			wait(0);
+		}
+	}	
 }

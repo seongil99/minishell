@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 18:35:30 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 20:35:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (!is_cmd_for_args(tmp))
+		if (tmp->type != WORD) //!is_cmd_for_args(tmp)
 		{
 			args[*nums] = NULL;
 			break;
@@ -75,10 +75,10 @@ void	pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[])
 	if (logic_stop(lst))
 		exit(g_exit_code);
 	args = get_cmd_args_pp(lst);
-	if (get_next_cmd_after_lr(lst))
-		dup2(get_next_cmd_after_lr(lst)->pipefd[1], STDOUT_FILENO);
+	if (new_get_next_cmd(lst) && new_get_next_cmd(lst)->type == WORD)
+		dup2(new_get_next_cmd(lst)->pipefd[1], STDOUT_FILENO);
 	close_pipe(lst);
 	if (!builtin_choice(lst, envlst))
 		exec_program(envlst, args, envp);
-	exit(g_exit_code);
+	g_exit_code = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 15:15:52 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 11:18:58 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 		ft_putstr_fd("minishell: cd: argument error occured\n", 2);
 	}
 	update_pwd(envlst);
+
+	int i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
 	g_exit_code = 0;
 	return (1);
 }

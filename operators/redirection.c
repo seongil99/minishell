@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 19:18:47 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 17:44:22 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,43 @@ t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst)
 	ret = lst->curr->prev;
 	while (!is_cmd_for_rr(ret))
 		ret = ret->prev;
+	if (!ft_strncmp(ret->token, "&&", 3) || !ft_strncmp(ret->token, "||", 3))
+		return (NULL);
 	while (ret && is_cmd_for_rr(ret))
 	{
-		if (ret == lst->head)
+		if (ret == lst->head && ret->type == WORD)
 			return (ret);
+		else if (ret->type != WORD)
+			return (NULL);
 		ret = ret->prev;
 	}
 	return (ret->next);
 }
+
+// t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst)
+// {
+// 	t_cmd_node	*ret;
+
+// 	if (lst->curr == lst->head)
+// 		return (NULL);
+// 	ret = lst->curr->prev;
+// 	while (ret && ret->type != WORD)
+// 	{
+// 		if (ret->type == AND_IF || ret->type == OR_IF)
+// 			return (NULL);
+// 		ret = ret->prev;
+// 	}
+// 	while (ret && ret->type == WORD)
+// 	{
+// 		if (ret == lst->head)
+// 			return (ret);
+// 		ret = ret->prev;
+// 	}
+// 	if (!ret)
+// 		return (NULL);
+// 	else
+// 		return (ret->next);	
+// }
 
 void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
@@ -61,9 +90,9 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	if (get_prev_cmd_rr(lst) && ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
 		dup2(lst->curr->pipefd[0], STDIN_FILENO);
 	if (!ft_strncmp(op, ">", 2))
-		file = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		file = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (!ft_strncmp(op, ">>", 3))
-		file = open(name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		file = open(name, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	else
 		exit(g_exit_code);
 	dup2(file, STDOUT_FILENO);
@@ -134,8 +163,7 @@ void	check_read_auth(t_cmd_lst *lst)
 	if (access(get_next_cmd_pp(lst)->token, F_OK | R_OK))
 	{
 		perror("file open error");
-		g_exit_code = 1;
-		exit(g_exit_code);
+		exit(1);
 	}
 }
 
@@ -146,6 +174,7 @@ void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	char	tmp[1024];
 
 	if (envlst && envp) {};
+	reset_written_pipe(lst);
 	if (!ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<<", 3))
 		file = open(lst->curr->file_heredoc, O_RDONLY, 0666);
 	else
@@ -153,7 +182,6 @@ void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 		check_read_auth(lst);
 		file = open(get_next_cmd_pp(lst)->token, O_RDONLY, 0666);
 	}
-	reset_written_pipe(lst);
 	ret = read(file, tmp, 1024);
 	while (ret)
 	{

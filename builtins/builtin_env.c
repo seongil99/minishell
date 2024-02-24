@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:23:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 14:01:57 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 11:13:12 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	update_underbar(t_cmd_lst *lst, t_env_lst *envlst)
 	{
 		free(envlst->underbar->value);
 		envlst->underbar->value = 0;
-		envlst->underbar->value = ft_strdup(" ");
+		envlst->underbar->value = ft_strdup("");
 	}
 }
 

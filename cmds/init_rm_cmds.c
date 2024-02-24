@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 14:26:33 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 20:12:41 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_pipe(t_cmd_lst *lst)
 	tmp = lst->head;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->token, "|", 2))
+		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
 			pipe(tmp->pipefd);
 		tmp = tmp->next;
 	}
@@ -59,7 +59,7 @@ void	close_pipe(t_cmd_lst *lst)
 	tmp = lst->head;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->token, "|", 2))
+		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
 		{
 			close(tmp->pipefd[0]);
 			close(tmp->pipefd[1]);

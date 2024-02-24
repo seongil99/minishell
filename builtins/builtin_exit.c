@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 11:09:11 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 13:01:08 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	builtin_exit(t_cmd_lst	*lst)
 
 	i = 0;
 	args = get_cmd_args(lst);
+	if (args[0] && !args[1])
+		exit(0);
 	if (args[1])
 	{
 		while (args[1][i])
@@ -66,13 +68,12 @@ void	builtin_exit(t_cmd_lst	*lst)
 			}
 		}
 		convert_ec_uc_range(args[1]);
-		exit(g_exit_code);
 	}
-	else
-		exit(0);
 	if (args[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		g_exit_code = 1;
+		return ;
 	}
+	exit(g_exit_code);
 }

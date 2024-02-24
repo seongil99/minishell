@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 16:03:39 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 20:05:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 
 void	move_to_next_cmd(t_cmd_lst *lst)
 {
-	if (!lst->curr)
-		return ;
-	if (!lst->curr->next)
-	{
-		lst->curr = lst->curr->next;
-		return ;
-	}
 	while (lst->curr && is_cmd_for_move(lst->curr))
 	{
-		if (!ft_strncmp(lst->curr->token, "(", 2))
+		if (lst->curr->type == LPAR)
 			exec_subshell(lst);
-		else if (!ft_strncmp(lst->curr->token, ")", 2))
+		else if (lst->curr->type == RPAR)
+		{
+			close_pipe(lst);
+			waitpid(-1, &g_exit_code, 0);
+			g_exit_code = WEXITSTATUS(g_exit_code);
 			exit(g_exit_code);
+		}
 		if (lst->curr)
 			lst->curr = lst->curr->next;
 	}

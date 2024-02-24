@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/20 16:48:47 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 10:21:54 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,17 @@ t_cmd_node	*get_prev_cmd_for_logic(t_cmd_lst *lst)
 
 int	logic_stop(t_cmd_lst *lst)
 {
-	if (lst->curr->prev && !ft_strncmp(lst->curr->prev->token, "||", 3))
+	t_cmd_node	*tmp;
+
+	tmp = lst->curr;
+	while (tmp && (tmp->type == WORD || tmp->type == LPAR))
+		tmp = tmp->prev;
+	if (!tmp)
+		return (0);
+	if (tmp->type == OR_IF)
 		if (g_exit_code == 0)
 			return (1);
-	if (lst->curr->prev && !ft_strncmp(lst->curr->prev->token, "&&", 3))
+	if (tmp->type == AND_IF)
 		if (g_exit_code != 0)
 			return (1);
 	return (0);
@@ -57,18 +64,24 @@ void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	
 	if (logic_stop(lst))
 		return ;
+	
 	pid = fork();
 	if (pid == 0)
 	{
 		args = get_cmd_args(lst);
 		if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
 			redi_left(lst, envlst, envp);
-		else if (get_prev_cmd_for_logic(lst))
-			dup2(get_prev_cmd_for_logic(lst)->pipefd[0], STDIN_FILENO);
+		else if (new_get_prev_cmd(lst))
+			dup2(lst->curr->pipefd[0], STDIN_FILENO);
 		close_pipe(lst);
-		if (!builtin_choice(lst, envlst))
+		if (get_next_cmd_after_lr(lst) && !ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
+				redi_right(lst, envlst, envp);
+		else if (!builtin_choice(lst, envlst))
 			exec_program(envlst, args, envp);
-		exit(g_exit_code); // 빌트인 실패시에 대한 errno설정 필요
+		exit(g_exit_code);
 	}
+	close(lst->curr->pipefd[0]);
+	close(lst->curr->pipefd[1]);
 	waitpid(pid, &g_exit_code, 0);
+	g_exit_code = WEXITSTATUS(g_exit_code);
 }

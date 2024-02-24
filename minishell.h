@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/23 18:54:11 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/24 09:33:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,8 @@ char		*get_next_line(int fd);
 char		*ft_realloc_gnl(char *str, size_t str_index, size_t	*str_max, int option);
 
 
+t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
+t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);
+int	is_logical(t_cmd_node *ret);
 
 #endif
