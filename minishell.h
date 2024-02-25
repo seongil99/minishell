@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 09:33:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 16:20:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_cmd_lst	*convert_cmd(t_lst	*lst);
 void		*ft_calloc2(size_t cnt, size_t size);
 void		sigint_handler_stdin(int a);
 void		sigquit_handler_stdin(int a);
-void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp, struct termios org_term);
 void		update_underbar(t_cmd_lst *lst, t_env_lst *envlst);
 void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 int			logic_stop(t_cmd_lst *lst);
@@ -114,13 +114,13 @@ void		init_pipe(t_cmd_lst *lst);
 void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 void		exec_subshell(t_cmd_lst *lst);
-void		move_to_close_subshell(t_cmd_lst *lst);
+void		move_to_close_subshell(t_cmd_lst *lst, pid_t id);
 int			redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli);
 char		*get_pwd(void);
 void		sigint_handler();
 void		sigquit_handler();
-void		sigint_handler_child(int a);
-void		sigquit_handler_child(int a);
+void		signal_exec(int sig);
+void		sigint_handler_heredoc(int a);
 void 		save_input_mode(struct termios *org_term);
 void		set_input_mode(struct termios *new_term);
 void		reset_input_mode(struct termios *org_term);
@@ -138,6 +138,7 @@ t_list_gnl	*ft_find_node(t_list_gnl *head, int fd);
 char		*get_next_line(int fd);
 char		*ft_realloc_gnl(char *str, size_t str_index, size_t	*str_max, int option);
 
+void signaltest(int sig);
 
 t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
 t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);

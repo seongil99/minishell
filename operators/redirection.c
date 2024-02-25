@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 17:44:22 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 16:23:22 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli)
 	id = fork();
 	if (id == 0)
 	{
-		signal(SIGINT, sigint_handler_child);
+		signal(SIGINT, sigint_handler_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 		doc_line = get_next_line(0);
 		while (doc_line && ft_strncmp(doc_line, delim, len_deli + 2))
@@ -144,6 +144,7 @@ int	redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(id, &g_exit_code, 0);
+		g_exit_code = WEXITSTATUS(g_exit_code);
 	}
 	free(delim);
 	close(tmp_file);
@@ -175,7 +176,7 @@ void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 
 	if (envlst && envp) {};
 	reset_written_pipe(lst);
-	if (!ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<<", 3))
+	if (get_next_cmd_pp(lst)->prev->type == DLESS)
 		file = open(lst->curr->file_heredoc, O_RDONLY, 0666);
 	else
 	{
@@ -185,11 +186,14 @@ void	redi_left(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	ret = read(file, tmp, 1024);
 	while (ret)
 	{
-		write(lst->curr->pipefd[1], tmp, ret);
+		if (lst->curr->type == WORD)
+			write(lst->curr->pipefd[1], tmp, ret);
+		else
+			write(0, tmp, ret);
 		ret = read(file, tmp, 1024);
 	}
 	close(file);
-	if (!ft_strncmp(get_next_cmd(lst)->prev->token, "<<", 3))
+	if (!ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<<", 3))
 		unlink(lst->curr->file_heredoc);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 10:21:54 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:32:55 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,15 @@ int	logic_stop(t_cmd_lst *lst)
 	if (!tmp)
 		return (0);
 	if (tmp->type == OR_IF)
+	{
 		if (g_exit_code == 0)
 			return (1);
-	if (tmp->type == AND_IF)
+	}
+	else if (tmp->type == AND_IF)
+	{
 		if (g_exit_code != 0)
 			return (1);
+	}
 	return (0);
 }
 
@@ -64,7 +68,6 @@ void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	
 	if (logic_stop(lst))
 		return ;
-	
 	pid = fork();
 	if (pid == 0)
 	{

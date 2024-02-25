@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 09:45:28 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:46:10 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ int	builtin_echo(t_cmd_lst *lst)
 		write_echo_args(lst);
 		write(1, "\n", 1);
 	}
+	g_exit_code = 0;
 	return (1);
 }

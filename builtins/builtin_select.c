@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:52:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 15:15:16 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:50:02 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
 {
+	if (logic_stop(lst))
+		return (1);
 	if (!ft_strncmp(lst->curr->token, "env", 4))
 		return (builtin_env(lst, envlst));
 	else if (!ft_strncmp(lst->curr->token, "unset", 6))

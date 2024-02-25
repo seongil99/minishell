@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 20:30:20 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 16:24:53 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		exec_program(t_env_lst *envlst, char **args, char **envp)
 	exit(127);
 }
 
-void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
+void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp, struct termios org_term)
 {
 	int			proc_id;
 	int			n_pid;
@@ -63,13 +63,14 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	{
 		while (lst->curr)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
 			if (!ft_strncmp(lst->curr->token, "(", 2))
 			{
 				exec_subshell(lst);
 				continue ;
 			}
+			reset_input_mode(&org_term);
+			signal(SIGINT, signal_exec);
+			signal(SIGQUIT, signal_exec);
 			update_underbar(lst, envlst);
 			if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
 				builtin_choice(lst, envlst);
@@ -95,8 +96,8 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 					}
 					else
 					{
-						signal(SIGINT, SIG_IGN);
-						signal(SIGQUIT, SIG_IGN);
+						// signal(SIGINT, SIG_IGN);
+						// signal(SIGQUIT, SIG_IGN);
 					}
 					n_pid++;
 				}
@@ -104,8 +105,9 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 			move_to_next_cmd(lst);
 		}
 		close_pipe(lst);
-		waitpid(proc_id, &g_exit_code, 0);
-		g_exit_code = WEXITSTATUS(g_exit_code);
+		if (waitpid(proc_id, &g_exit_code, 0) != -1)
+			g_exit_code = WEXITSTATUS(g_exit_code);
+		printf("exit code : %d\n", g_exit_code);
 		while (n_pid--)
 		{
 			wait(0);

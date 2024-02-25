@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:47:12 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 19:24:10 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 16:06:47 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_cmd_node	*get_prev_cmd_pp(t_cmd_lst *lst)
 
 int	is_logical(t_cmd_node *ret)
 {
-	while (ret && (ret->type == RPAR || ret->type == DGREAT || \
+	while (ret && (ret->type == RPAR || ret->type == DGREAT || ret->type == LPAR || ret->type == RPAR || \
 	ret->type == DLESS || ret->type == LESS || ret->type == GREAT || ret->type == WORD))
 		ret = ret->next;
 	if (!ret)

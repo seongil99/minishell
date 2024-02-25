@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 20:35:21 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 16:25:12 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (tmp->type != WORD) //!is_cmd_for_args(tmp)
+		if (tmp->type != WORD)
 		{
 			args[*nums] = NULL;
 			break;
@@ -61,9 +61,10 @@ char 	**get_cmd_args_pp(t_cmd_lst *lst)
 	int		size;
 
 	size = 10;
+	nums = 0;
 	args = (char **)ft_calloc(size, sizeof(char *));
-	args[0] = ft_strdup(lst->curr->token);
-	nums = 1;
+	if (lst->curr->type == WORD)
+		args[nums++] = ft_strdup(lst->curr->token);
 	push_args(lst, args, &nums, &size);
 	return (args);
 }

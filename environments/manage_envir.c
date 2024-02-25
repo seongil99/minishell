@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 13:33:38 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:45:34 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	remove_env_node(t_env_lst *envlst, char *delkey)
 	free(tmp);
 	tmp = 0;
 	envlst->nums--;
+	g_exit_code = 0;
 }
 
 void	put_env_node(t_env_lst *envlst, char *str)

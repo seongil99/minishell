@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:19:54 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/22 10:56:22 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:23:29 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,25 @@ void	sigquit_handler(void)
 	rl_redisplay();
 }
 
-void	sigint_handler_child(int a)
+void	sigint_handler_heredoc(int sig)
 {
-	a = 1;
-	write(1, "\n", 1);
+	if (sig == SIGINT)
+		write(1, "\n", 1);
 	exit(1);
 }
 
-void	sigquit_handler_child(int a)
+void signal_exec(int sig)
 {
-	a = 3;
+	if (sig == SIGINT)
+	{
+		g_exit_code = 130;
+		printf("\n");
+	}
+	if (sig == SIGQUIT)
+	{
+		g_exit_code = 131;
+		printf("Quit: 3\n");
+	}
 }
 
 void	save_input_mode(struct termios *org_term)

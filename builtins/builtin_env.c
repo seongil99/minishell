@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:23:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 11:13:12 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/25 15:42:31 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	builtin_env(t_cmd_lst *lst, t_env_lst *envlst)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	g_exit_code = 0;
 	return (1);
 }
 
