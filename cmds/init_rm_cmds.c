@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 14:12:36 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 16:22:47 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,11 @@ void	exit_subshell(t_cmd_lst *lst)
 	{
 	}
 	exit(g_exit_code);
+}
+
+int	is_cmd_close_ss(t_cmd_node *node)
+{
+	if (!node)
+		return (0);
+	return (node->type == WORD || node->type == LPAR);
 }

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/27 14:18:09 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 16:23:06 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 void		exec_subshell(t_cmd_lst *lst);
 void		move_to_close_subshell(t_cmd_lst *lst, pid_t id);
+int			is_cmd_close_ss(t_cmd_node *node);
 int			redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, \
 char *file_name, char *deli);
 char		*get_pwd(void);

@@ -6,24 +6,42 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 11:01:53 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 16:23:19 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	wait_child_process(pid_t id)
+{
+	waitpid(id, &g_exit_code, 0);
+	g_exit_code = WEXITSTATUS(g_exit_code);
+	while (wait(0) != -1)
+	{
+	}
+}
+
 void	exec_subshell(t_cmd_lst *lst)
 {
-	pid_t	id;
+	static int	num = 0;
+	pid_t		id;
 
 	id = fork();
 	if (id == 0)
 	{
+		num++;
+		if (logic_stop(lst))
+			exit(g_exit_code);
 		lst->curr = lst->curr->next;
 		return ;
 	}
 	else
 		move_to_close_subshell(lst, id);
+	if (num != 0)
+	{
+		wait_child_process(id);
+		exit(g_exit_code);
+	}
 }
 
 void	end_subshell(t_cmd_lst *lst)
@@ -43,13 +61,6 @@ void	end_subshell(t_cmd_lst *lst)
 		}
 		tmp = tmp->next;
 	}
-}
-
-int	is_cmd_close_ss(t_cmd_node *node)
-{
-	if (!node)
-		return (0);
-	return (node->type == WORD || node->type == LPAR);
 }
 
 t_cmd_node	*logic_with_ss(t_cmd_lst *lst)
@@ -85,10 +96,7 @@ void	move_to_close_subshell(t_cmd_lst *lst, pid_t id)
 	while (tmp)
 	{
 		if (tmp->type == AND_IF || tmp->type == OR_IF)
-		{
-			waitpid(id, &g_exit_code, 0);
-			g_exit_code = WEXITSTATUS(g_exit_code);
-		}
+			wait_child_process(id);
 		tmp = tmp->next;
 		if (tmp->type == WORD || tmp->type == LPAR)
 			break ;
