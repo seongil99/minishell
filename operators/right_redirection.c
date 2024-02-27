@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 13:10:11 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 14:23:17 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	if (logic_stop(lst))
 		exit(g_exit_code);
 	tmp = lst->curr;
-	printf("hihihihi\n");
 	while (tmp->next && \
 		tmp->type != DGREAT && \
 		tmp->type != GREAT)

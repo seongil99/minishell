@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:19:16 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 12:54:08 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 14:23:29 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli)
 
 	tmp_file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	delim = ft_strjoin(deli, "\n");
-	printf("asdf");
 	id = fork();
 	if (id == 0)
 		heredoc_child_action(lst, envlst, delim, tmp_file);

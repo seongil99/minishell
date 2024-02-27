@@ -1,0 +1,16 @@
+Makefile
+a
+builtins
+cmds
+envir.h
+environments
+expansions
+libft
+main.c
+main.o
+minishell
+minishell.h
+operators
+parsing
+termi_signal
+utils
