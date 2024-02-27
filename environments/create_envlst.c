@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:23:14 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 13:20:31 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 13:57:14 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ void	first_equal_separtion(t_env_node *new, char *str)
 	}
 }
 
+void	special_variables_pointing(t_env_lst *envlst, t_env_node *new)
+{
+	if (!ft_strncmp(new->key, "PWD", 4))
+		envlst->pwd = new;
+	else if (!ft_strncmp(new->key, "OLDPWD", 7))
+		envlst->oldpwd = new;
+	else if (!ft_strncmp(new->key, "PATH", 5))
+		envlst->path = new;
+	else if (!ft_strncmp(new->key, "HOME", 5))
+		envlst->n_home = new;
+	else if (!ft_strncmp(new->key, "_", 2))
+		envlst->underbar = new;
+}
+
 void	create_new_node(t_env_lst *envlst, char *keyval)
 {
 	t_env_node	*new;
@@ -58,17 +72,25 @@ void	create_new_node(t_env_lst *envlst, char *keyval)
 		envlst->tail = new;
 		new->next = NULL;
 	}
-	if (!ft_strncmp(new->key, "PWD", 4))
-		envlst->pwd = new;
-	else if (!ft_strncmp(new->key, "OLDPWD", 7))
-		envlst->oldpwd = new;
-	else if (!ft_strncmp(new->key, "PATH", 5))
-		envlst->path = new;
-	else if (!ft_strncmp(new->key, "HOME", 5))
-		envlst->n_home = new;
-	else if (!ft_strncmp(new->key, "_", 2))
-		envlst->underbar = new;
+	special_variables_pointing(envlst, new);
 	envlst->nums++;
+}
+
+void	special_variable_setting(t_env_lst *envlst)
+{
+	if (!ft_strncmp(envlst->tail->key, "PATH", 5))
+		envlst->path = envlst->tail;
+	else if (!ft_strncmp(envlst->tail->key, "PWD", 4))
+		envlst->pwd = envlst->tail;
+	else if (!ft_strncmp(envlst->tail->key, "OLDPWD", 7))
+		envlst->oldpwd = envlst->tail;
+	else if (!ft_strncmp(envlst->tail->key, "HOME", 5))
+	{
+		envlst->home = ft_strdup(envlst->tail->value);
+		envlst->n_home = envlst->tail;
+	}
+	else if (!ft_strncmp(envlst->tail->key, "_", 2))
+		envlst->underbar = envlst->tail;
 }
 
 void	init_env_lst(t_env_lst *envlst, char **envp)
@@ -82,23 +104,11 @@ void	init_env_lst(t_env_lst *envlst, char **envp)
 	while (envp[i])
 	{
 		create_new_node(envlst, envp[i++]);
-		if (!ft_strncmp(envlst->tail->key, "PATH", 5))
-			envlst->path = envlst->tail;
-		else if (!ft_strncmp(envlst->tail->key, "PWD", 4))
-			envlst->pwd = envlst->tail;
-		else if (!ft_strncmp(envlst->tail->key, "OLDPWD", 7))
-			envlst->oldpwd = envlst->tail;
-		else if (!ft_strncmp(envlst->tail->key, "HOME", 5))
-		{
-			envlst->home = ft_strdup(envlst->tail->value);
-			envlst->n_home = envlst->tail;
-		}
-		else if (!ft_strncmp(envlst->tail->key, "_", 2))
-			envlst->underbar = envlst->tail;
+		special_variable_setting(envlst);
 	}
 	if (!envlst->oldpwd)
 	{
-		tmp = ft_strjoin("OLDPWD=",envlst->pwd->value);
+		tmp = ft_strjoin("OLDPWD=", envlst->pwd->value);
 		create_new_node(envlst, tmp);
 		free(tmp);
 	}

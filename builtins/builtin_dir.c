@@ -6,11 +6,28 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 15:48:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 08:52:45 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	argu_cleaner(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+	g_exit_code = 0;
+}
+
+void	cd_post_process(t_env_lst *envlst, char **args)
+{
+	update_pwd(envlst);
+	argu_cleaner(args);
+}
 
 int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 {
@@ -37,13 +54,7 @@ int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
 		ft_putstr_fd("minishell: cd: argument error occured\n", 2);
 		return (1);
 	}
-	update_pwd(envlst);
-
-	int i = 0;
-	while (args[i])
-		free(args[i++]);
-	free(args);
-	g_exit_code = 0;
+	cd_post_process(envlst, args);
 	return (1);
 }
 

@@ -6,111 +6,72 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 16:24:53 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 14:17:30 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		exec_program(t_env_lst *envlst, char **args, char **envp)
+void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
+						char **envp, pid_t *proc_id)
 {
-	char	**path;
-	int		i;
-	char	*ab_path;
-	char	*add_slash;
-	i = 0;
-
-	if (!ft_strchr(args[0], '/'))
+	if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
+		builtin_choice(lst, envlst);
+	else
 	{
-		if (envlst->path)
+		if (is_logical(lst->curr))
+			logic_control(lst, envlst, envp);
+		else
 		{
-			path = ft_split(envlst->path->value, ':');
-			add_slash = ft_strjoin("/", args[0]);
-			while (path[i])
+			*proc_id = fork();
+			if (*proc_id == 0)
 			{
-				ab_path = ft_strjoin(path[i++], add_slash);
-				if (!access(ab_path, F_OK & X_OK))
-				{
-					execve(ab_path, args, envp);
-					break ;
-				}
+				if (left_redirect_condition(lst))
+					redi_left(lst);
+				else if (new_get_prev_cmd(lst))
+					dup2(lst->curr->pipefd[0], STDIN_FILENO);
+				if (right_redirect_condition(lst))
+					redi_right(lst, envlst, envp);
+				else
+					pipe_exec(lst, envlst, envp);
 			}
 		}
 	}
-	else
-	{
-		if (!access(args[0], F_OK & X_OK))
-		{
-			execve(args[0], args, envp);
-			perror("minishell program executed");
-			exit(126);
-		}
-	}
-	perror("minishell program failed");
-	exit(127);
 }
 
-void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, char **envp, struct termios org_term)
+void	start_cmd(t_cmd_lst *lst, t_env_lst *envlst, \
+				char **envp, int *proc_id)
+{
+	process_io_exec(lst, envlst, envp, proc_id);
+	move_to_next_cmd(lst);
+}
+
+void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
+					char **envp, struct termios org_term)
 {
 	int			proc_id;
-	int			n_pid;
-	
-	n_pid = 0;
+
 	proc_id = 0;
-	init_pipe(lst);
-	get_heredoc(lst, envlst);
+	cmd_pre_process(lst, envlst);
 	if (g_exit_code == 0)
 	{
 		while (lst->curr)
 		{
-			if (!ft_strncmp(lst->curr->token, "(", 2))
+			if (lst->curr->type == RPAR)
+				exit_subshell(lst);
+			else if (lst->curr->type == LPAR)
 			{
 				exec_subshell(lst);
 				continue ;
 			}
-			reset_input_mode(&org_term);
-			signal(SIGINT, signal_exec);
-			signal(SIGQUIT, signal_exec);
-			update_underbar(lst, envlst);
-			if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
-				builtin_choice(lst, envlst);
-			else
+			else if (align_pl_location_condition(lst->curr))
 			{
-				if (is_logical(lst->curr))
-					logic_control(lst, envlst, envp);
-				else
-				{
-					proc_id = fork();
-					if (proc_id == 0)
-					{
-						if (get_next_cmd_pp(lst) && !ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<", 1))
-							redi_left(lst, envlst, envp);
-						else if (new_get_prev_cmd(lst))
-							dup2(lst->curr->pipefd[0], STDIN_FILENO);
-						if (get_next_cmd_after_lr(lst) && \
-						!ft_strncmp(get_next_cmd_after_lr(lst)->prev->token, ">", 1))
-							redi_right(lst, envlst, envp);
-						else
-							pipe_exec(lst, envlst, envp);
-						exit(g_exit_code);
-					}
-					else
-					{
-						// signal(SIGINT, SIG_IGN);
-						// signal(SIGQUIT, SIG_IGN);
-					}
-					n_pid++;
-				}
+				lst->curr = lst->curr->next;
+				continue ;
 			}
-			move_to_next_cmd(lst);
+			set_program_envir(lst, envlst, org_term);
+			start_cmd(lst, envlst, envp, &proc_id);
 		}
-		close_pipe(lst);
-		if (waitpid(proc_id, &g_exit_code, 0) != -1)
-			g_exit_code = WEXITSTATUS(g_exit_code);
-		printf("exit code : %d\n", g_exit_code);
-		while (n_pid--)
-		{
-			wait(0);
-		}
-	}	
+		cmd_post_process(lst, proc_id);
+	}
 }

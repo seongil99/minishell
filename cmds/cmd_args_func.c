@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:56:57 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/23 19:36:16 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 08:56:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	*last_args(t_cmd_lst *lst)
 	return (ret);
 }
 
-char 	**get_cmd_args(t_cmd_lst *lst)
+char	**get_cmd_args(t_cmd_lst *lst)
 {
 	t_cmd_node	*tmp;
-	char	**args;
-	int		nums;
+	char		**args;
+	int			nums;
 
 	nums = 0;
 	tmp = lst->curr;

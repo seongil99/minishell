@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:52:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 15:50:02 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 08:14:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	builtin_choice(t_cmd_lst *lst, t_env_lst *envlst)
 		return (builtin_pwd());
 	else if (!ft_strncmp(lst->curr->token, "exit", 5))
 		builtin_exit(lst);
-	
 	return (0);
 }
 

@@ -6,11 +6,30 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:29:36 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 15:45:34 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 14:04:48 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	special_variable_remove(t_env_lst *envlst, char *delkey)
+{
+	if (envlst->pwd && \
+	!ft_strncmp(delkey, envlst->pwd->key, ft_strlen(delkey) + 1))
+		envlst->pwd = 0;
+	else if (envlst->oldpwd && \
+	!ft_strncmp(delkey, envlst->oldpwd->key, ft_strlen(delkey) + 1))
+		envlst->oldpwd = 0;
+	else if (envlst->path && \
+	!ft_strncmp(delkey, envlst->path->key, ft_strlen(delkey) + 1))
+		envlst->path = 0;
+	else if (envlst->n_home && \
+	!ft_strncmp(delkey, envlst->n_home->key, ft_strlen(delkey) + 1))
+		envlst->n_home = 0;
+	else if (envlst->underbar && \
+	!ft_strncmp(delkey, envlst->underbar->key, ft_strlen(delkey) + 1))
+		envlst->underbar = 0;
+}
 
 void	remove_env_node(t_env_lst *envlst, char *delkey)
 {
@@ -27,16 +46,7 @@ void	remove_env_node(t_env_lst *envlst, char *delkey)
 		tmp->prev->next = tmp->next;
 	if (tmp->next)
 		tmp->next->prev = tmp->prev;
-	if (envlst->pwd && !ft_strncmp(delkey, envlst->pwd->key, ft_strlen(delkey) + 1))
-		envlst->pwd = 0;
-	else if (envlst->oldpwd && !ft_strncmp(delkey, envlst->oldpwd->key, ft_strlen(delkey) + 1))
-		envlst->oldpwd = 0;
-	else if (envlst->path && !ft_strncmp(delkey, envlst->path->key, ft_strlen(delkey) + 1))
-		envlst->path = 0;
-	else if (envlst->n_home && !ft_strncmp(delkey, envlst->n_home->key, ft_strlen(delkey) + 1))
-		envlst->n_home = 0;
-	else if (envlst->underbar && !ft_strncmp(delkey, envlst->underbar->key, ft_strlen(delkey) + 1))
-		envlst->underbar = 0;
+	special_variable_remove(envlst, delkey);
 	free(tmp->key);
 	tmp->key = 0;
 	free(tmp->value);
@@ -45,6 +55,17 @@ void	remove_env_node(t_env_lst *envlst, char *delkey)
 	tmp = 0;
 	envlst->nums--;
 	g_exit_code = 0;
+}
+
+void	value_setting(t_env_node *tmp, char *str, int len, int i)
+{
+	if (len == i)
+		tmp->value = NULL;
+	else
+	{
+		tmp->value = (char *)ft_calloc2(sizeof(char), len - i + 1);
+		ft_strlcpy(tmp->value, &str[i + 1], len - i + 1);
+	}
 }
 
 void	put_env_node(t_env_lst *envlst, char *str)
@@ -64,13 +85,7 @@ void	put_env_node(t_env_lst *envlst, char *str)
 	if (tmp)
 	{
 		free(tmp->value);
-		if (len == i)
-			tmp->value = NULL;
-		else
-		{
-			tmp->value = (char *)ft_calloc2(sizeof(char), len - i + 1);
-			ft_strlcpy(tmp->value, &str[i + 1], len - i + 1);
-		}
+		value_setting(tmp, str, len, i);
 	}
 	else
 		create_new_node(envlst, str);

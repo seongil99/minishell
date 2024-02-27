@@ -6,18 +6,18 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 16:25:12 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 13:51:36 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		redirect_check(t_cmd_node *tmp)
+int	redirect_check(t_cmd_node *tmp)
 {
-	return (!ft_strncmp(tmp->token, "<", 1) || \
-		!ft_strncmp(tmp->token, ">", 1) || \
-		!ft_strncmp(tmp->prev->token, "<", 1) || \
-		!ft_strncmp(tmp->prev->token, ">", 1));
+	return (tmp->type == LESS || tmp->type == DLESS || tmp->type == GREAT || \
+	tmp->type == DGREAT || tmp->prev->type == LESS || \
+	tmp->prev->type == DLESS || tmp->prev->type == GREAT || \
+	tmp->prev->type == DGREAT);
 }
 
 char	**need_realloc_chk(char **args, int nums, int *size)
@@ -46,7 +46,7 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 		if (tmp->type != WORD)
 		{
 			args[*nums] = NULL;
-			break;
+			break ;
 		}
 		args = need_realloc_chk(args, *nums, size);
 		args[(*nums)++] = ft_strdup(tmp->token);
@@ -54,7 +54,7 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 	}
 }
 
-char 	**get_cmd_args_pp(t_cmd_lst *lst)
+char	**get_cmd_args_pp(t_cmd_lst *lst)
 {
 	char	**args;
 	int		nums;
@@ -72,7 +72,7 @@ char 	**get_cmd_args_pp(t_cmd_lst *lst)
 void	pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[])
 {
 	char	**args;
-	
+
 	if (logic_stop(lst))
 		exit(g_exit_code);
 	args = get_cmd_args_pp(lst);

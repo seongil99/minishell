@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/25 15:48:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 08:14:13 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,23 @@ void	convert_ec_uc_range(char *arg)
 		g_exit_code += 256;
 }
 
+char	**exit_pre_process(t_cmd_lst	*lst)
+{
+	char	**args;
+
+	args = get_cmd_args(lst);
+	if (args[0] && !args[1])
+		exit(0);
+	return (args);
+}
+
 void	builtin_exit(t_cmd_lst	*lst)
 {
 	int		i;
 	char	**args;
 
 	i = 0;
-	args = get_cmd_args(lst);
-	if (args[0] && !args[1])
-		exit(0);
+	args = exit_pre_process(lst);
 	if (args[1])
 	{
 		while (args[1][i])

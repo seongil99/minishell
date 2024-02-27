@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_cmd.c                                       :+:      :+:    :+:   */
+/*   terminal_mode.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 13:04:48 by sihkang          ###   ########seoul.kr  */
+/*   Created: 2024/02/27 13:17:08 by sihkang           #+#    #+#             */
+/*   Updated: 2024/02/27 14:02:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	move_to_next_cmd(t_cmd_lst *lst)
+void	save_input_mode(struct termios *org_term)
 {
-	while (lst->curr)
-	{
-		if (lst->curr->type == RPAR)
-			break ;
-		else if (lst->curr->type == PIPE || \
-		lst->curr->type == AND_IF || \
-		lst->curr->type == OR_IF)
-		{
-			lst->curr = lst->curr->next;
-			break ;
-		}
-		lst->curr = lst->curr->next;
-	}
+	tcgetattr(STDIN_FILENO, org_term);
+}
+
+void	set_input_mode(struct termios *new_term)
+{
+	tcgetattr(STDIN_FILENO, new_term);
+	new_term->c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, new_term);
+}
+
+void	reset_input_mode(struct termios *org_term)
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, org_term);
 }

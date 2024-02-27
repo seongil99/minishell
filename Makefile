@@ -24,7 +24,11 @@ COMDS_SRC		= init_rm_cmds.c \
 				convert_cmd.c \
 				cmd_args_func.c \
 				cmd_checker.c \
-				get_cmds_func.c
+				get_next_cmds_func.c \
+				cmd_reordering.c \
+				exec_program.c \
+				cmd_align_condition.c \
+				get_prev_cmd_func.c
 
 EXPNS_SRC		= lst_expansion.c \
 				param_expansion.c \
@@ -71,13 +75,17 @@ BUILT_SRC		= builtin_dir.c \
 				builtin_unset_export.c \
 				builtin_select.c
 
-TMSIG_SRC		= signal_control.c
+TMSIG_SRC		= signal_control.c \
+				terminal_mode.c
 
 ENVIR_SRC		= create_envlst.c \
 				manage_envir.c
 
-OPERA_SRC		= redirection.c \
+OPERA_SRC		= heredoc_utils.c\
+				heredoc.c \
 				subshell.c \
+				right_redirection.c \
+				left_redirection.c \
 				logics.c
 
 MAIN_SRC		= main.c

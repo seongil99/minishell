@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/24 20:12:41 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/27 14:12:36 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	init_pipe(t_cmd_lst *lst)
 void	close_pipe(t_cmd_lst *lst)
 {
 	t_cmd_node	*tmp;
-	
+
 	tmp = lst->head;
 	while (tmp)
 	{
@@ -66,4 +66,13 @@ void	close_pipe(t_cmd_lst *lst)
 		}
 		tmp = tmp->next;
 	}
+}
+
+void	exit_subshell(t_cmd_lst *lst)
+{
+	close_pipe(lst);
+	while (wait(0) != -1)
+	{
+	}
+	exit(g_exit_code);
 }
