@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 12:31:45 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 22:12:31 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ int	exec_program(t_env_lst *envlst, char **args, char **envp)
 void	cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst)
 {
 	lst_reordering(lst);
+	// while (lst->curr)
+	// {
+	// 	printf("%s ", lst->curr->token);
+	// 	lst->curr= lst->curr->next;
+	// }
+	// printf("\n");
+	// lst->curr = lst->head;
 	init_pipe(lst);
 	get_heredoc(lst, envlst);
 }
@@ -73,6 +80,7 @@ void	set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
 
 void	cmd_post_process(t_cmd_lst *lst, pid_t proc_id)
 {
+	(void)lst;
 	close_pipe(lst);
 	if (waitpid(proc_id, &g_exit_code, 0) != -1)
 		g_exit_code = WEXITSTATUS(g_exit_code);

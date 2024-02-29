@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 20:15:03 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:05:03 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 

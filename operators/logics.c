@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 11:06:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 22:10:11 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,38 +45,60 @@ int	logic_stop(t_cmd_lst *lst)
 
 void	logic_post_processing(t_cmd_lst *lst, pid_t pid)
 {
-	if (lst->curr->type == WORD)
-	{
-		close(lst->curr->pipefd[0]);
-		close(lst->curr->pipefd[1]);
-	}
+	t_cmd_node	*tmp;
+
+	tmp = lst->curr;
+	// while (tmp->type != AND_IF && tmp->type != OR_IF)
+	// {
+	// 	if (tmp->type == WORD)
+	// 	{
+	// 		close(tmp->pipefd[0]);
+	// 		close(tmp->pipefd[1]);
+	// 	}
+	// 	tmp = tmp->next;
+	// }
+	// close_pipe(lst); 					// 문제의 근원
+	// while (tmp)
+	// {
+	// 	if (tmp->type == PIPE || tmp->type == AND_IF || tmp->type == OR_IF)
+	// 		break ;
+	// 	if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+	// 	{
+	// 		close(tmp->pipefd[0]);
+	// 		close(tmp->pipefd[1]);
+	// 	}
+	// 	tmp = tmp->next;
+	// }
+	// printf("waiting pid %d\n", pid);
 	waitpid(pid, &g_exit_code, 0);
 	g_exit_code = WEXITSTATUS(g_exit_code);
+	// printf("after logic exit code : %d\n", g_exit_code);
+	// printf("waiting g_exit_code\n");
+	while (wait(0) != -1)
+	{
+	}
+	// init_pipe(lst);
 }
 
-void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
+void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp, pid_t *proc_id)
 {
-	char	**args;
-	pid_t	pid;
-
 	if (logic_stop(lst))
-		return ;
-	pid = fork();
-	if (pid == 0)
 	{
-		args = get_cmd_args_pp(lst);
-		if (args[0] == NULL)
-			exit(0);
+		// printf("pid %d | g_exit : %d\n", getpid(), g_exit_code);
+		return ;
+	}
+	*proc_id = fork();
+	if (*proc_id == 0)
+	{
 		if (left_redirect_condition(lst))
 			redi_left(lst);
 		else if (new_get_prev_cmd(lst))
 			dup2(lst->curr->pipefd[0], STDIN_FILENO);
-		close_pipe(lst);
 		if (right_redirect_condition(lst))
 			redi_right(lst, envlst, envp);
-		else if (!builtin_choice(lst, envlst))
-			exec_program(envlst, args, envp);
+		else
+			pipe_exec(lst, envlst, envp);
 		exit(g_exit_code);
 	}
-	logic_post_processing(lst, pid);
+	logic_post_processing(lst, *proc_id);
 }

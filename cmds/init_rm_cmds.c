@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 16:22:47 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 22:13:49 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,17 @@ void	init_pipe(t_cmd_lst *lst)
 	t_cmd_node	*tmp;
 
 	tmp = lst->head;
+	// printf("pid %d opened fds : ", getpid());
 	while (tmp)
 	{
 		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+		{
 			pipe(tmp->pipefd);
+			// printf("%s : %d %d | ", tmp->token, tmp->pipefd[0], tmp->pipefd[1]);
+		}
 		tmp = tmp->next;
 	}
+	// printf("\n");
 }
 
 void	close_pipe(t_cmd_lst *lst)
@@ -57,20 +62,27 @@ void	close_pipe(t_cmd_lst *lst)
 	t_cmd_node	*tmp;
 
 	tmp = lst->head;
+	// printf("pid %d closed fds : ", getpid());
 	while (tmp)
 	{
 		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
 		{
 			close(tmp->pipefd[0]);
 			close(tmp->pipefd[1]);
+			// printf("%s : %d %d | ", tmp->token, tmp->pipefd[0], tmp->pipefd[1]);
 		}
 		tmp = tmp->next;
 	}
+	// printf("\n");
 }
 
-void	exit_subshell(t_cmd_lst *lst)
+void	exit_subshell(t_cmd_lst *lst, pid_t	proc_id)
 {
+	// (void)proc_id;
+	// printf("pid %d subshell closed\n", getpid());
 	close_pipe(lst);
+	waitpid(proc_id, &g_exit_code, 0);
+	g_exit_code = WEXITSTATUS(g_exit_code);
 	while (wait(0) != -1)
 	{
 	}

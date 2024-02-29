@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 14:23:17 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 21:12:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst)
 	return (ret->next);
 }
 
-int	open_file_option(t_cmd_node *tmp)
+int	open_file_option(t_cmd_lst *lst, t_cmd_node *tmp)
 {
 	char	*name;
 
@@ -53,12 +53,15 @@ int	open_file_option(t_cmd_node *tmp)
 	else if (tmp->type == DGREAT)
 		return (open(name, O_WRONLY | O_CREAT | O_APPEND, 0666));
 	else
+	{
+		close_pipe(lst);
 		exit(g_exit_code);
+	}
 }
 
 int	get_pl_data_condition(t_cmd_lst *lst)
 {
-	return (get_prev_cmd_rr(lst) && \
+	return (get_prev_cmd_rr(lst) || \
 	(get_next_cmd_pp(lst)->prev->type == LESS || \
 	get_next_cmd_pp(lst)->prev->type == DLESS));
 }
@@ -77,16 +80,22 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 		tmp->type != GREAT)
 		tmp = tmp->next;
 	args = get_cmd_args_pp(lst);
+	if (args[0] == NULL)
+		exit(0);
 	if (get_pl_data_condition(lst))
 		dup2(lst->curr->pipefd[0], STDIN_FILENO);
-	file = open_file_option(tmp);
+	file = open_file_option(lst, tmp);
 	dup2(file, STDOUT_FILENO);
 	close_pipe(lst);
 	close(file);
-	if (!builtin_choice(lst, envlst))
-	{
+	// if (!builtin_choice(lst, envlst))
+	// {
+	// 	exec_program(envlst, args, envp);
+	// 	perror("minishell right redirection");
+	// }
+	if (!is_builtin(lst))
 		exec_program(envlst, args, envp);
-		perror("minishell right redirection");
-	}
+	else
+		builtin_choice(lst, envlst);
 	exit(g_exit_code);
 }

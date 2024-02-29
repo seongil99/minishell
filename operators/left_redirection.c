@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 09:56:53 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 21:12:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,29 @@ void	check_read_auth(t_cmd_lst *lst)
 	}
 }
 
-int	open_file_readonly(t_cmd_lst *lst)
+int	open_file_readonly(t_cmd_lst *lst, t_cmd_node *tmp)
 {
-	if (get_next_cmd_pp(lst)->prev->type == DLESS)
+	if (tmp->prev->type == DLESS)
 		return (open(lst->curr->file_heredoc, O_RDONLY, 0666));
 	else
 	{
 		check_read_auth(lst);
-		return (open(get_next_cmd_pp(lst)->token, O_RDONLY, 0666));
+		return (open(tmp->token, O_RDONLY, 0666));
 	}
 }
 
 void	redi_left(t_cmd_lst *lst)
 {
-	int		file;
-	int		ret;
-	char	tmp[1024];
+	int			file;
+	int			ret;
+	char		tmp[1024];
+	t_cmd_node	*f_node;
 
 	if (lst->curr->type != WORD)
 		return ;
 	reset_written_pipe(lst);
-	file = open_file_readonly(lst);
+	f_node = left_redirect_condition(lst);
+	file = open_file_readonly(lst, f_node);
 	ret = read(file, tmp, 1024);
 	while (ret)
 	{
@@ -60,6 +62,6 @@ void	redi_left(t_cmd_lst *lst)
 		ret = read(file, tmp, 1024);
 	}
 	close(file);
-	if (!ft_strncmp(get_next_cmd_pp(lst)->prev->token, "<<", 3))
+	if (f_node->prev->type == DLESS)
 		unlink(lst->curr->file_heredoc);
 }

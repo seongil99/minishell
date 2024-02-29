@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/27 16:23:06 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 21:12:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		sigquit_handler_stdin(int a);
 void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
 char **envp, struct termios org_term);
 void		update_underbar(t_cmd_lst *lst, t_env_lst *envlst);
-void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
+void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp, pid_t *proc_id);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst);
@@ -112,12 +112,13 @@ int			redirect_check(t_cmd_node *tmp);
 void		init_pipe(t_cmd_lst *lst);
 void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
-void		exec_subshell(t_cmd_lst *lst);
+void		exec_subshell(t_cmd_lst *lst, pid_t *proc_id);
 void		move_to_close_subshell(t_cmd_lst *lst, pid_t id);
 int			is_cmd_close_ss(t_cmd_node *node);
 int			redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, \
 char *file_name, char *deli);
 char		*get_pwd(void);
+void		wait_child_process(t_cmd_lst *lst, pid_t id);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		signal_exec(int sig);
@@ -129,6 +130,8 @@ void		move_to_next_cmd(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
 int			exec_program(t_env_lst *envlst, char **args, char **envp);
 t_cmd_node	*get_prev_cmd_for_logic(t_cmd_lst *lst);
+void		logic_post_processing(t_cmd_lst *lst, pid_t pid);
+int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -154,12 +157,11 @@ struct termios org_term);
 void		cmd_post_process(t_cmd_lst *lst, pid_t proc_id);
 void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 						char **envp, pid_t *proc_id);
-void		exit_subshell(t_cmd_lst *lst);
-void		end_subshell(t_cmd_lst *lst);
+void		exit_subshell(t_cmd_lst *lst, pid_t	proc_id);
 void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
 int			is_cmd_for_logic(t_cmd_node *node);	
 
-int			left_redirect_condition(t_cmd_lst *lst);
+t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
 int			right_redirect_condition(t_cmd_lst *lst);
 int			align_pl_location_condition(t_cmd_node *curr);
 void		lst_reordering(t_cmd_lst *lst);

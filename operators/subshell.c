@@ -6,60 +6,48 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 16:23:19 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 21:39:04 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	wait_child_process(pid_t id)
+void	wait_child_process(t_cmd_lst *lst, pid_t id)
 {
-	waitpid(id, &g_exit_code, 0);
-	g_exit_code = WEXITSTATUS(g_exit_code);
+	(void)lst;
+	// close_pipe(lst);
+	if (waitpid(id, &g_exit_code, 0) != -1)
+		g_exit_code = WEXITSTATUS(g_exit_code);
 	while (wait(0) != -1)
 	{
 	}
 }
 
-void	exec_subshell(t_cmd_lst *lst)
+void	exec_subshell(t_cmd_lst *lst, pid_t *id)
 {
 	static int	num = 0;
-	pid_t		id;
+	// pid_t		id;
 
-	id = fork();
-	if (id == 0)
+	*id = fork();
+	if (*id == 0)
 	{
 		num++;
 		if (logic_stop(lst))
+		{
 			exit(g_exit_code);
+		}
 		lst->curr = lst->curr->next;
 		return ;
 	}
 	else
-		move_to_close_subshell(lst, id);
+	{	
+		move_to_close_subshell(lst, *id);
+	}
 	if (num != 0)
 	{
-		wait_child_process(id);
+		wait_child_process(lst, *id);
+		close_pipe(lst);
 		exit(g_exit_code);
-	}
-}
-
-void	end_subshell(t_cmd_lst *lst)
-{
-	t_cmd_node	*tmp;
-
-	tmp = lst->curr;
-	while (tmp && tmp->type != PIPE && \
-	tmp->type != AND_IF && tmp->type != OR_IF)
-	{
-		if (tmp->type == RPAR)
-		{
-			while (wait(0) != -1)
-			{
-			}
-			exit(g_exit_code);
-		}
-		tmp = tmp->next;
 	}
 }
 
@@ -96,10 +84,14 @@ void	move_to_close_subshell(t_cmd_lst *lst, pid_t id)
 	while (tmp)
 	{
 		if (tmp->type == AND_IF || tmp->type == OR_IF)
-			wait_child_process(id);
+			wait_child_process(lst, id);
 		tmp = tmp->next;
 		if (tmp->type == WORD || tmp->type == LPAR)
 			break ;
 	}
 	lst->curr = tmp;
+	if (tmp && tmp->type == WORD && (tmp->prev->type == LESS || \
+	tmp->prev->type == DLESS || tmp->prev->type == GREAT || \
+	tmp->prev->type == DGREAT))
+		lst->curr = get_next_cmd_pp(lst);
 }

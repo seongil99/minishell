@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 13:51:36 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 22:10:20 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 	tmp = lst->curr->next;
 	while (tmp)
 	{
+		if (tmp->type == PIPE || tmp->type == AND_IF || tmp->type == OR_IF || \
+		tmp->type == LPAR || tmp->type == RPAR || tmp->prev->type == LPAR || tmp->prev->type == RPAR)
+		{
+			args[*nums] = NULL;
+			break ;
+		}
 		if (redirect_check(tmp))
 		{
 			tmp = tmp->next;
@@ -66,6 +72,15 @@ char	**get_cmd_args_pp(t_cmd_lst *lst)
 	if (lst->curr->type == WORD)
 		args[nums++] = ft_strdup(lst->curr->token);
 	push_args(lst, args, &nums, &size);
+	// printf("pid %d | ", getpid());
+	// int i = 0;
+	// while (args[i])
+	// {
+	// 	printf(" args[%d] : %s ", i, args[i]);
+	// 	i++;
+	// }
+	// printf("** next : %s ** \n", lst->curr->next->token);
+	// printf("\n");
 	return (args);
 }
 
@@ -74,12 +89,21 @@ void	pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[])
 	char	**args;
 
 	if (logic_stop(lst))
+	{
+		close_pipe(lst);
 		exit(g_exit_code);
+	}
 	args = get_cmd_args_pp(lst);
+	if (args[0] == NULL)
+	{
+		close_pipe(lst);
+		exit(0);
+	}
 	if (new_get_next_cmd(lst) && new_get_next_cmd(lst)->type == WORD)
 		dup2(new_get_next_cmd(lst)->pipefd[1], STDOUT_FILENO);
 	close_pipe(lst);
-	if (!builtin_choice(lst, envlst))
+	if (!is_builtin(lst))
 		exec_program(envlst, args, envp);
-	g_exit_code = 1;
+	else
+		builtin_choice(lst, envlst);
 }

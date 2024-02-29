@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/27 14:11:36 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/29 21:54:16 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 && argv[1] != NULL)
 		return (127);
 	minishell_pre_process(&envlst, envp, &org_term);
+	printf("* parent process %d * \n", getpid());
 	while (true)
 	{
 		set_input_mode(&new_term);
