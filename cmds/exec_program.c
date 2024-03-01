@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 22:12:31 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 17:44:07 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
 
 void	cmd_post_process(t_cmd_lst *lst, pid_t proc_id)
 {
-	(void)lst;
 	close_pipe(lst);
 	if (waitpid(proc_id, &g_exit_code, 0) != -1)
 		g_exit_code = WEXITSTATUS(g_exit_code);

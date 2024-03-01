@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 22:11:03 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 20:25:08 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 						char **envp, pid_t *proc_id)
 {
-	// printf("lst->curr : %s\n", lst->curr->token);
 	if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
 		builtin_choice(lst, envlst);
 	else
@@ -35,7 +34,6 @@ void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 					redi_right(lst, envlst, envp);
 				else
 					pipe_exec(lst, envlst, envp);
-				exit(g_exit_code);
 			}
 		}
 	}
@@ -59,12 +57,8 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
 	{
 		while (lst->curr)
 		{
-			// printf("pid : %d | lst->curr : %s | g_exit_code : %d\n", getpid(), lst->curr->token, g_exit_code);
 			if (lst->curr->type == RPAR)
-			{
-				// printf("pid %d is died\n", getpid());
 				exit_subshell(lst, proc_id);
-			}
 			else if (lst->curr->type == LPAR)
 			{
 				exec_subshell(lst, &proc_id);

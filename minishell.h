@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/29 21:12:25 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 21:16:55 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,8 @@ t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
 int			right_redirect_condition(t_cmd_lst *lst);
 int			align_pl_location_condition(t_cmd_node *curr);
 void		lst_reordering(t_cmd_lst *lst);
+
+
+void	close_pipe_re(t_cmd_lst *lst);
 
 #endif

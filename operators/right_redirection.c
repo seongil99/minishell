@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 21:12:24 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 19:47:54 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,6 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 	dup2(file, STDOUT_FILENO);
 	close_pipe(lst);
 	close(file);
-	// if (!builtin_choice(lst, envlst))
-	// {
-	// 	exec_program(envlst, args, envp);
-	// 	perror("minishell right redirection");
-	// }
 	if (!is_builtin(lst))
 		exec_program(envlst, args, envp);
 	else

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 22:10:20 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 19:45:34 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ void	pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[])
 		exec_program(envlst, args, envp);
 	else
 		builtin_choice(lst, envlst);
+	exit(g_exit_code);
 }

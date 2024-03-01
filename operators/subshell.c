@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:29:07 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 21:39:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/01 21:02:51 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,30 @@ void	wait_child_process(t_cmd_lst *lst, pid_t id)
 	{
 	}
 }
+// if (logic_stop(lst))
+// 		{
+// 			close_pipe(lst);
+// 			exit(g_exit_code);
+// 		}
+// 		lst->curr = lst->curr->next;
+// 		tmp = lst->curr;
+// 		while (tmp->type == LPAR)
+// 			tmp = tmp->next;
+// 		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+// 		{
+// 			cmd = tmp;
+// 			while (tmp && is_cmd_for_move(tmp))
+// 				tmp = tmp->next;
+// 			if (tmp && tmp->type != PIPE)
+// 			{
+// 				close(cmd->pipefd[0]);
+// 				close(cmd->pipefd[1]);
+// 			}
+// 		}
 
 void	exec_subshell(t_cmd_lst *lst, pid_t *id)
 {
 	static int	num = 0;
-	// pid_t		id;
 
 	*id = fork();
 	if (*id == 0)
@@ -34,15 +53,13 @@ void	exec_subshell(t_cmd_lst *lst, pid_t *id)
 		num++;
 		if (logic_stop(lst))
 		{
+			close_pipe(lst);
 			exit(g_exit_code);
 		}
 		lst->curr = lst->curr->next;
 		return ;
 	}
-	else
-	{	
-		move_to_close_subshell(lst, *id);
-	}
+	move_to_close_subshell(lst, *id);
 	if (num != 0)
 	{
 		wait_child_process(lst, *id);
