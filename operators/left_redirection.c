@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:48:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/01 13:58:08 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 11:22:46 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@ void	reset_written_pipe(t_cmd_lst *lst)
 	dup2(lst->curr->pipefd[0], STDIN_FILENO);
 }
 
-void	check_read_auth(t_cmd_lst *lst)
+void	check_read_auth(t_cmd_node *f_node)
 {
-	if (access(get_next_cmd_pp(lst)->token, F_OK | R_OK))
+	if (access(f_node->token, F_OK | R_OK))
 	{
 		perror("file open error");
 		exit(1);
 	}
 }
 
-int	open_file_readonly(t_cmd_lst *lst, t_cmd_node *tmp)
+int	open_file_readonly(t_cmd_lst *lst, t_cmd_node *f_node)
 {
-	if (tmp->prev->type == DLESS)
+	if (f_node->prev->type == DLESS)
 		return (open(lst->curr->file_heredoc, O_RDONLY, 0666));
 	else
 	{
-		check_read_auth(lst);
-		return (open(tmp->token, O_RDONLY, 0666));
+		check_read_auth(f_node);
+		return (open(f_node->token, O_RDONLY, 0666));
 	}
 }
 
