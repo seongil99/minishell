@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 08:52:51 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 18:32:56 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	builtin_export(t_cmd_lst *lst, t_env_lst *envlst)
 		args[i][j] == '=' || args[i][j] == '\"' || \
 		args[i][j] == '\'' || args[i][j] == ' ' || args[i][j] == '/')
 			j++;
-		if (args[i][j] || args[i][0] == '=')
+		if (args[i][j] || args[i][0] == '=' || ft_isdigit(args[i][0]))
 		{
 			g_exit_code = 1;
 			ft_putstr_fd("minishell: export: not a valid identifier\n", 2);

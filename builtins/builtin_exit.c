@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/27 20:05:12 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 18:29:36 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static long long	ft_atoll(const char *str)
 	digits = 0;
 	ret = 0;
 	sign = 1;
-	if (*str == '-')
+	if (*str == '-' || *str == '+')
 	{
-		sign = -1;
+		sign = 1 * (44 - *str);
 		str++;
 	}
 	while (1)
