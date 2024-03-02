@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 11:17:03 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,20 @@ void	logic_post_processing(t_cmd_lst *lst, pid_t pid)
 	t_cmd_node	*tmp;
 
 	tmp = lst->curr;
-	// printf("waiting pid %d\n", pid);
 	close_pipe(lst);
 	waitpid(pid, &g_exit_code, 0);
 	g_exit_code = WEXITSTATUS(g_exit_code);
-	// while (wait(0) != -1)
-	// {
-	// }
-	// printf("waiting g_exit_code %d\n", g_exit_code);
 	init_pipe(lst);
 }
 
-void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp, pid_t *proc_id)
+void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, \
+					char **envp, pid_t *proc_id)
 {
 	if (logic_stop(lst))
 		return ;
 	*proc_id = fork();
 	if (*proc_id == 0)
 	{
-		// pipe(lst->curr->pipefd);
 		if (left_redirect_condition(lst))
 			redi_left(lst);
 		else if (new_get_prev_cmd(lst))

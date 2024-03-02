@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 11:23:51 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,8 @@ void	run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
 	{
 		while (lst->curr)
 		{
-			if (lst->curr->type == RPAR)
-				exit_subshell(lst, proc_id);
-			else if (lst->curr->type == LPAR)
-			{
-				exec_subshell(lst, &proc_id);
-				continue ;
-			}
-			else if (align_pl_location_condition(lst->curr))
+			if (lst->curr->type == RPAR || lst->curr->type == LPAR || \
+			align_pl_location_condition(lst->curr))
 			{
 				lst->curr = lst->curr->next;
 				continue ;

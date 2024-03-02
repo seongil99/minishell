@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/01 19:45:34 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:23 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,21 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 	while (tmp)
 	{
 		if (tmp->type == PIPE || tmp->type == AND_IF || tmp->type == OR_IF || \
-		tmp->type == LPAR || tmp->type == RPAR || tmp->prev->type == LPAR || tmp->prev->type == RPAR)
-		{
-			args[*nums] = NULL;
+		tmp->type == LPAR || tmp->type == RPAR || tmp->prev->type == LPAR || \
+		tmp->prev->type == RPAR)
 			break ;
-		}
 		if (redirect_check(tmp))
 		{
 			tmp = tmp->next;
 			continue ;
 		}
 		if (tmp->type != WORD)
-		{
-			args[*nums] = NULL;
 			break ;
-		}
 		args = need_realloc_chk(args, *nums, size);
 		args[(*nums)++] = ft_strdup(tmp->token);
 		tmp = tmp->next;
 	}
+	args[*nums] = NULL;
 }
 
 char	**get_cmd_args_pp(t_cmd_lst *lst)
@@ -72,15 +68,6 @@ char	**get_cmd_args_pp(t_cmd_lst *lst)
 	if (lst->curr->type == WORD)
 		args[nums++] = ft_strdup(lst->curr->token);
 	push_args(lst, args, &nums, &size);
-	// printf("pid %d | ", getpid());
-	// int i = 0;
-	// while (args[i])
-	// {
-	// 	printf(" args[%d] : %s ", i, args[i]);
-	// 	i++;
-	// }
-	// printf("** next : %s ** \n", lst->curr->next->token);
-	// printf("\n");
 	return (args);
 }
 

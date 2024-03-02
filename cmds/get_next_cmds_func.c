@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:47:12 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/01 19:01:59 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:20 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,6 @@ t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst)
 		return (NULL);
 	}	
 	while (ret && is_cmd_pp(ret))
-		ret = ret->next;
-	if (ret)
-		ret = ret->next;
-	return (ret);
-}
-
-t_cmd_node	*get_next_cmd_for_check_logic(t_cmd_lst *lst)
-{
-	t_cmd_node	*ret;
-
-	ret = lst->curr;
-	if (!ret->next)
-	{
-		ret = ret->next;
-		return (NULL);
-	}	
-	while (ret && is_cmd_for_check_logic(ret))
 		ret = ret->next;
 	if (ret)
 		ret = ret->next;

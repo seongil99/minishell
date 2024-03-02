@@ -6,25 +6,48 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/01 13:17:54 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:23 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	skip_to_ss_end(t_cmd_lst *lst)
+{
+	int	num_ss;
+
+	num_ss = 1;
+	lst->curr = lst->curr->next->next;
+	while (lst->curr && num_ss)
+	{
+		if (lst->curr->type == LPAR)
+			num_ss++;
+		else if (lst->curr->type == RPAR)
+			num_ss--;
+		lst->curr = lst->curr->next;
+	}
+}
+
 void	move_to_next_cmd(t_cmd_lst *lst)
 {
 	while (lst->curr)
 	{
-		if (lst->curr->type == RPAR)
+		if (lst->curr->type == PIPE)
 			break ;
-		else if (lst->curr->type == PIPE || \
-		lst->curr->type == AND_IF || \
-		lst->curr->type == OR_IF)
+		if ((lst->curr->type == AND_IF || \
+		lst->curr->type == OR_IF) && lst->curr->next->type == LPAR)
 		{
-			lst->curr = lst->curr->next;
-			break ;
+			if ((lst->curr->type == OR_IF && g_exit_code == 0) || \
+			(lst->curr->type == AND_IF && g_exit_code != 0))
+			{
+				skip_to_ss_end(lst);
+				break ;
+			}
 		}
+		if (lst->curr->type == AND_IF || lst->curr->type == OR_IF)
+			break ;
 		lst->curr = lst->curr->next;
 	}
+	if (lst->curr)
+		lst->curr = lst->curr->next;
 }

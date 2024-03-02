@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/01 21:16:55 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:17 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ char		**need_realloc_chk(char **args, int nums, int *size);
 void		push_args(t_cmd_lst *lst, char **args, int *nums, int *size);
 t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node);
 t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst);
-t_cmd_node	*get_next_cmd_for_check_logic(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
-t_cmd_node	*get_prev_cmd(t_cmd_lst *lst);
-t_cmd_node	*get_prev_cmd_pp(t_cmd_lst *lst);
 t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_for_move(t_cmd_lst *lst);
 char		**get_cmd_args(t_cmd_lst *lst);
@@ -98,11 +95,8 @@ char		**get_cmd_args_pp(t_cmd_lst *lst);
 void		clear_lst(t_cmd_lst *lst);
 t_cmd_lst	*convert_cmd(t_lst	*lst);
 void		*ft_calloc2(size_t cnt, size_t size);
-void		sigint_handler_stdin(int a);
-void		sigquit_handler_stdin(int a);
 void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
 char **envp, struct termios org_term);
-void		update_underbar(t_cmd_lst *lst, t_env_lst *envlst);
 void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp, pid_t *proc_id);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
@@ -112,13 +106,10 @@ int			redirect_check(t_cmd_node *tmp);
 void		init_pipe(t_cmd_lst *lst);
 void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
-void		exec_subshell(t_cmd_lst *lst, pid_t *proc_id);
-void		move_to_close_subshell(t_cmd_lst *lst, pid_t id);
 int			is_cmd_close_ss(t_cmd_node *node);
 int			redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, \
 char *file_name, char *deli);
 char		*get_pwd(void);
-void		wait_child_process(t_cmd_lst *lst, pid_t id);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		signal_exec(int sig);
@@ -129,7 +120,6 @@ void		reset_input_mode(struct termios *org_term);
 void		move_to_next_cmd(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
 int			exec_program(t_env_lst *envlst, char **args, char **envp);
-t_cmd_node	*get_prev_cmd_for_logic(t_cmd_lst *lst);
 void		logic_post_processing(t_cmd_lst *lst, pid_t pid);
 int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
 
@@ -157,7 +147,6 @@ struct termios org_term);
 void		cmd_post_process(t_cmd_lst *lst, pid_t proc_id);
 void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 						char **envp, pid_t *proc_id);
-void		exit_subshell(t_cmd_lst *lst, pid_t	proc_id);
 void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
 int			is_cmd_for_logic(t_cmd_node *node);	
 

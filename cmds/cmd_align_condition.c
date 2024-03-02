@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:01:50 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 21:12:22 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:25:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,10 @@ t_cmd_node	*left_redirect_condition(t_cmd_lst *lst)
 		if (tmp->type == PIPE || tmp->type == AND_IF || tmp->type == OR_IF)
 			return (0);
 		else if (tmp->type == LESS || tmp->type == DLESS)
-			return (tmp->next);		
+			return (tmp->next);
 		tmp = tmp->next;
 	}
 	return (0);
-	// return (get_next_cmd_pp(lst) && \
-	// (get_next_cmd_pp(lst)->prev->type == LESS || \
-	// get_next_cmd_pp(lst)->prev->type == DLESS));
 }
 
 int	right_redirect_condition(t_cmd_lst *lst)
@@ -42,5 +39,7 @@ int	align_pl_location_condition(t_cmd_node *curr)
 {
 	return (curr->type != WORD && \
 			curr->type != LESS && \
-			curr->type != DLESS);
+			curr->type != DLESS && \
+			curr->type != GREAT && \
+			curr->type != DGREAT);
 }
