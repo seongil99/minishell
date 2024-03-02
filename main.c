@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 16:58:14 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_code;
 
-void check(void)
+void	check(void)
 {
 	system("leaks minishell");
 }
@@ -42,44 +42,52 @@ void	minishell_line_clear(char *line, t_cmd_lst *cmd_lst, t_lst *tkn_lst)
 	line = 0;
 }
 
-int	main(int argc, char **argv, char **envp)
+typedef struct s_data
 {
 	int				parse_code;
 	char			*line;
 	t_lst			*tkn_lst;
 	t_cmd_lst		*cmd_lst;
 	t_env_lst		envlst;
+}	t_data;
+
+void	exec(t_data *data, char **envp, struct termios org_term)
+{
+	data->tkn_lst = tokenize(data->line);
+	data->parse_code = parse_line(data->tkn_lst);
+	data->tkn_lst = word_expantion(&data->tkn_lst, &data->envlst);
+	data->cmd_lst = convert_cmd(data->tkn_lst);
+	if (data->parse_code == ACC && data->cmd_lst)
+		run_commands(data->cmd_lst, &data->envlst, envp, org_term);
+	else if (data->parse_code == REJECT && data->tkn_lst)
+	{
+		ft_putstr_fd("minishell: syntax error occured\n", STDERR_FILENO);
+		g_exit_code = 258;
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data			data;
 	struct termios	org_term;
 	struct termios	new_term;
 
-	// atexit(check);
 	if (argc != 1 && argv[1] != NULL)
 		return (127);
-	minishell_pre_process(&envlst, envp, &org_term);
-	printf("* parent process %d * \n", getpid());
+	minishell_pre_process(&data.envlst, envp, &org_term);
 	while (true)
 	{
 		set_input_mode(&new_term);
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, sigquit_handler);
-		line = readline("minishell$ ");
-		if (!line)
+		data.line = readline("minishell$ ");
+		if (!data.line)
 		{
 			printf("byebye\n");
 			break ;
 		}
-		tkn_lst = tokenize(line);
-		parse_code = parse_line(tkn_lst);
-		tkn_lst = word_expantion(&tkn_lst, &envlst);
-		cmd_lst = convert_cmd(tkn_lst);
-		if (parse_code == ACC && cmd_lst)
-			run_commands(cmd_lst, &envlst, envp, org_term);
-		else if (parse_code == REJECT && tkn_lst)
-		{
-			ft_putstr_fd("minishell: syntax error occured\n", STDERR_FILENO);
-			g_exit_code = 258;
-		}
-		minishell_line_clear(line, cmd_lst, tkn_lst);
+		exec(&data, envp, org_term);
+		minishell_line_clear(data.line, data.cmd_lst, data.tkn_lst);
 	}
 	rl_clear_history();
 	reset_input_mode(&org_term);
