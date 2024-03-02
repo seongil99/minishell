@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:17 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/02 17:25:41 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ void		clear_lst(t_cmd_lst *lst);
 t_cmd_lst	*convert_cmd(t_lst	*lst);
 void		*ft_calloc2(size_t cnt, size_t size);
 void		run_commands(t_cmd_lst *lst, t_env_lst *envlst, \
-char **envp, struct termios org_term);
-void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, char **envp, pid_t *proc_id);
+						char **envp, struct termios org_term);
+void		logic_control(t_cmd_lst *lst, t_env_lst *envlst, \
+						char **envp, pid_t *proc_id);
 int			logic_stop(t_cmd_lst *lst);
 void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst);
@@ -108,7 +109,7 @@ void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);
 int			is_cmd_close_ss(t_cmd_node *node);
 int			redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, \
-char *file_name, char *deli);
+						char *file_name, char *deli);
 char		*get_pwd(void);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
@@ -122,6 +123,24 @@ t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
 int			exec_program(t_env_lst *envlst, char **args, char **envp);
 void		logic_post_processing(t_cmd_lst *lst, pid_t pid);
 int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
+t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
+t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);
+int			is_logical(t_cmd_node *ret);
+void		exec_with_dir(t_env_lst *envlst, char **args, char **envp);
+int			exec_program(t_env_lst *envlst, char **args, char **envp);
+void		cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst);
+void		set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
+					struct termios org_term);
+void		cmd_post_process(t_cmd_lst *lst, pid_t proc_id);
+void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
+					char **envp, pid_t *proc_id);
+void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
+int			is_cmd_for_logic(t_cmd_node *node);	
+t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
+int			right_redirect_condition(t_cmd_lst *lst);
+int			align_pl_location_condition(t_cmd_node *curr);
+void		lst_reordering(t_cmd_lst *lst);
+void		close_pipe_re(t_cmd_lst *lst);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -129,33 +148,10 @@ int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
 
 char		*ft_find_next_line(t_list_gnl *node, int fd);
 char		*ft_make_str(t_list_gnl *node, char *str, \
-size_t str_index, size_t str_max);
+					size_t str_index, size_t str_max);
 t_list_gnl	*ft_find_node(t_list_gnl *head, int fd);
 char		*get_next_line(int fd);
 char		*ft_realloc_gnl(char *str, size_t str_index, \
-size_t	*str_max, int option);
-
-t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
-t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);
-int			is_logical(t_cmd_node *ret);
-
-void		exec_with_dir(t_env_lst *envlst, char **args, char **envp);
-int			exec_program(t_env_lst *envlst, char **args, char **envp);
-void		cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst);
-void		set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
-struct termios org_term);
-void		cmd_post_process(t_cmd_lst *lst, pid_t proc_id);
-void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
-						char **envp, pid_t *proc_id);
-void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
-int			is_cmd_for_logic(t_cmd_node *node);	
-
-t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
-int			right_redirect_condition(t_cmd_lst *lst);
-int			align_pl_location_condition(t_cmd_node *curr);
-void		lst_reordering(t_cmd_lst *lst);
-
-
-void	close_pipe_re(t_cmd_lst *lst);
+					size_t	*str_max, int option);
 
 #endif
