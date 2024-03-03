@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:24 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 14:53:02 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 						char **envp, pid_t *proc_id)
 {
-	if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
+	if (is_builtin(lst) && (!new_get_prev_cmd(lst) && !get_next_cmd_pp(lst)))
 		builtin_choice(lst, envlst);
 	else
 	{

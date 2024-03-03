@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:01:34 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 18:29:36 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 16:39:38 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static long long	ft_atoll(const char *str)
 	{
 		if (!ft_isdigit(*str) || digits > 19)
 		{
-			ft_putstr_fd("minishell: exit2: numeric argument required\n", 2);
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			exit(255);
 		}
 		ret = ret * 10 + (*(str++) - '0');
@@ -71,7 +71,7 @@ void	builtin_exit(t_cmd_lst	*lst)
 		{
 			if (ft_isalpha(args[1][i++]))
 			{
-				ft_putstr_fd("minishell: exit1: numeric argument required\n", 2);
+				ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 				exit(255);
 			}
 		}

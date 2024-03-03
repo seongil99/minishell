@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:26 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 13:44:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_cmd_for_rr(t_cmd_node *node)
 {
 	if (!node)
 		return (0);
-	return (node->type != PIPE);
+	return (node->type == WORD || node->type == LPAR || node->type == RPAR);
 }
 
 t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst)

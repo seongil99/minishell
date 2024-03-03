@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:47:12 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:20 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 13:48:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst)
 	}	
 	while (ret && is_cmd_pp(ret))
 		ret = ret->next;
+	if (ret && (ret->type == AND_IF || ret->type == OR_IF))
+		return (NULL);
 	if (ret)
 		ret = ret->next;
 	return (ret);

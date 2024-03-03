@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:26:17 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 11:26:32 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 14:57:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node)
 	{
 		node = node->next;
 		return (NULL);
-	}	
+	}
 	while (node && is_cmd_for_heredoc(node))
 		node = node->next;
+	if (node && (node->type == PIPE || \
+	node->type == AND_IF || node->type == OR_IF))
+		return (NULL);
 	if (node)
 		node = node->next;
 	return (node);

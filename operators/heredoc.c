@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:19:16 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:25 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 14:51:22 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	redi_heredoc(t_cmd_lst *lst, t_env_lst *envlst, char *file_name, char *deli)
 
 void	get_heredoc(t_cmd_lst *lst, t_env_lst *envlst)
 {
-	t_cmd_node	*next_cmd;
+	t_cmd_node	*nxtcmd;
 	t_cmd_node	*tg;
 	char		*get_itoa;
 	int			num_heredoc;
@@ -82,14 +82,14 @@ void	get_heredoc(t_cmd_lst *lst, t_env_lst *envlst)
 		get_itoa = ft_itoa(num_heredoc++);
 		tg->file_heredoc = ft_strjoin(".", get_itoa);
 		free(get_itoa);
-		next_cmd = get_next_cmd_for_heredoc(lst->curr);
-		while (next_cmd && next_cmd->prev->type == DLESS)
+		nxtcmd = get_next_cmd_for_heredoc(lst->curr);
+		while (nxtcmd)
 		{
-			if (redi_heredoc(lst, envlst, tg->file_heredoc, next_cmd->token))
-				break ;
-			next_cmd = get_next_cmd_for_heredoc(next_cmd);
+			if (nxtcmd->prev->type == DLESS)
+				if (redi_heredoc(lst, envlst, tg->file_heredoc, nxtcmd->token))
+					break ;
+			nxtcmd = get_next_cmd_for_heredoc(nxtcmd);
 		}
 		move_to_next_cmd_heredoc(lst);
 	}
-	lst->curr = lst->head;
 }

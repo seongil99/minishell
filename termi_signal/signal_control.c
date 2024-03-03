@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:19:54 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:28 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 14:58:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	sigint_handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
+	g_exit_code = 1;
 	write(1, "\n", 1);
 	rl_replace_line("", 1);
 	rl_on_new_line();

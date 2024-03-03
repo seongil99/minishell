@@ -69,6 +69,7 @@ UTILS_SRC		= ft_calloc2.c \
 				get_next_line.c
 
 BUILT_SRC		= builtin_dir.c \
+				builtin_pwd.c \
 				builtin_echo.c \
 				builtin_env.c \
 				builtin_exit.c \

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:22 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 16:13:00 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ void	exec_with_dir(t_env_lst *envlst, char **args, char **envp)
 				break ;
 			}
 		}
-	}	
+		ft_putstr_fd("minishell: command not found\n", 2);
+		return ;
+	}
+	ft_putstr_fd("minishell: No such file or directory\n", 2);
+	return ;
 }
 
 int	exec_program(t_env_lst *envlst, char **args, char **envp)
@@ -51,7 +55,7 @@ int	exec_program(t_env_lst *envlst, char **args, char **envp)
 			exit(126);
 		}
 	}
-	perror("minishell program failed");
+	// perror("minishell program failed");
 	exit(127);
 }
 
@@ -60,6 +64,7 @@ void	cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst)
 	lst_reordering(lst);
 	init_pipe(lst);
 	get_heredoc(lst, envlst);
+	lst->curr = lst->head;
 }
 
 void	set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
