@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 18:12:45 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 19:59:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ char	**get_cmd_args_pp(t_cmd_lst *lst)
 	args = (char **)ft_calloc(size, sizeof(char *));
 	if (lst->curr->type == WORD)
 		args[nums++] = ft_strdup(lst->curr->token);
+	else if (lst->curr->type == AND_IF || lst->curr->type == OR_IF || \
+	lst->curr->type == PIPE)
+	{
+		args[nums] = NULL;
+		return (args);
+	}
 	args = push_args(lst, args, &nums, &size);
 	return (args);
 }
