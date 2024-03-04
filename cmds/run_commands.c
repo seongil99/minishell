@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/03 14:53:02 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 15:40:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 			logic_control(lst, envlst, envp, proc_id);
 		else
 		{
-			*proc_id = fork();
+			*proc_id = fork2();
 			if (*proc_id == 0)
 			{
 				if (left_redirect_condition(lst))
