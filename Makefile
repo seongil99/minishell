@@ -39,14 +39,10 @@ EXPNS_SRC		= lst_expansion.c \
 
 EXPNS_INCLUDE	= expansions.h
 
-PARSE_SRC		= lalr_action_table.c \
-				lalr_action_tablev2.c \
+PARSE_SRC		= lalr_action_tablev2.c \
 				lalr_action_tablev21.c \
 				lalr_action_tablev22.c \
-				lalr_action_table2.c \
-				lalr_action_table3.c \
 				lalr_automata.c \
-				lalr_goto_table.c \
 				lalr_goto_tablev2.c \
 				lalr_goto.c \
 				lalr_parsing.c \
