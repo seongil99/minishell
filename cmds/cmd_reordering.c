@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 19:41:05 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/29 19:20:48 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:32:42 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,17 @@ void	relink_after_insert(t_cmd_lst *lst, t_cmd_node *tmp)
 void	lst_reordering(t_cmd_lst *lst)
 {
 	t_cmd_node	*tmp;
+	int			n_cmd;
 
+	n_cmd = 0;
 	while (lst->curr)
 	{
 		while (lst->curr->type == LPAR)
 			lst->curr = lst->curr->next;
 		if (lst->curr->type != WORD)
 		{
+			if (!is_cmd_for_move(lst->curr))
+				n_cmd++;
 			tmp = move_to_cmd_name(lst);
 			if (tmp == NULL)
 				break ;
@@ -90,5 +94,7 @@ void	lst_reordering(t_cmd_lst *lst)
 		}
 		lst->curr = get_next_cmd_for_move(lst);
 	}
+	if (n_cmd > 50)
+		return (1);
 	lst->curr = lst->head;
 }

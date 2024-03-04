@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/03 11:37:35 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:23:10 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_list_gnl
 }			t_list_gnl;
 
 void		argu_cleaner(char **args);
+pid_t		fork2(void);
 int			builtin_env(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_cd(t_cmd_lst *lst, t_env_lst *envlst);
 int			builtin_pwd(void);

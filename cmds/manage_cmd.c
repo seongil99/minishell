@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:22:18 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,18 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 	}
 	if (lst->curr)
 		lst->curr = lst->curr->next;
+}
+
+pid_t	fork2()
+{
+	pid_t	id;
+
+	id = fork();
+	if (id == 1)
+	{
+		perror("minishell: ");
+		kill(0, SIGTERM);
+		exit(errno);
+	}
+	return (id);
 }

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/03 15:53:15 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:22:36 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	logic_control(t_cmd_lst *lst, t_env_lst *envlst, \
 		return ;
 	if (is_builtin(lst) && (!get_prev_cmd_rr(lst) && !get_next_cmd_pp(lst)))
 		builtin_choice(lst, envlst);
-	*proc_id = fork();
+	*proc_id = fork2();
 	if (*proc_id == 0)
 	{
 		if (left_redirect_condition(lst))
