@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 09:23:10 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:54:24 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,13 @@ void		set_input_mode(struct termios *new_term);
 void		reset_input_mode(struct termios *org_term);
 void		move_to_next_cmd(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
-int			exec_program(t_env_lst *envlst, char **args, char **envp);
+void		exec_program(t_env_lst *envlst, char **args, char **envp);
 void		logic_post_processing(t_cmd_lst *lst, pid_t pid);
 int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
 t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
 t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);
 int			is_logical(t_cmd_node *ret);
 void		exec_with_dir(t_env_lst *envlst, char **args, char **envp);
-int			exec_program(t_env_lst *envlst, char **args, char **envp);
 void		cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst);
 void		set_program_envir(t_cmd_lst *lst, t_env_lst *envlst, \
 					struct termios org_term);

@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 09:38:50 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 10:02:27 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,37 @@ void	exec_with_dir(t_env_lst *envlst, char **args, char **envp)
 			}
 		}
 		ft_putstr_fd("minishell: command not found\n", 2);
-		return ;
+		exit(127);
 	}
 	ft_putstr_fd("minishell: No such file or directory\n", 2);
-	return ;
+	exit(127);
 }
 
-int	exec_program(t_env_lst *envlst, char **args, char **envp)
+void	exec_program(t_env_lst *envlst, char **args, char **envp)
 {
 	if (args[0] == NULL)
 		exit(0);
 	if (!ft_strchr(args[0], '/'))
 		exec_with_dir(envlst, args, envp);
-	else if (ft_strchr(args[0], '/'))
+	else
 	{
-		if (!access(args[0], F_OK & X_OK))
+		if (access(args[0], F_OK))
+		{
+			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			exit(127);
+		}
+		else if (access(args[0], X_OK))
+		{
+			ft_putstr_fd("minishell: Permission denied\n", 2);
+			exit(126);
+		}
+		else
 		{
 			execve(args[0], args, envp);
 			perror("minishell program executed");
-			exit(126);
+			exit(127);
 		}
 	}
-	exit(127);
 }
 
 void	cmd_pre_process(t_cmd_lst *lst, t_env_lst *envlst)
