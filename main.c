@@ -6,29 +6,13 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:49:19 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 15:16:04 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:58:25 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_code;
-
-void	check(void)
-{
-	system("leaks minishell");
-}
-
-void	print_tkn(t_lst *tknlst)
-{
-	while (tknlst)
-	{
-		t_token	*temp = tknlst->data;
-		printf("|%s| ", temp->str);
-		tknlst = tknlst->next;
-	}
-	printf("\n");
-}
 
 void	minishell_pre_process(t_env_lst *envlst, char **envp, \
 							struct termios *org_term)
@@ -53,21 +37,11 @@ void	minishell_line_clear(char *line, t_cmd_lst *cmd_lst, t_lst *tkn_lst)
 	line = 0;
 }
 
-typedef struct s_data
-{
-	int				parse_code;
-	char			*line;
-	t_lst			*tkn_lst;
-	t_cmd_lst		*cmd_lst;
-	t_env_lst		envlst;
-}	t_data;
-
 void	exec(t_data *data, char **envp, struct termios org_term)
 {
 	int	exp_err;
 
 	data->tkn_lst = tokenize(data->line);
-	// print_tkn(data->tkn_lst);
 	data->parse_code = parse_line(data->tkn_lst);
 	exp_err = word_expantion(&data->tkn_lst, &data->envlst);
 	data->cmd_lst = convert_cmd(data->tkn_lst);

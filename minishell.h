@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 09:54:24 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 15:58:13 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,15 @@ typedef struct s_list_gnl
 	char				*buf;
 	struct s_list_gnl	*next;
 }			t_list_gnl;
+
+typedef struct s_data
+{
+	int				parse_code;
+	char			*line;
+	t_lst			*tkn_lst;
+	t_cmd_lst		*cmd_lst;
+	t_env_lst		envlst;
+}	t_data;
 
 void		argu_cleaner(char **args);
 pid_t		fork2(void);
@@ -136,7 +145,7 @@ void		cmd_post_process(t_cmd_lst *lst, pid_t proc_id);
 void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 					char **envp, pid_t *proc_id);
 void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
-int			is_cmd_for_logic(t_cmd_node *node);	
+int			is_cmd_for_logic(t_cmd_node *node);
 t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
 int			right_redirect_condition(t_cmd_lst *lst);
 int			align_pl_location_condition(t_cmd_node *curr);

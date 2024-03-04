@@ -1,9 +1,7 @@
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror
 LIBFT_FLAG		= -L./libft -lft
 READLINE_FLAG	= -L/usr/local/include/readline -lreadline -lhistory
-# READLINE_FLAG	= -L/opt/homebrew/opt/readline/lib -lreadline -lhistory
-# READLINE_INCLUDE= -I/opt/homebrew/opt/readline/include
 
 NAME			= minishell
 
@@ -32,12 +30,14 @@ COMDS_SRC		= init_rm_cmds.c \
 
 EXPNS_SRC		= lst_expansion.c \
 				param_expansion.c \
-				pathname_expansion.c \
-				pattern_match.c \
+				pathname_expansion_bonus.c \
+				pattern_match_bonus.c \
 				quote_removal.c \
 				tilde_expansion.c \
 				utils.c \
 				word_expansion.c
+
+EXPNS_INCLUDE	= expansions.h
 
 PARSE_SRC		= lalr_action_table.c \
 				lalr_action_tablev2.c \
@@ -59,6 +59,12 @@ PARSE_SRC		= lalr_action_table.c \
 				token.c \
 				tokenize.c
 
+PARSE_INCLUDE	= lalr_parser.h \
+				lalr_table.h \
+				mini_parsing.h \
+				parsing_type.h \
+				scanner.h
+
 UTILS_SRC		= ft_calloc2.c \
 				ft_stack.c \
 				ft_stack_func.c \
@@ -68,6 +74,11 @@ UTILS_SRC		= ft_calloc2.c \
 				str_buffer2.c \
 				utils.c \
 				get_next_line.c
+
+UTILS_INCLUDE	= ft_stack.h \
+				linked_list.h \
+				mini_utils.h \
+				str_buffer.h
 
 BUILT_SRC		= builtin_dir.c \
 				builtin_pwd.c \
@@ -103,8 +114,13 @@ SRCS			= $(MAIN_SRC) \
 				$(addprefix $(COMDS_DIR)/,$(COMDS_SRC))
 
 OBJS			= $(SRCS:.c=.o)
-INCLUDES		= minishell.h
+INCLUDES		= minishell.h \
+				envir.h \
+				$(addprefix $(EXPNS_DIR)/,$(EXPNS_INCLUDE)) \
+				$(addprefix $(PARSE_DIR)/,$(PARSE_INCLUDE)) \
+				$(addprefix $(UTILS_DIR)/,$(UTILS_INCLUDE)) \
 
+bonus: all
 all: $(NAME)
 
 $(NAME): $(OBJS)
