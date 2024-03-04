@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:21:25 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	**get_cmd_args_pp(t_cmd_lst *lst)
 	int		nums;
 	int		size;
 
+	if (!lst->curr)
+		return (NULL);
 	size = 10;
 	nums = 0;
 	args = (char **)ft_calloc(size, sizeof(char *));

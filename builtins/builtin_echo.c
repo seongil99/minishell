@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 16:00:08 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:27:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static void	write_echo_args(char **args)
 	int	i;
 
 	i = 0;
+	if (!args || !args[0])
+		return ;
 	while (args[i])
 	{
 		write(1, args[i], ft_strlen(args[i]));

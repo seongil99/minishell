@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/03 15:52:28 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:25:06 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	argu_cleaner(char **args)
 	int	i;
 
 	i = 0;
-	while (args[i])
+	while (args && args[i])
 		free(args[i++]);
-	free(args);
+	if (args)
+		free(args);
 }
 
 void	cd_post_process(t_env_lst *envlst, char **args)
