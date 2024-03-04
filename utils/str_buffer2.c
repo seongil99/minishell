@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_table.h                                       :+:      :+:    :+:   */
+/*   str_buffer2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 18:17:03 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 18:17:18 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/23 13:10:22 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/23 13:40:54 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LALR_TABLE_H
-# define LALR_TABLE_H
+#include "mini_utils.h"
 
-# include "mini_parsing.h"
-
-t_table	**get_action_table(void);
-t_table	**get_goto_table(void);
-void	init_action_table(void);
-void	init_action_tablev2(void);
-void	init_goto_table(void);
-void	init_goto_tablev2(void);
-
-#endif
+void	buf_remove_char(t_buf *buf, int index)
+{
+	while (index < buf->size - 1)
+	{
+		buf->buf[index] = buf->buf[index + 1];
+		++index;
+	}
+	buf->len--;
+}

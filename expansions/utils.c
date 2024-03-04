@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:24:07 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 18:00:52 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:05:10 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 char	*get_home_dir(t_env_lst *envlst)
 {
 	char		*home_dir;
-	t_env_node	*home_node;
 
-	home_node = search_env_node(envlst, "HOME");
-	home_dir = home_node->value;
+	home_dir = envlst->home;
 	return (home_dir);
 }
 

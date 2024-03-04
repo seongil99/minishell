@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:38:02 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/20 16:41:49 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:12:27 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	lst_tilde_expansion(t_lst *tknlst, t_env_lst *envlst)
 	char	*home_dir;
 
 	home_dir = get_home_dir(envlst);
+	if (!home_dir)
+		return ;
 	while (tknlst)
 	{
 		token = tknlst->data;
@@ -33,23 +35,28 @@ void	lst_param_expansion(t_lst *tknlst, t_env_lst *envlst)
 	while (tknlst)
 	{
 		token = tknlst->data;
-		replace_str(&(token->str), param_expansion(token->str, envlst));
+		replace_str(&(token->str), param_expansion(token->str, envlst, false));
 		tknlst = tknlst->next;
 	}
 }
 
-void	lst_path_expansion(t_lst *tknlst)
+int	lst_path_expansion(t_lst **head)
 {
 	t_lst	*temp;
-	t_lst	*head;
+	t_lst	*tknlst;
+	int		ret;
 
-	head = tknlst;
+	tknlst = *head;
+	ret = 0;
 	while (tknlst)
 	{
 		temp = tknlst->next;
-		path_expansion(head, tknlst);
+		ret = path_expansion(head, tknlst, tknlst->prev);
+		if (ret)
+			return (ret);
 		tknlst = temp;
 	}
+	return (ret);
 }
 
 void	lst_quote_removal(t_lst *tknlst)

@@ -2,3 +2,5 @@
 *.o
 *.a
 minishell
+minishell_tester/
+.DS_Store

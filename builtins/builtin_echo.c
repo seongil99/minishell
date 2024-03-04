@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 15:23:12 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:27:21 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,26 @@ static int	echo_option_check(t_cmd_node *arg)
 	return (1 + echo_option_check(arg->next));
 }
 
-static void	write_echo_args(t_cmd_lst *lst)
+static void	write_echo_args(char **args)
 {
-	if (!lst->curr)
+	int	i;
+
+	i = 0;
+	if (!args || !args[0])
 		return ;
-	while (lst->curr->next && is_cmd(lst->curr->next))
+	while (args[i])
 	{
-		write(1, lst->curr->token, ft_strlen(lst->curr->token));
-		write(1, " ", 1);
-		lst->curr = lst->curr->next;
+		write(1, args[i], ft_strlen(args[i]));
+		if (args[i + 1])
+			write(1, " ", 1);
+		i++;
 	}
-	write(1, lst->curr->token, ft_strlen(lst->curr->token));
 }
 
 int	builtin_echo(t_cmd_lst *lst)
 {
-	int	skip;
+	int		skip;
+	char	**args;
 
 	lst->curr = lst->curr->next;
 	skip = echo_option_check(lst->curr);
@@ -57,12 +61,16 @@ int	builtin_echo(t_cmd_lst *lst)
 	{
 		while (skip--)
 			lst->curr = lst->curr->next;
-		write_echo_args(lst);
+		args = get_cmd_args_pp(lst);
+		write_echo_args(args);
 	}
 	else
 	{
-		write_echo_args(lst);
+		args = get_cmd_args_pp(lst);
+		write_echo_args(args);
 		write(1, "\n", 1);
 	}
+	g_exit_code = 0;
+	argu_cleaner(args);
 	return (1);
 }

@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   convert_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:20:45 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 16:20:39 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:05:09 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static t_cmd_node	*cmd_node_new(char	*token)
+static t_cmd_node	*cmd_node_new(char	*token, t_gmr_var type)
 {
 	t_cmd_node	*ret;
 
 	ret = ft_calloc2(1, sizeof(t_cmd_node));
 	ret->token = ft_strdup(token);
+	ret->type = type;
 	return (ret);
 }
 
@@ -71,7 +72,7 @@ t_cmd_lst	*convert_cmd(t_lst	*lst)
 	while (lst)
 	{
 		t = lst->data;
-		cmdlst_push_back(ret, cmd_node_new(t->str));
+		cmdlst_push_back(ret, cmd_node_new(t->str, t->type));
 		lst = lst->next;
 	}
 	return (ret);

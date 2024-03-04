@@ -6,14 +6,17 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 16:21:11 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:41:42 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_parsing.h"
+#include "../expansions/expansions.h"
 
-t_gmr_var	get_char_type(t_scanner *src, char c)
+t_gmr_var	get_char_type(t_scanner *src, char c, int *flag)
 {
+	if (*flag != NO_QUOTE)
+		return (WORD);
 	if (c == '(')
 		return (LPAR);
 	else if (c == ')')
@@ -35,21 +38,22 @@ t_gmr_var	get_char_type(t_scanner *src, char c)
 	return (WORD);
 }
 
-char	token_add_char(t_scanner *src, t_token *tkn, t_buf *buf)
+char	token_add_char(t_scanner *src, t_token *tkn, t_buf *buf, int *flag)
 {
 	char	c;
 
 	c = next_char(src);
-	if (c == ' ' || c == '\t')
+	set_quote_flag(flag, c);
+	if (*flag == NO_QUOTE && (c == ' ' || c == '\t'))
 		return (0);
-	if (tkn->type && tkn->type != get_char_type(src, c))
+	if (tkn->type && tkn->type != get_char_type(src, c, flag))
 	{
 		cur_back(src);
 		return (0);
 	}
 	buf_add_char(buf, c);
 	if (tkn->type == 0)
-		tkn->type = get_char_type(src, c);
+		tkn->type = get_char_type(src, c, flag);
 	if (tkn->type == DLESS || tkn->type == DGREAT
 		|| tkn->type == OR_IF || tkn->type == AND_IF)
 	{
@@ -63,15 +67,17 @@ char	token_add_char(t_scanner *src, t_token *tkn, t_buf *buf)
 
 t_token	*get_next_token(t_scanner *src)
 {
-	t_token			*tkn;
-	t_buf			*buf;
+	t_token	*tkn;
+	t_buf	*buf;
+	int		flag;
 
 	tkn = ft_calloc2(1, sizeof(t_token));
 	buf = buf_new();
+	flag = NO_QUOTE;
 	skip_whitespaces(src);
 	while (peek_char(src) != T_EOF)
 	{
-		if (!token_add_char(src, tkn, buf))
+		if (!token_add_char(src, tkn, buf, &flag))
 			break ;
 	}
 	tkn->str_len = ft_strlen(buf->buf);
@@ -110,8 +116,10 @@ t_lst	*tokenize(char *command)
 	t_token		*temp;
 	t_lst		*head;
 
-	head = NULL;
+	if (!command || !*command || *command == '\n')
+		return (NULL);
 	src = scanner_new(command);
+	head = NULL;
 	while (true)
 	{
 		temp = get_next_token(src);

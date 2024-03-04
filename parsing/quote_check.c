@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lalr_table.h                                       :+:      :+:    :+:   */
+/*   quote_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 18:17:03 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 18:17:18 by seonyoon         ###   ########.fr       */
+/*   Created: 2024/02/21 17:41:11 by seonyoon          #+#    #+#             */
+/*   Updated: 2024/02/21 18:02:10 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LALR_TABLE_H
-# define LALR_TABLE_H
+#include "mini_parsing.h"
+#include "../expansions/expansions.h"
 
-# include "mini_parsing.h"
+int	quote_check(char *str)
+{
+	int	flag;
 
-t_table	**get_action_table(void);
-t_table	**get_goto_table(void);
-void	init_action_table(void);
-void	init_action_tablev2(void);
-void	init_goto_table(void);
-void	init_goto_tablev2(void);
-
-#endif
+	flag = NO_QUOTE;
+	while (*str)
+	{
+		set_quote_flag(&flag, *str);
+		str++;
+	}
+	if (flag == NO_QUOTE)
+		return (ACC);
+	return (REJECT);
+}

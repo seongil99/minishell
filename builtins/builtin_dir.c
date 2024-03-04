@@ -6,46 +6,77 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:57:43 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/18 15:02:55 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:25:06 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
+void	argu_cleaner(char **args)
 {
-	if (envlst)
-	if (lst->curr->next == NULL)
-	{
-		if (chdir(getenv("HOME")))
-		{
-			perror("minishell chdir 1");
-			g_exit_code = 1;
-			return (1);
-		}
-		return (0);
-	} 
-	if (chdir(lst->curr->next->token))
-	{
-		g_exit_code = 1;
-		perror("minishell chdir 2");
-		return (1);
-	}
-	perror("minishell chdir 3");
-	return (1);
+	int	i;
+
+	i = 0;
+	while (args && args[i])
+		free(args[i++]);
+	if (args)
+		free(args);
 }
 
-int	builtin_pwd(void)
+void	cd_post_process(t_env_lst *envlst, char **args)
 {
-	char 	*tmp;
-	size_t	size;
+	update_pwd(envlst);
+	argu_cleaner(args);
+}
 
-	size = 100;
-	tmp = (char *)ft_calloc(sizeof(char), size);
-	while (!getcwd(tmp, size))
-		size *= 2;
-	printf("%s\n", tmp);
-	free(tmp);
-	g_exit_code = 0;
+void	dir_access_test_no_args(t_env_lst *envlst)
+{
+	if (!envlst->n_home || !envlst->n_home->value)
+	{
+		g_exit_code = 1;
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	}
+	else if (envlst->n_home && access(envlst->n_home->value, F_OK))
+	{
+		g_exit_code = 1;
+		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
+	}
+	else
+	{
+		g_exit_code = 0;
+		chdir(envlst->n_home->value);
+	}
+}
+
+void	dir_access_test_args(char **args)
+{
+	if (access(args[1], F_OK))
+	{
+		g_exit_code = 1;
+		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
+	}
+	else if (access(args[1], R_OK))
+	{
+		g_exit_code = 1;
+		ft_putstr_fd("minishell: cd: Permission denied\n", 2);
+	}
+	else
+	{
+		g_exit_code = 0;
+		chdir(args[1]);
+	}
+}
+
+int	builtin_cd(t_cmd_lst *lst, t_env_lst *envlst)
+{
+	char	**args;
+
+	args = get_cmd_args(lst);
+	update_oldpwd(envlst);
+	if (args[0] && !args[1])
+		dir_access_test_no_args(envlst);
+	else if (args[1])
+		dir_access_test_args(args);
+	cd_post_process(envlst, args);
 	return (1);
 }

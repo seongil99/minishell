@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:33:47 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 10:49:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/02/23 13:18:35 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ typedef struct s_env_lst
 	struct s_env_node	*head;
 	struct s_env_node	*tail;
 	struct s_env_node	*path;
+	struct s_env_node	*pwd;
+	struct s_env_node	*oldpwd;
+	struct s_env_node	*underbar;
+	struct s_env_node	*n_home;
+	char				*home;
 	int					nums;
 }			t_env_lst;
 

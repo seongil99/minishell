@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_rm_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:31:25 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/19 15:40:19 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/04 09:28:07 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	push_cmd(t_cmd_lst *lst, char **tokens)
-{
-	t_cmd_node	*new;
-	int		i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		new = (t_cmd_node *)ft_calloc2(sizeof(t_cmd_node), 1);
-		new->token = ft_strdup(tokens[i]);
-		new->file_heredoc = NULL;
-		free(tokens[i]);
-		new->next = NULL;
-		if (i++ == 0)
-		{
-			lst->head = new;
-			new->prev = NULL;
-		}
-		else
-		{
-			lst->tail->next = new;
-			new->prev = lst->tail;
-		}
-		lst->tail = new;
-		lst->nums++;
-	}
-	free(tokens);
-}
 
 void	clear_lst(t_cmd_lst *lst)
 {
@@ -53,6 +24,8 @@ void	clear_lst(t_cmd_lst *lst)
 	{
 		del = tmp;
 		tmp = tmp->next;
+		if (del->file_heredoc)
+			unlink(del->file_heredoc);
 		free(del->token);
 		del->token = 0;
 		free(del->file_heredoc);
@@ -64,5 +37,48 @@ void	clear_lst(t_cmd_lst *lst)
 	lst->tail = 0;
 	lst->curr = 0;
 	free(lst);
-	return ;
+}
+
+void	init_pipe(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+
+	tmp = lst->head;
+	while (tmp)
+	{
+		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+		{
+			pipe(tmp->pipefd);
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	close_pipe(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+
+	tmp = lst->head;
+	while (tmp)
+	{
+		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+		{
+			close(tmp->pipefd[0]);
+			close(tmp->pipefd[1]);
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	close_pipe_re(t_cmd_lst *lst)
+{
+	t_cmd_node	*tmp;
+
+	tmp = lst->head;
+	while (tmp)
+	{
+		if (tmp->type == WORD && (tmp->prev == NULL || tmp->prev->type != WORD))
+			close(tmp->pipefd[0]);
+		tmp = tmp->next;
+	}
 }

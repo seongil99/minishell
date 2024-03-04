@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lalr_automata.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 20:07:43 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 13:17:56 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:54:19 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 

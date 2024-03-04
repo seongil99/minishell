@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:07:24 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 16:18:57 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:03:21 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	parse_line(t_lst *lst)
 	t_automata	*atmt;
 	int			t;
 
+	if (!lst)
+		return (0);
 	atmt = automata_new(lst);
 	while (true)
 	{

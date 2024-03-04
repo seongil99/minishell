@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:52:22 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 13:13:53 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:25:24 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef enum e_gmr_var
 	SUBSHELL,
 	SIMPLE_COMMAND,
 	CMD_NAME,
+	CMD_PREFIX,
 	CMD_SUFFIX,
 	REDIRECTION_LIST,
 	IO_REDIRECT,

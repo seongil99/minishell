@@ -6,39 +6,48 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:19:54 by sihkang           #+#    #+#             */
-/*   Updated: 2024/02/16 12:17:13 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/03 14:58:01 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	sigint_handler(void)
+void	sigint_handler(int sig)
 {
+	if (sig != SIGINT)
+		return ;
+	g_exit_code = 1;
 	write(1, "\n", 1);
 	rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-void	sigquit_handler(void)
+void	sigquit_handler(int sig)
 {
+	if (sig != SIGQUIT)
+		return ;
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-void	save_input_mode(struct termios *org_term)
+void	sigint_handler_heredoc(int sig)
 {
-	tcgetattr(STDIN_FILENO, org_term);
+	if (sig == SIGINT)
+		write(1, "\n", 1);
+	exit(1);
 }
 
-void	set_input_mode(struct termios *new_term)
+void	signal_exec(int sig)
 {
-	tcgetattr(STDIN_FILENO, new_term);
-	new_term->c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSANOW, new_term);
-}
-
-void	reset_input_mode(struct termios *org_term)
-{
-	tcsetattr(STDIN_FILENO, TCSANOW, org_term);
+	if (sig == SIGINT)
+	{
+		g_exit_code = 130;
+		printf("\n");
+	}
+	if (sig == SIGQUIT)
+	{
+		g_exit_code = 131;
+		printf("Quit: 3\n");
+	}
 }

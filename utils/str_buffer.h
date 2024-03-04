@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:39:11 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/18 15:41:03 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:14:39 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	buf_del(t_buf *buf);
 void	buf_add_char(t_buf *buf, char c);
 void	buf_add_str(t_buf *buf, char *str);
 char	*buf_get_str(t_buf *buf);
+void	buf_remove_char(t_buf *buf, int index);
 
 #endif

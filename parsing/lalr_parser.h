@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:38:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/19 13:15:41 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:45:00 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ int			auto_transition(t_automata *at);
 t_automata	*automata_new(t_lst *input);
 void		automata_del(t_automata *at);
 int			auto_get_state(t_automata *at);
+int			quote_check(char *str);
 
 #endif
