@@ -33,6 +33,7 @@ COMDS_SRC		= init_rm_cmds.c \
 EXPNS_SRC		= lst_expansion.c \
 				param_expansion.c \
 				pathname_expansion.c \
+				pattern_match.c \
 				quote_removal.c \
 				tilde_expansion.c \
 				utils.c \
