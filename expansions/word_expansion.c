@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:54:41 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 15:06:25 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:41:45 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	word_expantion(t_lst **tknlst, t_env_lst *envlst)
 
 	ret = 0;
 	if (!tknlst || !*tknlst || !envlst)
-		return (1);
+		return (0);
 	lst_tilde_expansion(*tknlst, envlst);
 	lst_param_expansion(*tknlst, envlst);
 	ret = lst_path_expansion(tknlst);
