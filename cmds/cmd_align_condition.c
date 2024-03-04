@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:01:50 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/03 15:53:30 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 20:34:35 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,25 @@ t_cmd_node	*left_redirect_condition(t_cmd_lst *lst)
 	return (ret);
 }
 
-int	right_redirect_condition(t_cmd_lst *lst)
+t_cmd_node	*right_redirect_condition(t_cmd_lst *lst)
 {
-	return (get_next_cmd_after_lr(lst) && \
-	(get_next_cmd_after_lr(lst)->prev->type == GREAT || \
-	get_next_cmd_after_lr(lst)->prev->type == DGREAT));
+	t_cmd_node	*tmp;
+	t_cmd_node	*ret;
+
+	tmp = lst->curr;
+	ret = 0;
+	while (tmp)
+	{
+		if (tmp->type == PIPE || tmp->type == AND_IF || tmp->type == OR_IF)
+			return (ret);
+		else if (tmp->type == GREAT || tmp->type == DGREAT)
+		{
+			ret = tmp->next;
+			open(ret->token, O_WRONLY | O_CREAT, 0666);
+		}
+		tmp = tmp->next;
+	}
+	return (ret);
 }
 
 int	align_pl_location_condition(t_cmd_node *curr)

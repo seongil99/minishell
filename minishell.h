@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 18:12:23 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 20:32:11 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		move_to_next_cmd(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
 void		exec_program(t_env_lst *envlst, char **args, char **envp);
 void		logic_post_processing(t_cmd_lst *lst, pid_t pid);
-int			open_file_option(t_cmd_lst *lst, t_cmd_node *tmp);
+int			open_file_option(t_cmd_lst *lst);
 t_cmd_node	*new_get_prev_cmd(t_cmd_lst *lst);
 t_cmd_node	*new_get_next_cmd(t_cmd_lst *lst);
 int			is_logical(t_cmd_node *ret);
@@ -147,7 +147,7 @@ void		process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 void		move_to_next_cmd_heredoc(t_cmd_lst *lst);
 int			is_cmd_for_logic(t_cmd_node *node);
 t_cmd_node	*left_redirect_condition(t_cmd_lst *lst);
-int			right_redirect_condition(t_cmd_lst *lst);
+t_cmd_node	*right_redirect_condition(t_cmd_lst *lst);
 int			align_pl_location_condition(t_cmd_node *curr);
 void		lst_reordering(t_cmd_lst *lst);
 void		close_pipe_re(t_cmd_lst *lst);

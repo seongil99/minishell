@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 10:02:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 20:10:17 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	exec_program(t_env_lst *envlst, char **args, char **envp)
 		else
 		{
 			execve(args[0], args, envp);
+			printf("* %s *\n", args[0]);
 			perror("minishell program executed");
 			exit(127);
 		}

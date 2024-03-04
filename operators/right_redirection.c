@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 18:13:21 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 20:33:04 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,16 @@ t_cmd_node	*get_prev_cmd_rr(t_cmd_lst *lst)
 	return (ret->next);
 }
 
-int	open_file_option(t_cmd_lst *lst, t_cmd_node *tmp)
+int	open_file_option(t_cmd_lst *lst)
 {
-	char	*name;
+	t_cmd_node	*tmp;
+	char		*name;
 
-	name = tmp->next->token;
-	if (tmp->type == GREAT)
+	tmp = right_redirect_condition(lst);
+	name = tmp->token;
+	if (tmp->prev->type == GREAT)
 		return (open(name, O_WRONLY | O_CREAT | O_TRUNC, 0666));
-	else if (tmp->type == DGREAT)
+	else if (tmp->prev->type == DGREAT)
 		return (open(name, O_WRONLY | O_CREAT | O_APPEND, 0666));
 	else
 	{
@@ -70,21 +72,15 @@ void	redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp)
 {
 	int			file;
 	char		**args;
-	t_cmd_node	*tmp;
 
 	if (logic_stop(lst))
 		exit(g_exit_code);
-	tmp = lst->curr;
-	while (tmp->next && \
-		tmp->type != DGREAT && \
-		tmp->type != GREAT)
-		tmp = tmp->next;
 	args = get_cmd_args_pp(lst);
 	if (args[0] == NULL)
 		exit(0);
 	if (get_pl_data_condition(lst))
 		dup2(lst->curr->pipefd[0], STDIN_FILENO);
-	file = open_file_option(lst, tmp);
+	file = open_file_option(lst);
 	dup2(file, STDOUT_FILENO);
 	close_pipe(lst);
 	close(file);
