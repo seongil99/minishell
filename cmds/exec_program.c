@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 09:33:48 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:38:50 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	exec_program(t_env_lst *envlst, char **args, char **envp)
 			exit(126);
 		}
 	}
-	// perror("minishell program failed");
 	exit(127);
 }
 

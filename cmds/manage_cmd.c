@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:24:06 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 09:22:18 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 09:39:03 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	move_to_next_cmd(t_cmd_lst *lst)
 		lst->curr = lst->curr->next;
 }
 
-pid_t	fork2()
+pid_t	fork2(void)
 {
 	pid_t	id;
 
