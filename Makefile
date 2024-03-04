@@ -83,12 +83,12 @@ TMSIG_SRC		= signal_control.c \
 ENVIR_SRC		= create_envlst.c \
 				manage_envir.c
 
-OPERA_SRC		= heredoc_utils.c\
+OPERA_SRC		= heredoc_utils.c \
 				heredoc.c \
-				subshell.c \
 				right_redirection.c \
 				left_redirection.c \
-				logics.c
+				subshell_bonus.c \
+				logics_bonus.c
 
 MAIN_SRC		= main.c
 

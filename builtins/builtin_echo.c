@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:28:27 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 15:54:09 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 16:00:08 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,6 @@ static void	write_echo_args(char **args)
 		i++;
 	}
 }
-
-
-// static void	write_echo_args(t_cmd_lst *lst)
-// {
-// 	if (!lst->curr)
-// 		return ;
-// 	while (lst->curr->next && is_cmd(lst->curr->next))
-// 	{
-// 		write(1, lst->curr->token, ft_strlen(lst->curr->token));
-// 		write(1, " ", 1);
-// 		lst->curr = lst->curr->next;
-// 	}
-// 	write(1, lst->curr->token, ft_strlen(lst->curr->token));
-// }
 
 int	builtin_echo(t_cmd_lst *lst)
 {
