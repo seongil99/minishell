@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:29:03 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 16:21:25 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/04 18:12:45 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**need_realloc_chk(char **args, int nums, int *size)
 	return (args);
 }
 
-void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
+char	**push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 {
 	t_cmd_node	*tmp;
 
@@ -54,6 +54,7 @@ void	push_args(t_cmd_lst *lst, char **args, int *nums, int *size)
 		tmp = tmp->next;
 	}
 	args[*nums] = NULL;
+	return (args);
 }
 
 char	**get_cmd_args_pp(t_cmd_lst *lst)
@@ -69,7 +70,7 @@ char	**get_cmd_args_pp(t_cmd_lst *lst)
 	args = (char **)ft_calloc(size, sizeof(char *));
 	if (lst->curr->type == WORD)
 		args[nums++] = ft_strdup(lst->curr->token);
-	push_args(lst, args, &nums, &size);
+	args = push_args(lst, args, &nums, &size);
 	return (args);
 }
 

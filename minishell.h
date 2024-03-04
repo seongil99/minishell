@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 15:58:13 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:12:23 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int			is_cmd_for_move(t_cmd_node *node);
 char		*last_args(t_cmd_lst *lst);
 int			redirect_check(t_cmd_node *tmp);
 char		**need_realloc_chk(char **args, int nums, int *size);
-void		push_args(t_cmd_lst *lst, char **args, int *nums, int *size);
+char		**push_args(t_cmd_lst *lst, char **args, int *nums, int *size);
 t_cmd_node	*get_next_cmd_for_heredoc(t_cmd_node *node);
 t_cmd_node	*get_next_cmd_pp(t_cmd_lst *lst);
 t_cmd_node	*get_next_cmd_after_lr(t_cmd_lst *lst);
