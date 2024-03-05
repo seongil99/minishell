@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:19:16 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 15:40:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 10:35:32 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	get_heredoc(t_cmd_lst *lst, t_env_lst *envlst)
 	g_exit_code = 0;
 	while (lst->curr)
 	{
-		while (lst->curr->type != WORD)
+		while (lst->curr->type == LPAR || lst->curr->type == RPAR)
 			lst->curr = lst->curr->next;
 		tg = lst->curr;
 		get_itoa = ft_itoa(num_heredoc++);
