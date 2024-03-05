@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:41:11 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/21 18:02:10 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:36:19 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	quote_check(char *str)
 	flag = NO_QUOTE;
 	while (*str)
 	{
-		set_quote_flag(&flag, *str);
+		set_quote_flag(&flag, *str, str);
 		str++;
 	}
 	if (flag == NO_QUOTE)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:24:07 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/27 20:05:10 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 12:36:11 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansions.h"
+#include "../libft/libft.h"
 
 char	*get_home_dir(t_env_lst *envlst)
 {
@@ -26,13 +27,13 @@ void	replace_str(char **dist, char *new_str)
 	*dist = new_str;
 }
 
-void	set_quote_flag(int *flag, char c)
+void	set_quote_flag(int *flag, char c, char *str)
 {
 	if (*flag == NO_QUOTE)
 	{
-		if (c == '\"')
+		if (c == '\"' && ft_strchr(str + 1, '\"'))
 			*flag = DQUOTE;
-		else if (c == '\'')
+		else if (c == '\'' && ft_strchr(str + 1, '\''))
 			*flag = SQUOTE;
 	}
 	else if (*flag == SQUOTE)

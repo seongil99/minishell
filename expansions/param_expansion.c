@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:28:34 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/27 20:05:03 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 12:35:31 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*param_expansion(char *str, t_env_lst *elst, bool is_heredoc)
 	while (*str)
 	{
 		if (!is_heredoc)
-			set_quote_flag(&flag, *str);
+			set_quote_flag(&flag, *str, str);
 		str += append_param(str, buf, elst, flag);
 	}
 	ret = buf_get_str(buf);

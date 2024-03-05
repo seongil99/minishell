@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:40:32 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 15:35:00 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:35:23 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ char	*tilde_expansion(char *str, char *home_dir);
 int		path_expansion(t_lst **head, t_lst *tknnode, t_lst *prev);
 char	*get_home_dir(t_env_lst *envlst);
 void	replace_str(char **dist, char *new_str);
-void	set_quote_flag(int *flag, char c);
+void	set_quote_flag(int *flag, char c, char *str);
 
 #endif

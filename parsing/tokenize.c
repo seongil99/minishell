@@ -6,7 +6,7 @@
 /*   By: seonyoon <seonyoon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:58:13 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/02/24 10:41:42 by seonyoon         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:36:39 by seonyoon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	token_add_char(t_scanner *src, t_token *tkn, t_buf *buf, int *flag)
 	char	c;
 
 	c = next_char(src);
-	set_quote_flag(flag, c);
+	set_quote_flag(flag, c, src->line + src->cur);
 	if (*flag == NO_QUOTE && (c == ' ' || c == '\t'))
 		return (0);
 	if (tkn->type && tkn->type != get_char_type(src, c, flag))
