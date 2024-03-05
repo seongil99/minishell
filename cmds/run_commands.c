@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:13:15 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 15:40:27 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 09:08:11 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	process_io_exec(t_cmd_lst *lst, t_env_lst *envlst, \
 					redi_left(lst);
 				else if (new_get_prev_cmd(lst))
 					dup2(lst->curr->pipefd[0], STDIN_FILENO);
-				if (right_redirect_condition(lst))
+				if (right_condition(lst))
 					redi_right(lst, envlst, envp);
 				else
 					pipe_exec(lst, envlst, envp);

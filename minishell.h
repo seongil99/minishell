@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 13:43:40 by seonyoon          #+#    #+#             */
-/*   Updated: 2024/03/04 20:32:11 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 09:08:05 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void		redi_right(t_cmd_lst *lst, t_env_lst *envlst, char **envp);
 void		redi_left(t_cmd_lst *lst);
 void		get_heredoc(t_cmd_lst *lst, t_env_lst *envlst);
 int			redirect_check(t_cmd_node *tmp);
+t_cmd_node	*right_condition(t_cmd_lst *lst);
 void		init_pipe(t_cmd_lst *lst);
 void		close_pipe(t_cmd_lst *lst);
 void		pipe_exec(t_cmd_lst *lst, t_env_lst *envlst, char *envp[]);

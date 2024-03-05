@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:28:48 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 20:33:04 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 09:24:07 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	open_file_option(t_cmd_lst *lst)
 
 int	get_pl_data_condition(t_cmd_lst *lst)
 {
-	return (get_prev_cmd_rr(lst) || \
+	return (new_get_prev_cmd(lst) || \
 	(get_next_cmd_pp(lst)->prev->type == LESS || \
 	get_next_cmd_pp(lst)->prev->type == DLESS));
 }
