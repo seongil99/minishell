@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/05 12:56:00 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 13:15:55 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ void	logic_post_processing(t_cmd_lst *lst, pid_t pid)
 			g_exit_code = WTERMSIG(g_exit_code) + 128;
 		else
 			g_exit_code = WEXITSTATUS(g_exit_code);
+	}
+	while (wait(0) != -1)
+	{
 	}
 	init_pipe(lst);
 }
