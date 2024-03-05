@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:19:54 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/03 14:58:01 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 12:46:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,7 @@ void	sigint_handler_heredoc(int sig)
 void	signal_exec(int sig)
 {
 	if (sig == SIGINT)
-	{
-		g_exit_code = 130;
 		printf("\n");
-	}
 	if (sig == SIGQUIT)
-	{
-		g_exit_code = 131;
 		printf("Quit: 3\n");
-	}
 }

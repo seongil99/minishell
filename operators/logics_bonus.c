@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   logics.c                                           :+:      :+:    :+:   */
+/*   logics_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:58 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 09:22:36 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 12:56:00 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,13 @@ void	logic_post_processing(t_cmd_lst *lst, pid_t pid)
 
 	tmp = lst->curr;
 	close_pipe(lst);
-	waitpid(pid, &g_exit_code, 0);
-	g_exit_code = WEXITSTATUS(g_exit_code);
+	if (waitpid(pid, &g_exit_code, 0) != -1)
+	{
+		if (WTERMSIG(g_exit_code))
+			g_exit_code = WTERMSIG(g_exit_code) + 128;
+		else
+			g_exit_code = WEXITSTATUS(g_exit_code);
+	}
 	init_pipe(lst);
 }
 

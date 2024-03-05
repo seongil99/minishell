@@ -6,7 +6,7 @@
 /*   By: sihkang <sihkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:33:46 by sihkang           #+#    #+#             */
-/*   Updated: 2024/03/04 20:10:17 by sihkang          ###   ########seoul.kr  */
+/*   Updated: 2024/03/05 12:57:28 by sihkang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	exec_program(t_env_lst *envlst, char **args, char **envp)
 		else
 		{
 			execve(args[0], args, envp);
-			printf("* %s *\n", args[0]);
 			perror("minishell program executed");
 			exit(127);
 		}
@@ -89,7 +88,12 @@ void	cmd_post_process(t_cmd_lst *lst, pid_t proc_id)
 {
 	close_pipe(lst);
 	if (waitpid(proc_id, &g_exit_code, 0) != -1)
-		g_exit_code = WEXITSTATUS(g_exit_code);
+	{
+		if (WTERMSIG(g_exit_code))
+			g_exit_code += 128;
+		else
+			g_exit_code = WEXITSTATUS(g_exit_code);
+	}
 	while (wait(0) != -1)
 	{
 	}
